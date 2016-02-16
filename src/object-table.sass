@@ -1,0 +1,93 @@
+$selection-colour: #337ab7
+$copying-colour: desaturate($selection-colour, 100%)
+
+div.object-grid-container
+  margin-bottom: 2em
+  table
+    width: 100%
+    border: none !important
+    outline: none !important
+    font-size: 14px
+    border-collapse: separate
+
+    &.editing
+      td
+        div.contents
+          opacity: 0.2
+        &.editing div.contents
+          opacity: 1
+
+    //    borders
+    $border: 1px solid #ddd
+    $border-radius: 4px
+
+    // // border everything
+    // tr td, tr th
+    //   border: $border
+    //   margin-bottom: -1px
+
+    // border outside
+    tr:first-child
+      th:first-child
+        border-top-left-radius: $border-radius
+      th:last-child
+        border-top-right-radius: $border-radius
+    tr:last-child
+      td:first-child
+        border-bottom-left-radius: $border-radius
+      td:last-child
+        border-bottom-right-radius: $border-radius
+    tr:first-child
+      td, th
+        border-top: $border
+    tr:last-child
+      td
+        border-bottom: $border
+    td:first-child, th:first-child
+      border-left: $border
+    td:last-child, th:last-child
+      border-right: $border
+
+    td, th
+      div.contents
+        transition: opacity 0.2s
+
+      -webkit-box-sizing: border-box
+      -moz-box-sizing: border-box
+      -ms-box-sizing: border-box
+      box-sizing: border-box
+
+      // no selecting
+      -webkit-user-select: none
+      -moz-user-select: none
+      -ms-user-select: none
+      user-select: none
+
+    &:not(.editing)
+      td
+        &.selected
+          position: relative
+          &:before
+            content: ' '
+            position: absolute
+            top: 0px
+            left: 0px
+            width: 100%
+            height: 100%
+            background: rgba($selection-colour, 0.2)
+        &.copying
+          position: relative
+          &:after
+            content: ' '
+            position: absolute
+            top: 0px
+            left: 0px
+            width: 100%
+            height: 100%
+            background: rgba($copying-colour, 0.2)
+
+    th
+      padding: 0 5px
+
+@import 'drawers/text'
+@import 'editors/text'
