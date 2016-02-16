@@ -1,13 +1,15 @@
-var React = require('react');
-var JQuery = require('jquery');
-var ClassNames = require('classnames');
-var Clone = require('clone');
+const React = require('react');
+const JQuery = require('jquery');
+const ClassNames = require('classnames');
+const Clone = require('clone');
 
-var Utilities = require('./utilities.jsx');
-var Clipboard = require('./clipboard.jsx');
+const Utilities = require('./utilities.jsx');
+const Clipboard = require('./clipboard.jsx');
 
-var TextDrawer = require('./drawers/text.jsx');
-var TextEditor = require('./editors/text.jsx');
+const ObjectRow = require('./object-row.jsx');
+
+const TextDrawer = require('./drawers/text.jsx');
+const TextEditor = require('./editors/text.jsx');
 
 var ObjectTable = React.createClass({
   getDefaultProps: function() {

@@ -1,4 +1,4 @@
-var React = require('react');
+const React = require('react');
 
 var ObjectCell = React.createClass({
   getDefaultProps: function() {

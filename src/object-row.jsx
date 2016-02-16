@@ -1,6 +1,8 @@
-var React = require('react');
+const React = require('react');
 
-var Utilities = require('./utilities.jsx');
+const Utilities = require('./utilities.jsx');
+
+const ObjectCell = require('./object-cell.jsx');
 
 var ObjectRow = React.createClass({
   getDefaultProps: function() {
