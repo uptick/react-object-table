@@ -5,6 +5,7 @@ const Clone = require('clone');
 
 const Utilities = require('./utilities.jsx');
 const Clipboard = require('./clipboard.jsx');
+const TextEditor = require('./editors/text.jsx');
 
 const ObjectRow = require('./object-row.jsx');
 
@@ -75,7 +76,7 @@ var ObjectTable = React.createClass({
     });
     JQuery(document).on('paste', function(event) {
       var theEvent = event;
-      var clipboardObjects = deserialize_clipboard_cells(theEvent.originalEvent.clipboardData);
+      var clipboardObjects = Clipboard.deserialize_cells(theEvent.originalEvent.clipboardData);
       if (clipboardObjects.length) {
         reactClass.handlePaste(clipboardObjects);
       }
@@ -268,7 +269,7 @@ var ObjectTable = React.createClass({
           // // case 'v'
           // case 118:
           //   if (event.ctrlKey) {
-          //     var clipboardObjects = deserialize_clipboard_cells(event.originalEvent.clipboardData);
+          //     var clipboardObjects = Clipboard.deserialize_cells(event.originalEvent.clipboardData);
           //     this.handlePaste(clipboardObjects);
           //     event.preventDefault();
           //   }
@@ -563,17 +564,11 @@ var ObjectTable = React.createClass({
       cellsData.push(cellRow);
     }
 
-    var get_string_value = function(value) {
-      if (typeof value == 'number')
-        return value.toString();
-      return value;
-    };
-
     var stringData = '';
     var longestColumns = [];
     for (var rowIndex = 0; rowIndex < cellsData.length; rowIndex++) {
       for (var columnIndex = 0; columnIndex < cellsData[rowIndex].length; columnIndex++) {
-        var stringVal = get_string_value(cellsData[rowIndex][columnIndex]);
+        var stringVal = Clipboard.string_value(cellsData[rowIndex][columnIndex]);
 
         if (typeof longestColumns[columnIndex] == 'undefined' || longestColumns[columnIndex] < stringVal.length)
           longestColumns[columnIndex] = stringVal.length;
@@ -581,7 +576,7 @@ var ObjectTable = React.createClass({
     }
     for (var rowIndex = 0; rowIndex < cellsData.length; rowIndex++) {
       for (var columnIndex = 0; columnIndex < cellsData[rowIndex].length; columnIndex++) {
-        var stringVal = get_string_value(cellsData[rowIndex][columnIndex]);
+        var stringVal = Clipboard.string_value(cellsData[rowIndex][columnIndex]);
         stringData += stringVal;
         var numSpaces = longestColumns[columnIndex] - stringVal.length;
         if (columnIndex != (cellsData[rowIndex].length - 1))
@@ -595,7 +590,7 @@ var ObjectTable = React.createClass({
     var csvData = '';
     for (var rowIndex = 0; rowIndex < cellsData.length; rowIndex++) {
       for (var columnIndex = 0; columnIndex < cellsData[rowIndex].length; columnIndex++) {
-        var stringVal = get_string_value(cellsData[rowIndex][columnIndex]);
+        var stringVal = Clipboard.string_value(cellsData[rowIndex][columnIndex]);
         // var wrapQuotes = (stringVal.indexOf(',') != -1);
         var wrapQuotes = false;
         if (wrapQuotes)
@@ -673,7 +668,8 @@ var ObjectTable = React.createClass({
             if (pastingColumnIndex < pasteData[pastingRowIndex].length) {
               newSelectionColumns[column.key] = true;
               if (column.editor !== false) {
-                var validated = column.editor.validate(
+                var editor = column.editor || TextEditor;
+                var validated = editor.validate(
                   pasteData[pastingRowIndex][pastingColumnIndex],
                   column.editorProps || {}
                 );
@@ -706,7 +702,8 @@ var ObjectTable = React.createClass({
           if (typeof this.state.selectedColumns[column.key] == 'undefined')
             continue;
           if (column.editor !== false) {
-            var validated = column.editor.validate(
+            var editor = column.editor || TextEditor;
+            var validated = editor.validate(
               pasteData[pasteRow][pasteColumn],
               column.editorProps || {}
             );

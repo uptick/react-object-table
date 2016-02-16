@@ -1,4 +1,5 @@
 const React = require('react');
+const Clone = require('clone');
 const ClassNames = require('classnames');
 
 const TextDrawer = require('./drawers/text.jsx');

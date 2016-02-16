@@ -1,4 +1,4 @@
-var deserialize_clipboard_cells = function(clipboardData) {
+var deserialize_cells = function(clipboardData) {
   var gridData = clipboardData.getData('react/object-grid');
   if (gridData) {
     return JSON.parse(gridData);
@@ -20,6 +20,23 @@ var deserialize_clipboard_cells = function(clipboardData) {
   return [];
 };
 
+var string_value = function(value) {
+  switch (typeof value) {
+
+    case 'number':
+      return value.toString();
+
+    case 'object':
+      if (value !== null)
+        return 'object';
+
+    case 'string':
+      return value;
+  }
+  return '';
+};
+
 module.exports = {
-  deserialize_clipboard_cells: deserialize_clipboard_cells,
+  deserialize_cells: deserialize_cells,
+  string_value: string_value,
 };
