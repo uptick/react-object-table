@@ -1,11 +1,14 @@
 const React = require('react');
 const ClassNames = require('classnames');
 
+const TextDrawer = require('./drawers/text.jsx');
+const TextEditor = require('./editors/text.jsx');
+
 var ObjectCell = React.createClass({
   getDefaultProps: function() {
     return {
       // column: {}, // from row
-      // objectId: 1, // from row
+      // objectId: 1, // from ro w
     };
   },
   getInitialState: function() {

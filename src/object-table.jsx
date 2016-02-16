@@ -8,9 +8,6 @@ const Clipboard = require('./clipboard.jsx');
 
 const ObjectRow = require('./object-row.jsx');
 
-const TextDrawer = require('./drawers/text.jsx');
-const TextEditor = require('./editors/text.jsx');
-
 var ObjectTable = React.createClass({
   getDefaultProps: function() {
     return {
