@@ -65,7 +65,7 @@ var ObjectCell = React.createClass({
 
       return (
         <td
-          className={classes + ' ' + editor.className}
+          className={classes + ' editor ' + editor.className}
           style={style}
         >
           <div className="contents">
@@ -86,7 +86,7 @@ var ObjectCell = React.createClass({
 
       return (
         <td
-          className={classes + ' ' + drawer.className}
+          className={classes + ' drawer ' + drawer.className}
           style={style}
 
           onMouseDown={this.handleMouseDown}
