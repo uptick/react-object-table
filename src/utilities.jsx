@@ -5,13 +5,13 @@ var dict_count = function(dict) {
   return count;
 };
 
-var dict_first = function(dict) {
+var dict_first_key = function(dict) {
   for (var dictKey in dict)
-    return dict[dictKey];
+    return dictKey;
   return undefined;
 };
 
 module.exports = {
   dict_count: dict_count,
-  dict_first: dict_first,
+  dict_first_key: dict_first_key,
 };

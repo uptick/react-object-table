@@ -89,13 +89,17 @@ var ObjectCell = React.createClass({
       drawerProps.ref = 'drawer';
       drawerProps.value = this.props.value;
 
+      var cellProps = {
+        className: classes + ' drawer ' + drawer.className,
+        style: style,
+        onMouseDown: this.handleMouseDown,
+      };
+      if (!this.props.disabled)
+        cellProps.onDoubleClick = this.handleDoubleClick;
+
       return (
         <td
-          className={classes + ' drawer ' + drawer.className}
-          style={style}
-
-          onMouseDown={this.handleMouseDown}
-          onDoubleClick={this.handleDoubleClick}
+          {...cellProps}
         >
           <div className="contents">
             {React.createElement(

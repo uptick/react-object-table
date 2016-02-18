@@ -1,7 +1,7 @@
 $selection-colour: #337ab7
 $copying-colour: desaturate($selection-colour, 100%)
 
-div.object-grid-container
+div.object-table-container
   margin-bottom: 2em
   table
     width: 100%
@@ -47,7 +47,13 @@ div.object-grid-container
       border-left: $border
     td:last-child, th:last-child
       border-right: $border
+    td.actions
+      border-left: $border
+      i
+        cursor: pointer
 
+    tr.disabled
+      opacity: 0.5
     td, th
       div.contents
         transition: opacity 0.2s
@@ -89,8 +95,34 @@ div.object-grid-container
     th
       padding: 0 5px
 
+    td.actions
+      position: relative
+      text-align: center
+      font-size: 12px
+      ul.actions
+        line-height: 1em
+        text-align: left
+        position: absolute
+        top: 50%
+        left: 0px
+        list-style: none
+        padding: 0
+        z-index: 20
+        background: #fff
+        border: 1px solid #eee
+        border-radius: 4px
+        min-width: 150px
+        li
+          display: block
+          padding: 10px
+          cursor: pointer
+          font-size: 15px
+          &:hover
+            background: $selection-colour
+            color: #fff
+
 // all editors by default
-div.object-grid-container
+div.object-table-container
   td.editor
     input
       box-shadow: none
@@ -102,7 +134,7 @@ div.object-grid-container
       background: none
 
 // all drawers by default
-div.object-grid-container
+div.object-table-container
   td.drawer
     padding: 0 5px
 

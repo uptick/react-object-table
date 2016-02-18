@@ -27,7 +27,9 @@ var string_value = function(value) {
       return value.toString();
 
     case 'object':
-      if (value !== null)
+      if (value === null)
+        return '';
+      else
         return 'object';
 
     case 'string':
