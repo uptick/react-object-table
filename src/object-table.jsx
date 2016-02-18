@@ -673,7 +673,7 @@ var ObjectTable = React.createClass({
             pastingColumn = true;
             if (pastingColumnIndex < pasteData[pastingRowIndex].length) {
               newSelectionColumns[column.key] = true;
-              if (column.editor !== false) {
+              if (column.editor !== false && !row.disabled) {
                 var editor = column.editor || TextEditor;
                 var validated = editor.validate(
                   pasteData[pastingRowIndex][pastingColumnIndex],
@@ -707,7 +707,7 @@ var ObjectTable = React.createClass({
           var column = this.props.columns[columnIndex];
           if (typeof this.state.selectedColumns[column.key] == 'undefined')
             continue;
-          if (column.editor !== false) {
+          if (column.editor !== false && !row.disabled) {
             var editor = column.editor || TextEditor;
             var validated = editor.validate(
               pasteData[pasteRow][pasteColumn],
