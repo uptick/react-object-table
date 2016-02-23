@@ -31,6 +31,7 @@ var ObjectTable = React.createClass({
           editorProps: null,
         },
       ],
+      emptyText: 'No objects',
     };
   },
   getInitialState: function() {
@@ -415,7 +416,7 @@ var ObjectTable = React.createClass({
     if (this.state.editing) {
       this.updateField(
         this.state.editing.objectId,
-        this.state.editing.columnRef,
+        this.state.editing.columnKey,
         this.refs['object-' + this.state.editing.objectId].refs['column-' + this.state.editing.columnKey].refs.editor.getValue()
       );
     }
@@ -921,10 +922,13 @@ var ObjectTable = React.createClass({
     }
 
     if (!rows.length) {
+      var numColumns = this.props.columns.length;
+      if (this.props.actions && this.props.actions.length)
+        numColumns += 1;
       return (
         <tr style={{height: this.props.rowHeight}}>
-          <td colSpan={this.props.columns.length}>
-            No objects
+          <td colSpan={numColumns} className="empty">
+            {this.props.emptyText}
           </td>
         </tr>
       );
