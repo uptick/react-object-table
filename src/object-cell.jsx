@@ -90,10 +90,11 @@ var ObjectCell = React.createClass({
       drawerProps.value = this.props.value;
 
       var cellProps = {
-        className: classes + ' drawer ' + drawer.className,
+        className: ClassNames(classes + ' drawer ' + drawer.className, {
+          uneditable: (this.props.column.editor === false),
+        }),
         style: style,
         onMouseDown: this.handleMouseDown,
-        uneditable: (this.props.editor === false),
       };
       if (!this.props.disabled)
         cellProps.onDoubleClick = this.handleDoubleClick;
