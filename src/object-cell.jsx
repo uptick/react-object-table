@@ -51,10 +51,6 @@ var ObjectCell = React.createClass({
       'copying': this.props.copying,
       'editing': this.props.editing,
     });
-    var style = {};
-    if (this.props.column.width)
-      style.width = '' + this.props.column.width + 'px';
-    // console.log('this is a cell re rendering');
 
     if (this.props.editing) {
       var editor = this.props.column.editor || TextEditor;
@@ -71,7 +67,6 @@ var ObjectCell = React.createClass({
       return (
         <td
           className={classes + ' editor ' + editor.className}
-          style={style}
         >
           <div className="contents">
             {React.createElement(
@@ -93,7 +88,6 @@ var ObjectCell = React.createClass({
         className: ClassNames(classes + ' drawer ' + drawer.className, {
           uneditable: (this.props.column.editor === false),
         }),
-        style: style,
         onMouseDown: this.handleMouseDown,
       };
       if (!this.props.disabled)

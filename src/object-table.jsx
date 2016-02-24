@@ -854,15 +854,20 @@ var ObjectTable = React.createClass({
     var columns = [];
     for (var columnIndex = 0; columnIndex < this.props.columns.length; columnIndex++) {
       var column = this.props.columns[columnIndex];
-      var ref = 'header-' + column.key;
+      var headerProps = {};
+      headerProps.ref = 'header-' + column.key;
+      headerProps.key = headerProps.ref;
+      headerProps.style = {
+        height: '' + this.props.rowHeight + 'px',
+      };
+      if (column.width)
+        headerProps.width = column.width;
       columns.push(
         <th
-          ref={ref}
-          key={ref}
-          style={{
-            height: '' + this.props.rowHeight + 'px',
-          }}
-        >{column.name}</th>
+          {...headerProps}
+        >
+          {column.name}
+        </th>
       );
     }
     if (this.props.actions && this.props.actions.length) {
