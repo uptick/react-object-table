@@ -87,6 +87,7 @@ var ObjectRow = React.createClass({
 
         updateField: this.props.updateField,
         abortField: this.props.abortField,
+        cellError: this.props.cellError,
       };
       cellProps.disabled = (this.props.object.disabled === true);
       if (this.props.object.disabled)

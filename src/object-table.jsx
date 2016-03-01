@@ -35,6 +35,14 @@ var ObjectTable = React.createClass({
         },
       ],
       emptyText: 'No objects',
+      onRowError: function(row, message) {
+        console.warn('Unable to update row:', row);
+        console.warn('As the following error was encountered:', message);
+      },
+      onCellError: function(objectId, columnKey, message) {
+        console.warn('Unable to update row ' + objectId + ' ' + columnKey);
+        console.warn('As the following error was encountered:', message);
+      },
     };
   },
   getInitialState: function() {
@@ -64,7 +72,7 @@ var ObjectTable = React.createClass({
     JQuery(document).on('mouseup', function(event) {
       var parentContainer = JQuery(event.target).closest('.object-table-container');
       if (parentContainer.length == 1) {
-        if (parentContainer.parent()[0] == reactClass.getDOMNode())
+        if (parentContainer[0] == reactClass.getDOMNode())
           return;
       }
       if (reactClass.state.selectionDragStart === null)
@@ -420,11 +428,7 @@ var ObjectTable = React.createClass({
   },
   handleClickOutside: function(event) {
     if (this.state.editing) {
-      this.updateField(
-        this.state.editing.objectId,
-        this.state.editing.columnKey,
-        this.refs['object-' + this.state.editing.objectId].refs['column-' + this.state.editing.columnKey].refs.editor.getValue()
-      );
+      this.refs['object-' + this.state.editing.objectId].refs['column-' + this.state.editing.columnKey].refs.editor.handleBlur();
     }
     else if (Utilities.dict_count(this.state.selectedRows) != 0 || Utilities.dict_count(this.state.selectedColumns) != 0) {
       this.setState(state => {
@@ -639,42 +643,37 @@ var ObjectTable = React.createClass({
     });
   },
   handlePaste: function(pasteData) {
+    var reactClass = this;
     var raise_row_errors = function(errors, row) {
       var numErrors = Utilities.dict_count(errors);
       if (numErrors) {
-        if (typeof window.notify == 'function') {
-          var message;
-          if (numErrors > 1)
-            message = 'Invalid values given for ';
-          else
-            message = 'Invalid value given for ';
-          for (var columnKey in errors) {
-            message += columnKey;
-            message += ', ';
-          }
-          message = message.substring(0, message.length - 2);
-          message += '.';
-          window.notify({
-            style: 'error',
-            title: 'Cannot update some fields of row ' + row.id,
-            body: message,
-          });
+        var message;
+        if (numErrors > 1)
+          message = 'Invalid values given for ';
+        else
+          message = 'Invalid value given for ';
+        for (var columnKey in errors) {
+          message += columnKey;
+          message += ', ';
         }
+        message = message.substring(0, message.length - 2);
+        message += '.';
+        reactClass.props.onRowError(row, message);
       }
     };
 
     // console.log('handling a paste of', pasteData);
-    var numSelectedRows = Utilities.dict_count(this.state.selectedRows);
-    var numSelectedColumns = Utilities.dict_count(this.state.selectedColumns);
+    var numSelectedRows = Utilities.dict_count(reactClass.state.selectedRows);
+    var numSelectedColumns = Utilities.dict_count(reactClass.state.selectedColumns);
     if (numSelectedRows == 1 && numSelectedColumns == 1) {
       var newSelectionColumns = {};
       var newSelectionRows = {};
 
       var pastingRow = false;
       var pastingRowIndex = 0;
-      for (var rowIndex = 0; rowIndex < this.props.objects.length; rowIndex++) {
-        var row = this.props.objects[rowIndex];
-        if (!pastingRow && typeof this.state.selectedRows[row.id] == 'undefined')
+      for (var rowIndex = 0; rowIndex < reactClass.props.objects.length; rowIndex++) {
+        var row = reactClass.props.objects[rowIndex];
+        if (!pastingRow && typeof reactClass.state.selectedRows[row.id] == 'undefined')
           continue;
         pastingRow = true;
         if (pastingRowIndex < pasteData.length) {
@@ -683,9 +682,9 @@ var ObjectTable = React.createClass({
           var pastingColumnIndex = 0;
           var updates = {};
           var errors = {};
-          for (var columnIndex = 0; columnIndex < this.props.columns.length; columnIndex++) {
-            var column = this.props.columns[columnIndex];
-            if (!pastingColumn && typeof this.state.selectedColumns[column.key] == 'undefined')
+          for (var columnIndex = 0; columnIndex < reactClass.props.columns.length; columnIndex++) {
+            var column = reactClass.props.columns[columnIndex];
+            if (!pastingColumn && typeof reactClass.state.selectedColumns[column.key] == 'undefined')
               continue;
             pastingColumn = true;
             if (pastingColumnIndex < pasteData[pastingRowIndex].length) {
@@ -705,24 +704,24 @@ var ObjectTable = React.createClass({
             }
           }
           if (Utilities.dict_count(updates))
-            this.updateObject(row.id, updates);
+            reactClass.updateObject(row.id, updates);
           raise_row_errors(errors, row);
           pastingRowIndex++;
         }
       }
-      this.changeSelectionTo(newSelectionRows, newSelectionColumns);
+      reactClass.changeSelectionTo(newSelectionRows, newSelectionColumns);
     } else {
       var pasteRow = 0;
       var pasteColumn = 0;
-      for (var rowIndex = 0; rowIndex < this.props.objects.length; rowIndex++) {
-        var row = this.props.objects[rowIndex];
-        if (typeof this.state.selectedRows[row.id] == 'undefined')
+      for (var rowIndex = 0; rowIndex < reactClass.props.objects.length; rowIndex++) {
+        var row = reactClass.props.objects[rowIndex];
+        if (typeof reactClass.state.selectedRows[row.id] == 'undefined')
           continue;
         var updates = {};
         var errors = {};
-        for (var columnIndex = 0; columnIndex < this.props.columns.length; columnIndex++) {
-          var column = this.props.columns[columnIndex];
-          if (typeof this.state.selectedColumns[column.key] == 'undefined')
+        for (var columnIndex = 0; columnIndex < reactClass.props.columns.length; columnIndex++) {
+          var column = reactClass.props.columns[columnIndex];
+          if (typeof reactClass.state.selectedColumns[column.key] == 'undefined')
             continue;
           if (column.editor !== false && !row.disabled) {
             var editor = column.editor || TextEditor;
@@ -741,14 +740,14 @@ var ObjectTable = React.createClass({
         }
         pasteColumn = 0;
         if (Utilities.dict_count(updates))
-          this.updateObject(row.id, updates);
+          reactClass.updateObject(row.id, updates);
         raise_row_errors(errors, row);
         pasteRow++;
         if (pasteRow >= pasteData.length)
           pasteRow = 0;
       }
     }
-    this.setState(state => {
+    reactClass.setState(state => {
       state.copyingColumns = {};
       state.copyingRows = {};
       return state;
@@ -933,6 +932,7 @@ var ObjectTable = React.createClass({
 
           updateField={this.updateField}
           abortField={this.abortField}
+          cellError={this.props.onCellError}
           openActions={this.openActions}
           closeActions={this.closeActions}
 
@@ -979,4 +979,5 @@ var ObjectTable = React.createClass({
   },
 });
 
+ObjectTable.BaseEditor = require('./base-editor.jsx');
 module.exports = ObjectTable;
