@@ -9,6 +9,9 @@ const TextEditor = require('./editors/text.jsx');
 
 const ObjectRow = require('./object-row.jsx');
 
+const _iOSDevice = !!navigator.platform.match(/iPhone|iPod|iPad/);
+
+
 var ObjectTable = React.createClass({
   getDefaultProps: function() {
     return {
@@ -59,7 +62,7 @@ var ObjectTable = React.createClass({
     JQuery(document).on('keypress', reactClass.handleKeyPress);
     JQuery(document).on('keydown', reactClass.handleKeyDown);
     JQuery(document).on('mouseup', function(event) {
-      if (JQuery(event.target).closest('.object-grid-container').length == 1)
+      if (JQuery(event.target).closest('.object-table-container').length == 1)
         return;
       if (reactClass.state.selectionDragStart === null)
         reactClass.handleClickOutside(event);
@@ -439,6 +442,16 @@ var ObjectTable = React.createClass({
   },
   handleMouseDownCell: function(ref, clientX, clientY, shift) {
     var reactClass = this;
+
+    if (_iOSDevice) {
+      this.handleDoubleClickCell(ref);
+      return;
+    }
+
+    if (reactClass.state.editing !== null) {
+      reactClass.handleClickOutside({});
+      return;
+    }
 
     var mouseX = clientX;
     var mouseY = clientY;

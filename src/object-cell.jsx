@@ -37,6 +37,7 @@ var ObjectCell = React.createClass({
 
   handleMouseDown: function(event) {
     var button = event.which || event.button;
+    event.preventDefault();
     if (button == 0)
       this.props.onMouseDownCell(this.getCellRef(), event.clientX, event.clientY, event.shiftKey);
   },
