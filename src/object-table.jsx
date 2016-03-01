@@ -62,8 +62,11 @@ var ObjectTable = React.createClass({
     JQuery(document).on('keypress', reactClass.handleKeyPress);
     JQuery(document).on('keydown', reactClass.handleKeyDown);
     JQuery(document).on('mouseup', function(event) {
-      if (JQuery(event.target).closest('.object-table-container').length == 1)
-        return;
+      var parentContainer = JQuery(event.target).closest('.object-table-container');
+      if (parentContainer.length == 1) {
+        if (parentContainer.parent()[0] == reactClass.getDOMNode())
+          return;
+      }
       if (reactClass.state.selectionDragStart === null)
         reactClass.handleClickOutside(event);
     });
