@@ -3,11 +3,11 @@ const JQuery = require('jquery');
 const ClassNames = require('classnames');
 const Clone = require('clone');
 
-const Utilities = require('./utilities.jsx');
-const Clipboard = require('./clipboard.jsx');
-const TextEditor = require('./editors/text.jsx');
+const Utilities = require('./utilities');
+const Clipboard = require('./clipboard');
+const TextEditor = require('./editors/text');
 
-const ObjectRow = require('./object-row.jsx');
+const ObjectRow = require('./object-row');
 
 const _iOSDevice = !!navigator.platform.match(/iPhone|iPod|iPad/);
 
@@ -979,5 +979,5 @@ var ObjectTable = React.createClass({
   },
 });
 
-ObjectTable.BaseEditor = require('./base-editor.jsx');
+ObjectTable.BaseEditor = require('./base-editor');
 module.exports = ObjectTable;

@@ -2,8 +2,8 @@ const React = require('react');
 const Clone = require('clone');
 const ClassNames = require('classnames');
 
-const TextDrawer = require('./drawers/text.jsx');
-const TextEditor = require('./editors/text.jsx');
+const TextDrawer = require('./drawers/text');
+const TextEditor = require('./editors/text');
 
 var ObjectCell = React.createClass({
   getDefaultProps: function() {
