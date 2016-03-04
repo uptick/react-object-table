@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "buildjs": "./node_modules/webpack/bin/webpack.js",
     "buildsass": "./node_modules/node-sass/bin/node-sass src/object-table.sass dist/object-table.css",
-    "build": "npm run buildjs; npm run buildsass"
+    "build": "npm run buildjs; npm run buildsass",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
