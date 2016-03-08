@@ -1,6 +1,6 @@
-const ObjectTable = require('./object-table.jsx');
-const TextDrawer = require('./drawers/text.jsx');
-const TextEditor = require('./editors/text.jsx');
+const ObjectTable = require('./object-table');
+const TextDrawer = require('./drawers/text');
+const TextEditor = require('./editors/text');
 
 module.exports = ObjectTable;
 module.exports.TextDrawer = TextDrawer;

@@ -1,5 +1,5 @@
 const React = require('react');
-const BaseEditor = require('./../base-editor.jsx');
+const BaseEditor = require('./../base-editor');
 
 const validate = function(value, props) {
   return {
