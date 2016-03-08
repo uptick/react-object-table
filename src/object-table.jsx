@@ -9,7 +9,9 @@ const TextEditor = require('./editors/text');
 
 const ObjectRow = require('./object-row');
 
-const _iOSDevice = !!navigator.platform.match(/iPhone|iPod|iPad/);
+var _iOSDevice = false;
+if (typeof navigator !== 'undefined')
+  _iOSDevice = !!navigator.platform.match(/iPhone|iPod|iPad/);
 
 
 var ObjectTable = React.createClass({
