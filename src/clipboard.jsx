@@ -22,11 +22,20 @@ var deserialize_cells = function(clipboardData) {
 
 var string_value = function(value) {
   switch (typeof value) {
-
     case 'number':
       return value.toString();
 
     case 'object':
+      if (Array.isArray(value)) {
+        var stringValue = '';
+        for (var valueIndex = 0; valueIndex < value.length; valueIndex++) {
+          stringValue += string_value(value[valueIndex])
+          if (valueIndex < value.length - 1)
+            stringValue += ', ';
+        }
+        return stringValue;
+      }
+
       if (value === null)
         return '';
       else
