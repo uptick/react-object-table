@@ -65,6 +65,7 @@ var ObjectCell = React.createClass({
       editorProps.height = this.props.height;
       editorProps.editReplace = this.props.editReplace;
       editorProps.cellError = this.props.cellError;
+      editorProps.context = this.props.editorContext;
 
       return (
         <td

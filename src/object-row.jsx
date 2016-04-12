@@ -89,6 +89,10 @@ var ObjectRow = React.createClass({
         abortField: this.props.abortField,
         cellError: this.props.cellError,
       };
+      cellProps.editorContext = null;
+      if (editing && column.editorContext)
+        cellProps.editorContext = column.editorContext(this.props.object);
+
       cellProps.disabled = (this.props.object.disabled === true);
       if (this.props.object.disabled)
         cellProps.editing = false;
