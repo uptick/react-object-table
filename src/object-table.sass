@@ -1,5 +1,6 @@
 $selection-colour: #337ab7
 $copying-colour: desaturate($selection-colour, 100%)
+$cell-padding: 8px 4px
 
 div.object-table-container
   margin-bottom: 2em
@@ -80,7 +81,7 @@ div.object-table-container
           background: lighten(mix($selection-colour, $copying-colour, 50%), $bkg-fade)
 
     th
-      padding: 0 5px
+      padding: $cell-padding
 
     td.actions
       position: relative
@@ -116,7 +117,7 @@ div.object-table-container
     input
       box-shadow: none
       width: 100%
-      padding: 0 5px
+      padding: $cell-padding
       margin: 0
       border: none
       outline: none
@@ -125,7 +126,7 @@ div.object-table-container
 // all drawers by default
 div.object-table-container
   td.drawer, td.empty
-    padding: 0 5px
+    padding: $cell-padding
 
 @import 'drawers/text'
 @import 'editors/text'
