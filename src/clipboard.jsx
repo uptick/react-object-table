@@ -41,6 +41,12 @@ var string_value = function(value) {
       else
         return 'object';
 
+    case 'boolean':
+      if (value)
+        return 'true';
+      else
+        return 'false';
+
     case 'string':
       return value;
   }
