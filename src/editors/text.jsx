@@ -11,7 +11,7 @@ const validate = function(value, props) {
 class TextEditor extends BaseEditor {
   componentDidMount() {
     if (this.props.editReplace)
-      this.refs.field.getDOMNode().setSelectionRange(this.state.value.length, this.state.value.length);
+      this.refs.field.setSelectionRange(this.state.value.length, this.state.value.length);
   }
 
   validate(value) {
@@ -19,7 +19,7 @@ class TextEditor extends BaseEditor {
   }
 
   handleChange(event) {
-    var newValue = this.refs.field.getDOMNode().value;
+    var newValue = this.refs.field.value;
     this.setState(state => {
       state.value = newValue;
       return state;
@@ -30,7 +30,7 @@ class TextEditor extends BaseEditor {
     var reactClass = this;
     if (this.props.editReplace === null) {
       window.setTimeout(function() {
-        var inputElement = reactClass.refs.field.getDOMNode();
+        var inputElement = reactClass.refs.field;
         inputElement.select();
       }, 0);
     }

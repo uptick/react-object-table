@@ -31,7 +31,8 @@
     "classnames": "^2.2.3",
     "clone": "^1.0.2",
     "jquery": "^2.2.0",
-    "react": "^0.14.7"
+    "react": "^0.14.8",
+    "react-dom": "^0.14.6"
   },
   "devDependencies": {
     "babel-cli": "^6.6.4",

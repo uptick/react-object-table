@@ -1,4 +1,5 @@
 const React = require('react');
+const ReactDom = require('react-dom');
 const JQuery = require('jquery');
 const ClassNames = require('classnames');
 const Clone = require('clone');
@@ -74,14 +75,14 @@ var ObjectTable = React.createClass({
     JQuery(document).on('mouseup', function(event) {
       var parentContainer = JQuery(event.target).closest('.object-table-container');
       if (parentContainer.length == 1) {
-        if (parentContainer[0] == reactClass.getDOMNode())
+        if (parentContainer[0] == ReactDom.findDOMNode(reactClass))
           return;
       }
       if (reactClass.state.selectionDragStart === null)
         reactClass.handleClickOutside(event);
     });
     JQuery(document).on('mouseup', reactClass.handleMouseUp);
-    JQuery(reactClass.getDOMNode()).on('click', function(event) {
+    JQuery(ReactDom.findDOMNode(reactClass)).on('click', function(event) {
       // event.stopPropagation();
       // console.log(this);
     });
@@ -137,8 +138,7 @@ var ObjectTable = React.createClass({
       columnIndex++
     ) {
       var column = this.props.columns[columnIndex];
-      var columnRef = this.refs['header-' + column.key];
-      var colElem = columnRef.getDOMNode();
+      var colElem = this.refs['header-' + column.key];
       var colLeft = tableLeft + colElem.offsetLeft;
       var colRight = colLeft + colElem.offsetWidth;
 
@@ -168,10 +168,10 @@ var ObjectTable = React.createClass({
       rowIndex++
     ) {
       var object = this.props.objects[rowIndex];
-      var rowRef = this.refs['object-' + object.id];
-      if (!rowRef)
+      debugger;
+      var rowElem = this.refs['object-' + object.id];
+      if (!rowElem)
         continue;
-      var rowElem = rowRef.getDOMNode();
       var rowTop = tableTop + rowElem.offsetTop;
       var rowBottom = rowTop + rowElem.offsetHeight;
 
@@ -549,7 +549,7 @@ var ObjectTable = React.createClass({
       var mouseX = event.clientX + document.body.scrollLeft;
       var mouseY = event.clientY + document.body.scrollTop;
       reactClass.setState(state => {
-        var tableBounds = reactClass.refs.table.getDOMNode().getBoundingClientRect();
+        var tableBounds = reactClass.refs.table.getBoundingClientRect();
         state.selectedColumns = reactClass.getDraggedColumns(state.selectionDragStart.x, mouseX, tableBounds);
         state.selectedRows = reactClass.getDraggedRows(state.selectionDragStart.y, mouseY, tableBounds);
         state.selectedColumnsRight = true;
@@ -564,7 +564,7 @@ var ObjectTable = React.createClass({
       var mouseX = event.clientX + document.body.scrollLeft;
       var mouseY = event.clientY + document.body.scrollTop;
       reactClass.setState(state => {
-        var tableBounds = reactClass.refs.table.getDOMNode().getBoundingClientRect();
+        var tableBounds = reactClass.refs.table.getBoundingClientRect();
         state.selectedColumnsRight = (state.selectionDragStart.x < mouseX);
         state.selectedRowsDown = (state.selectionDragStart.y < mouseY);
         state.selectedColumns = reactClass.getDraggedColumns(state.selectionDragStart.x, mouseX, tableBounds);
