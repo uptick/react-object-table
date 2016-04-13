@@ -168,8 +168,7 @@ var ObjectTable = React.createClass({
       rowIndex++
     ) {
       var object = this.props.objects[rowIndex];
-      debugger;
-      var rowElem = this.refs['object-' + object.id];
+      var rowElem = ReactDom.findDOMNode(this.refs['object-' + object.id]);
       if (!rowElem)
         continue;
       var rowTop = tableTop + rowElem.offsetTop;
