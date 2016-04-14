@@ -670,6 +670,8 @@ var ObjectTable = React.createClass({
     var numSelectedRows = Utilities.dict_count(reactClass.state.selectedRows);
     var numSelectedColumns = Utilities.dict_count(reactClass.state.selectedColumns);
     if (numSelectedRows == 1 && numSelectedColumns == 1) {
+      var objectUpdates = [];
+
       var newSelectionColumns = {};
       var newSelectionRows = {};
 
@@ -708,13 +710,16 @@ var ObjectTable = React.createClass({
             }
           }
           if (Utilities.dict_count(updates))
-            reactClass.updateObject(row.id, updates);
+            objectUpdates.push([row.id, updates]);
           raise_row_errors(errors, row);
           pastingRowIndex++;
         }
       }
+      reactClass.updateManyObjects(objectUpdates);
       reactClass.changeSelectionTo(newSelectionRows, newSelectionColumns);
     } else {
+      var objectUpdates = [];
+
       var pasteRow = 0;
       var pasteColumn = 0;
       for (var rowIndex = 0; rowIndex < reactClass.props.objects.length; rowIndex++) {
@@ -744,12 +749,14 @@ var ObjectTable = React.createClass({
         }
         pasteColumn = 0;
         if (Utilities.dict_count(updates))
-          reactClass.updateObject(row.id, updates);
+          objectUpdates.push([row.id, updates]);
         raise_row_errors(errors, row);
         pasteRow++;
         if (pasteRow >= pasteData.length)
           pasteRow = 0;
       }
+
+      reactClass.updateManyObjects(objectUpdates);
     }
     reactClass.setState(state => {
       state.copyingColumns = {};
@@ -790,6 +797,16 @@ var ObjectTable = React.createClass({
       }
       return state;
     });
+  },
+  updateManyObjects: function(updates) {
+    if (typeof this.props.onUpdateMany == 'function')
+      this.props.onUpdateMany(updates);
+    else {
+      for (var updateId = 0; updateId < updates.length; updateId++) {
+        var update = updates[updateId];
+        this.updateObject(update[0], update[1]);
+      }
+    }
   },
   updateObject: function(objectId, updates) {
     if (typeof this.props.onUpdate == 'function')
