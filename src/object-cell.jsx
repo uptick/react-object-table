@@ -42,8 +42,11 @@ var ObjectCell = React.createClass({
       this.props.onMouseDownCell(this.getCellRef(), event.clientX, event.clientY, event.shiftKey);
   },
   handleDoubleClick: function(event) {
-    if (this.props.column.editor !== false)
-      this.props.onDoubleClickCell(this.getCellRef());
+    this.beginEdit();
+  },
+  beginEdit: function(editReplaceOverride) {
+    if (!this.props.disabled && this.props.column.editor !== false)
+      this.props.beginEdit(this.getCellRef(), editReplaceOverride);
   },
 
   render: function() {
@@ -86,15 +89,15 @@ var ObjectCell = React.createClass({
       var drawerProps = Clone(this.props.column.drawerProps || {});
       drawerProps.ref = 'drawer';
       drawerProps.value = this.props.value;
+      drawerProps.beginEdit = this.beginEdit;
 
       var cellProps = {
         className: ClassNames(classes + ' drawer ' + drawer.className, {
           uneditable: (this.props.column.editor === false),
         }),
         onMouseDown: this.handleMouseDown,
+        onDoubleClick: this.handleDoubleClick,
       };
-      if (!this.props.disabled)
-        cellProps.onDoubleClick = this.handleDoubleClick;
 
       return (
         <td

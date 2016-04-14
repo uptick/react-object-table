@@ -83,7 +83,7 @@ var ObjectRow = React.createClass({
         copying: (typeof this.props.copyingColumns[column.key] != 'undefined'),
 
         onMouseDownCell: this.props.onMouseDownCell,
-        onDoubleClickCell: this.props.onDoubleClickCell,
+        beginEdit: this.props.beginEdit,
 
         updateField: this.props.updateField,
         abortField: this.props.abortField,

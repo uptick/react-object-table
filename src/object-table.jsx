@@ -441,10 +441,13 @@ var ObjectTable = React.createClass({
     if (!JQuery(event.target).closest('ul.actions').length)
       this.closeActions();
   },
-  handleDoubleClickCell: function(ref) {
+  beginEdit: function(ref, editReplaceOverride) {
+    var editReplace = null;
+    if (typeof editReplaceOverride !== 'undefined')
+      editReplace = editReplaceOverride;
     this.setState(state => {
       state.editing = ref;
-      state.editReplace = null;
+      state.editReplace = editReplaceOverride;
       return state;
     });
   },
@@ -452,7 +455,7 @@ var ObjectTable = React.createClass({
     var reactClass = this;
 
     if (_iOSDevice) {
-      this.handleDoubleClickCell(ref);
+      this.beginEdit(ref);
       return;
     }
 
@@ -938,7 +941,7 @@ var ObjectTable = React.createClass({
           closeActions={this.closeActions}
 
           onMouseDownCell={this.handleMouseDownCell}
-          onDoubleClickCell={this.handleDoubleClickCell}
+          beginEdit={this.beginEdit}
         />
       );
     }
