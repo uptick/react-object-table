@@ -310,7 +310,7 @@ var ObjectTable = React.createClass({
       9: 'tab',
       8: 'backspace',
     };
-    if (this.state.editing == null) {
+    if (this.state.editing === null) {
       var selectedCells = Utilities.dict_count(this.state.selectedRows);
       selectedCells *= Utilities.dict_count(this.state.selectedColumns);
       if (selectedCells > 0) {
@@ -395,10 +395,11 @@ var ObjectTable = React.createClass({
             break;
 
           case 'backspace':
-            if (selectedCells > 0) {
+            var editColumn = reactClass.getSelectedFirstVisibleColumn();
+            if (selectedCells > 0 && reactClass.columnIsEditable(editColumn)) {
               this.setState(state => {
                 state.editing = {
-                  columnKey: reactClass.getSelectedFirstVisibleColumn(),
+                  columnKey: editColumn,
                   objectId: reactClass.getSelectedFirstVisibleRow(),
                 };
                 state.editReplace = '';
