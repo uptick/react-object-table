@@ -14,7 +14,6 @@ var _iOSDevice = false;
 if (typeof navigator !== 'undefined')
   _iOSDevice = !!navigator.platform.match(/iPhone|iPod|iPad/);
 
-
 var ObjectTable = React.createClass({
   getDefaultProps: function() {
     return {
@@ -889,24 +888,26 @@ var ObjectTable = React.createClass({
 
   renderHeaders: function() {
     var columns = [];
-    for (var columnIndex = 0; columnIndex < this.props.columns.length; columnIndex++) {
-      var column = this.props.columns[columnIndex];
-      var headerProps = {};
-      headerProps.ref = 'header-' + column.key;
-      headerProps.key = headerProps.ref;
-      headerProps.style = {
-        height: '' + this.props.rowHeight + 'px',
+    this.props.columns.map((column) => {
+      var headerProps = {
+        ref: `header-${column.key}`,
+        key: `header-${column.key}`,
+        style: {
+          height: `${this.props.rowHeight}px`,
+        },
       };
       if (column.width)
         headerProps.width = column.width;
       columns.push(
         <th
+          className={ClassNames(column.headerClassName || '')}
           {...headerProps}
         >
           {column.name}
         </th>
       );
-    }
+    });
+
     if (this.props.actions && this.props.actions.length) {
       columns.push(
         <th
@@ -918,6 +919,7 @@ var ObjectTable = React.createClass({
         </th>
       );
     }
+
     return (
       <tr>{columns}</tr>
     );
