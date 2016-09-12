@@ -1,54 +1,27 @@
-const React = require('react');
-const ReactDom = require('react-dom');
-const JQuery = require('jquery');
-const ClassNames = require('classnames');
-const Clone = require('clone');
+import React from 'react'
+import ReactDom from 'react-dom'
+import JQuery from 'jquery'
+import ClassNames from 'classnames'
+import Clone from 'clone'
 
-const Utilities = require('./utilities');
-const Clipboard = require('./clipboard');
-const TextEditor = require('./editors/text');
+import Utilities from './utilities'
+import Clipboard from './clipboard'
+import TextEditor from './editors/text'
 
-const ObjectRow = require('./object-row');
+import ObjectRow from './object-row'
+import BaseEditor from './base-editor'
 
 var _iOSDevice = false;
 if (typeof navigator !== 'undefined')
   _iOSDevice = !!navigator.platform.match(/iPhone|iPod|iPad/);
 
-var ObjectTable = React.createClass({
-  getDefaultProps: function() {
-    return {
-      rowHeight: 32,
-      objects: [
-        {
-          id: 1,  // every object is expected to have a unique identifier
-          name: 'Product item report',
-          quantity: '1.0000',
-        },
-      ],
-      columns: [
-        {
-          name: 'Description',
-          key: 'description',
-          width: 'auto',
-          drawer: null,
-          drawerProps: null,
-          editor: null,
-          editorProps: null,
-        },
-      ],
-      emptyText: 'No objects',
-      onRowError: function(row, message) {
-        console.warn('Unable to update row:', row);
-        console.warn('As the following error was encountered:', message);
-      },
-      onCellError: function(objectId, columnKey, message) {
-        console.warn('Unable to update row ' + objectId + ' ' + columnKey);
-        console.warn('As the following error was encountered:', message);
-      },
-    };
-  },
-  getInitialState: function() {
-    return {
+class ObjectTable extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      ...this.state,
+
       editing: null,
       editReplace: null,
 
@@ -64,42 +37,37 @@ var ObjectTable = React.createClass({
 
       openActions: null,
     };
-  },
+  }
 
-  componentDidMount: function() {
-    var reactClass = this;
-    JQuery(document).on('mousemove', reactClass.handleMouseMove);
-    JQuery(document).on('keypress', reactClass.handleKeyPress);
-    JQuery(document).on('keydown', reactClass.handleKeyDown);
-    JQuery(document).on('mouseup', function(event) {
+  componentDidMount() {
+    JQuery(document).on('mousemove', this.handleMouseMove.bind(this));
+    JQuery(document).on('keypress', this.handleKeyPress.bind(this));
+    JQuery(document).on('keydown', this.handleKeyDown.bind(this));
+    JQuery(document).on('mouseup', (event) => {
       var parentContainer = JQuery(event.target).closest('.object-table-container');
       if (parentContainer.length == 1) {
-        if (parentContainer[0] == ReactDom.findDOMNode(reactClass))
+        if (parentContainer[0] == ReactDom.findDOMNode(this))
           return;
       }
-      if (reactClass.state.selectionDragStart === null)
-        reactClass.handleClickOutside(event);
+      if (this.state.selectionDragStart === null)
+        this.handleClickOutside(event);
     });
-    JQuery(document).on('mouseup', reactClass.handleMouseUp);
-    JQuery(ReactDom.findDOMNode(reactClass)).on('click', function(event) {
-      // event.stopPropagation();
-      // console.log(this);
-    });
-    JQuery(document).on('copy', function(event) {
+    JQuery(document).on('mouseup', this.handleMouseUp.bind(this));
+    JQuery(document).on('copy', (event) => {
       var theEvent = event;
-      if (Utilities.dict_count(reactClass.state.selectedColumns) > 0 || Utilities.dict_count(reactClass.state.selectedRows))
-        reactClass.handleCopy(theEvent);
+      if (Object.keys(this.state.selectedColumns).length > 0 || Object.keys(this.state.selectedRows).length)
+        this.handleCopy(theEvent);
     });
-    JQuery(document).on('paste', function(event) {
+    JQuery(document).on('paste', (event) => {
       var theEvent = event;
       var clipboardObjects = Clipboard.deserialize_cells(theEvent.originalEvent.clipboardData);
       if (clipboardObjects.length) {
-        reactClass.handlePaste(clipboardObjects);
+        this.handlePaste(clipboardObjects);
       }
     });
-  },
+  }
 
-  columnIsEditable: function(columnKey) {
+  columnIsEditable(columnKey) {
     for (var columnIndex = 0; columnIndex < this.props.columns.length; columnIndex++) {
       var column = this.props.columns[columnIndex];
       if (column.key == columnKey) {
@@ -107,8 +75,8 @@ var ObjectTable = React.createClass({
       }
     }
     return false;
-  },
-  getEventCellRef: function(event) {
+  }
+  getEventCellRef(event) {
     var cell = JQuery(event.target);
     if (!cell.is('td'))
       cell = cell.closest('td');
@@ -118,8 +86,8 @@ var ObjectTable = React.createClass({
       objectId: objectId,
       columnKey: columnKey,
     };
-  },
-  getDraggedColumns: function(startX, endX, tableBounds) {
+  }
+  getDraggedColumns(startX, endX, tableBounds) {
     var cols = {};
 
     var tableLeft = tableBounds.left + document.body.scrollLeft;
@@ -131,12 +99,7 @@ var ObjectTable = React.createClass({
       lowestX = highestX;
       highestX = tempX;
     }
-    for (
-      var columnIndex = 0;
-      columnIndex < this.props.columns.length;
-      columnIndex++
-    ) {
-      var column = this.props.columns[columnIndex];
+    this.props.columns.map(column => {
       var colElem = this.refs['header-' + column.key];
       var colLeft = tableLeft + colElem.offsetLeft;
       var colRight = colLeft + colElem.offsetWidth;
@@ -145,11 +108,11 @@ var ObjectTable = React.createClass({
       var inRight = (colLeft <= highestX && colRight >= lowestX);
       if (inLeft || inRight)
         cols[column.key] = true;
-    }
+    });
 
     return cols;
-  },
-  getDraggedRows: function(startY, endY, tableBounds) {
+  }
+  getDraggedRows(startY, endY, tableBounds) {
     var rows = {};
 
     var tableTop = tableBounds.top + document.body.scrollTop;
@@ -180,8 +143,8 @@ var ObjectTable = React.createClass({
     }
 
     return rows;
-  },
-  getSelectedFirstVisibleRow: function(reverse) {
+  }
+  getSelectedFirstVisibleRow(reverse) {
     var allRows = Clone(this.props.objects || []);
     if (reverse)
       allRows = allRows.reverse();
@@ -192,8 +155,8 @@ var ObjectTable = React.createClass({
         return row.id;
     }
     return null;
-  },
-  getSelectedFirstVisibleColumn: function(reverse) {
+  }
+  getSelectedFirstVisibleColumn(reverse) {
     var allColumns = Clone(this.props.columns);
     if (reverse)
       allColumns = allColumns.reverse();
@@ -204,8 +167,8 @@ var ObjectTable = React.createClass({
         return column.key
     }
     return null;
-  },
-  getSelectedNextVisibleRow: function(reverse) {
+  }
+  getSelectedNextVisibleRow(reverse) {
     var allRows = Clone(this.props.objects || []);
     if (reverse)
       allRows = allRows.reverse();
@@ -225,8 +188,8 @@ var ObjectTable = React.createClass({
       }
     }
     return next;
-  },
-  getSelectedNextVisibleColumn: function(reverse) {
+  }
+  getSelectedNextVisibleColumn(reverse) {
     var allColumns = Clone(this.props.columns);
     if (reverse)
       allColumns = allColumns.reverse();
@@ -246,9 +209,9 @@ var ObjectTable = React.createClass({
       }
     }
     return next;
-  },
+  }
 
-  handleKeyPress: function(event) {
+  handleKeyPress(event) {
     if (this.state.editing === null) {
       var editRow = this.getSelectedFirstVisibleRow();
       var editColumn = this.getSelectedFirstVisibleColumn();
@@ -295,8 +258,8 @@ var ObjectTable = React.createClass({
         }
       }
     }
-  },
-  handleKeyDown: function(event) {
+  }
+  handleKeyDown(event) {
     var reactClass = this;
     var directionKeys = {
       38: 'arrow_up',
@@ -310,15 +273,15 @@ var ObjectTable = React.createClass({
       8: 'backspace',
     };
     if (this.state.editing === null) {
-      var selectedCells = Utilities.dict_count(this.state.selectedRows);
-      selectedCells *= Utilities.dict_count(this.state.selectedColumns);
+      var selectedCells = Object.keys(this.state.selectedRows).length;
+      selectedCells *= Object.keys(this.state.selectedColumns).length;
       if (selectedCells > 0) {
         switch (directionKeys[event.which]) {
 
           case 'arrow_up':
             if (event.shiftKey) {
               var newRows = Clone(this.state.selectedRows);
-              if (Utilities.dict_count(this.state.selectedRows) > 1 && this.state.selectedRowsDown)
+              if (Object.keys(this.state.selectedRows).length > 1 && this.state.selectedRowsDown)
                 delete newRows[this.getSelectedFirstVisibleRow(true)];
               else
                 newRows[this.getSelectedNextVisibleRow(true)] = true;
@@ -334,7 +297,7 @@ var ObjectTable = React.createClass({
           case 'arrow_down':
             if (event.shiftKey) {
               var newRows = Clone(this.state.selectedRows);
-              if (Utilities.dict_count(this.state.selectedRows) > 1 && !this.state.selectedRowsDown)
+              if (Object.keys(this.state.selectedRows).length > 1 && !this.state.selectedRowsDown)
                 delete newRows[this.getSelectedFirstVisibleRow()];
               else
                 newRows[this.getSelectedNextVisibleRow()] = true;
@@ -350,7 +313,7 @@ var ObjectTable = React.createClass({
           case 'arrow_left':
             if (event.shiftKey) {
               var newColumns = Clone(this.state.selectedColumns);
-              if (Utilities.dict_count(this.state.selectedColumns) > 1 && this.state.selectedColumnsRight)
+              if (Object.keys(this.state.selectedColumns).length > 1 && this.state.selectedColumnsRight)
                 delete newColumns[this.getSelectedFirstVisibleColumn(true)];
               else
                 newColumns[this.getSelectedNextVisibleColumn(true)] = true;
@@ -366,7 +329,7 @@ var ObjectTable = React.createClass({
           case 'arrow_right':
             if (event.shiftKey) {
               var newColumns = Clone(this.state.selectedColumns);
-              if (Utilities.dict_count(this.state.selectedColumns) > 1 && !this.state.selectedColumnsRight)
+              if (Object.keys(this.state.selectedColumns).length > 1 && !this.state.selectedColumnsRight)
                 delete newColumns[this.getSelectedFirstVisibleColumn()];
               else
                 newColumns[this.getSelectedNextVisibleColumn()] = true;
@@ -384,7 +347,7 @@ var ObjectTable = React.createClass({
         switch (actionKeys[event.which]) {
 
           case 'escape':
-            if (Utilities.dict_count(this.state.copyingColumns) > 0 || Utilities.dict_count(this.state.copyingRows) > 0) {
+            if (Object.keys(this.state.copyingColumns).length > 0 || Object.keys(this.state.copyingRows).length > 0) {
               this.setState(state => {
                 state.copyingColumns = {};
                 state.copyingRows = {};
@@ -426,48 +389,48 @@ var ObjectTable = React.createClass({
           event.preventDefault();
       }
     }
-  },
-  handleClickOutside: function(event) {
+  }
+  handleClickOutside(event) {
     if (this.state.editing) {
       this.refs['object-' + this.state.editing.objectId].refs['column-' + this.state.editing.columnKey].refs.editor.handleBlur();
     }
-    else if (Utilities.dict_count(this.state.selectedRows) != 0 || Utilities.dict_count(this.state.selectedColumns) != 0) {
+    else if (Object.keys(this.state.selectedRows).length != 0 || Object.keys(this.state.selectedColumns).length != 0) {
       this.setState(state => {
         state.selectedRows = {};
         state.selectedColumns = {};
         return state;
       });
     }
-    if (!JQuery(event.target).closest('ul.actions').length)
+    if (!JQuery(event.target).closest('ul.actions').length) {
       this.closeActions();
-  },
-  beginEdit: function(ref, editReplaceOverride) {
+    }
+  }
+  beginEdit(ref, editReplaceOverride) {
     var editReplace = null;
-    if (typeof editReplaceOverride !== 'undefined')
+    if (typeof editReplaceOverride !== 'undefined') {
       editReplace = editReplaceOverride;
+    }
     this.setState(state => {
       state.editing = ref;
       state.editReplace = editReplaceOverride;
       return state;
     });
-  },
-  handleMouseDownCell: function(ref, clientX, clientY, shift) {
-    var reactClass = this;
-
+  }
+  handleMouseDownCell(ref, clientX, clientY, shift) {
     if (_iOSDevice) {
       this.beginEdit(ref);
       return;
     }
 
-    if (reactClass.state.editing !== null) {
-      reactClass.handleClickOutside({});
+    if (this.state.editing !== null) {
+      this.handleClickOutside({});
       return;
     }
 
     var mouseX = clientX;
     var mouseY = clientY;
     var clickRef = ref;
-    if (reactClass.state.selectionDragStart === null) {
+    if (this.state.selectionDragStart === null) {
       if (shift) {
         var currentColumn = this.getSelectedFirstVisibleColumn(!this.state.selectedColumnsRight);
         var currentRow = this.getSelectedFirstVisibleRow(!this.state.selectedRowsDown);
@@ -529,7 +492,7 @@ var ObjectTable = React.createClass({
         });
       }
       else {
-        reactClass.setState(state => {
+        this.setState(state => {
           state.selectionDragStart = {
             x: mouseX + document.body.scrollLeft,
             y: mouseY + document.body.scrollTop,
@@ -544,51 +507,49 @@ var ObjectTable = React.createClass({
     }
 
     this.closeActions();
-  },
-  handleMouseMove: function(event) {
-    var reactClass = this;
+  }
+  handleMouseMove(event) {
     if (this.state.selectionDragStart !== null) {
       var mouseX = event.clientX + document.body.scrollLeft;
       var mouseY = event.clientY + document.body.scrollTop;
-      reactClass.setState(state => {
-        var tableBounds = reactClass.refs.table.getBoundingClientRect();
-        state.selectedColumns = reactClass.getDraggedColumns(state.selectionDragStart.x, mouseX, tableBounds);
-        state.selectedRows = reactClass.getDraggedRows(state.selectionDragStart.y, mouseY, tableBounds);
+      this.setState(state => {
+        var tableBounds = this.refs.table.getBoundingClientRect();
+        state.selectedColumns = this.getDraggedColumns(state.selectionDragStart.x, mouseX, tableBounds);
+        state.selectedRows = this.getDraggedRows(state.selectionDragStart.y, mouseY, tableBounds);
         state.selectedColumnsRight = true;
         state.selectedRowsDown = true;
         return state;
       });
     }
-  },
-  handleMouseUp: function(event) {
-    var reactClass = this;
-    if (reactClass.state.selectionDragStart !== null) {
+  }
+  handleMouseUp(event) {
+    if (this.state.selectionDragStart !== null) {
       var mouseX = event.clientX + document.body.scrollLeft;
       var mouseY = event.clientY + document.body.scrollTop;
-      reactClass.setState(state => {
-        var tableBounds = reactClass.refs.table.getBoundingClientRect();
+      this.setState(state => {
+        var tableBounds = this.refs.table.getBoundingClientRect();
         state.selectedColumnsRight = (state.selectionDragStart.x < mouseX);
         state.selectedRowsDown = (state.selectionDragStart.y < mouseY);
-        state.selectedColumns = reactClass.getDraggedColumns(state.selectionDragStart.x, mouseX, tableBounds);
-        state.selectedRows = reactClass.getDraggedRows(state.selectionDragStart.y, mouseY, tableBounds);
+        state.selectedColumns = this.getDraggedColumns(state.selectionDragStart.x, mouseX, tableBounds);
+        state.selectedRows = this.getDraggedRows(state.selectionDragStart.y, mouseY, tableBounds);
         state.selectionDragStart = null;
         return state;
       });
     }
-  },
-  handleCopy: function(event) {
+  }
+  handleCopy(event) {
     var clipboardData = event.originalEvent.clipboardData;
     if (clipboardData)
       clipboardData.clearData();
     var cellsData = [];
     for (var rowIndex = 0; rowIndex < this.props.objects.length; rowIndex++) {
       var row = this.props.objects[rowIndex];
-      if (Utilities.dict_count(this.state.selectedRows) > 0 && typeof this.state.selectedRows[row.id] == 'undefined')
+      if (Object.keys(this.state.selectedRows).length > 0 && typeof this.state.selectedRows[row.id] == 'undefined')
         continue;
       var cellRow = [];
       for (var columnIndex = 0; columnIndex < this.props.columns.length; columnIndex++) {
         var column = this.props.columns[columnIndex];
-        if (Utilities.dict_count(this.state.selectedColumns) > 0 && typeof this.state.selectedColumns[column.key] == 'undefined')
+        if (Object.keys(this.state.selectedColumns).length > 0 && typeof this.state.selectedColumns[column.key] == 'undefined')
           continue;
         cellRow.push(row[column.key]);
       }
@@ -645,11 +606,11 @@ var ObjectTable = React.createClass({
       state.copyingColumns = state.selectedColumns;
       return state;
     });
-  },
-  handlePaste: function(pasteData) {
+  }
+  handlePaste(pasteData) {
     var reactClass = this;
     var raise_row_errors = function(errors, row) {
-      var numErrors = Utilities.dict_count(errors);
+      var numErrors = Object.keys(errors).length;
       if (numErrors) {
         var message;
         if (numErrors > 1)
@@ -667,8 +628,8 @@ var ObjectTable = React.createClass({
     };
 
     // console.log('handling a paste of', pasteData);
-    var numSelectedRows = Utilities.dict_count(reactClass.state.selectedRows);
-    var numSelectedColumns = Utilities.dict_count(reactClass.state.selectedColumns);
+    var numSelectedRows = Object.keys(reactClass.state.selectedRows).length;
+    var numSelectedColumns = Object.keys(reactClass.state.selectedColumns).length;
     if (numSelectedRows == 1 && numSelectedColumns == 1) {
       var objectUpdates = [];
 
@@ -709,7 +670,7 @@ var ObjectTable = React.createClass({
               pastingColumnIndex++;
             }
           }
-          if (Utilities.dict_count(updates))
+          if (Object.keys(updates).length)
             objectUpdates.push([row.id, updates]);
           raise_row_errors(errors, row);
           pastingRowIndex++;
@@ -748,7 +709,7 @@ var ObjectTable = React.createClass({
             pasteColumn = 0;
         }
         pasteColumn = 0;
-        if (Utilities.dict_count(updates))
+        if (Object.keys(updates).length)
           objectUpdates.push([row.id, updates]);
         raise_row_errors(errors, row);
         pasteRow++;
@@ -763,15 +724,15 @@ var ObjectTable = React.createClass({
       state.copyingRows = {};
       return state;
     });
-  },
+  }
 
-  abortField: function(action) {
+  abortField(action) {
     this.setState(state => {
       state.editing = null;
       return state;
     });
-  },
-  updateField: function(objectId, columnKey, newValue, action) {
+  }
+  updateField(objectId, columnKey, newValue, action) {
     var reactClass = this;
 
     var updates = {};
@@ -797,8 +758,8 @@ var ObjectTable = React.createClass({
       }
       return state;
     });
-  },
-  updateManyObjects: function(updates) {
+  }
+  updateManyObjects(updates) {
     if (typeof this.props.onUpdateMany == 'function')
       this.props.onUpdateMany(updates);
     else {
@@ -807,42 +768,43 @@ var ObjectTable = React.createClass({
         this.updateObject(update[0], update[1]);
       }
     }
-  },
-  updateObject: function(objectId, updates) {
-    if (typeof this.props.onUpdate == 'function')
+  }
+  updateObject(objectId, updates) {
+    if (typeof this.props.onUpdate == 'function') {
       this.props.onUpdate(objectId, updates);
-    else
+    }
+    else {
       console.log('If I had a props.onUpdate, I would update object', objectId, 'with', updates);
-  },
-  openActions: function(id) {
-    var openId = id;
+    }
+  }
+  openActions(id) {
     this.setState(state => {
-      state.openActions = openId;
+      state.openActions = id;
       return state;
     });
-  },
-  closeActions: function() {
+  }
+  closeActions() {
     if (this.state.openActions === null)
       return;
     this.setState(state => {
       state.openActions = null;
       return state;
     });
-  },
+  }
 
-  moveSelectionTo: function(row, column) {
+  moveSelectionTo(row, column) {
     var newRows = {};
     var newColumns = {};
     newRows[row] = true;
     newColumns[column] = true;
     this.changeSelectionTo(newRows, newColumns);
-  },
-  changeSelectionTo: function(rows, columns) {
+  }
+  changeSelectionTo(rows, columns) {
     var newRows = rows;
     var newColumns = columns;
 
     var down;
-    if (Utilities.dict_count(this.state.selectedRows) == 1 && Utilities.dict_count(newRows) > 1) {
+    if (Object.keys(this.state.selectedRows).length == 1 && Object.keys(newRows).length > 1) {
       down = false;
       var oldRow = Utilities.dict_first_key(this.state.selectedRows);
       for (var rowIndex = 0; rowIndex < this.props.objects.length; rowIndex++) {
@@ -855,11 +817,11 @@ var ObjectTable = React.createClass({
           break;
       }
     }
-    if (Utilities.dict_count(newRows) <= 1)
+    if (Object.keys(newRows).length <= 1)
       down = true;
 
     var right;
-    if (Utilities.dict_count(this.state.selectedColumns) == 1 && Utilities.dict_count(newColumns) > 1) {
+    if (Object.keys(this.state.selectedColumns).length == 1 && Object.keys(newColumns).length > 1) {
       right = false;
       var oldColumn = Utilities.dict_first_key(this.state.selectedColumns);
       for (var columnIndex = 0; columnIndex < this.props.columns.length; columnIndex++) {
@@ -872,7 +834,7 @@ var ObjectTable = React.createClass({
           break;
       }
     }
-    if (Utilities.dict_count(newColumns) <= 1)
+    if (Object.keys(newColumns).length <= 1)
       right = true;
 
     this.setState(state => {
@@ -884,9 +846,9 @@ var ObjectTable = React.createClass({
       state.selectedColumns = newColumns;
       return state;
     });
-  },
+  }
 
-  renderHeaders: function() {
+  renderHeaders() {
     var columns = [];
     this.props.columns.map((column) => {
       var headerProps = {
@@ -923,14 +885,13 @@ var ObjectTable = React.createClass({
     return (
       <tr>{columns}</tr>
     );
-  },
-  renderRows: function() {
-    var numSelectedRows = Utilities.dict_count(this.state.selectedRows);
-    var numCopyingRows = Utilities.dict_count(this.state.copyingRows);
+  }
+  renderRows() {
+    var numSelectedRows = Object.keys(this.state.selectedRows).length;
+    var numCopyingRows = Object.keys(this.state.copyingRows).length;
     var rows = [];
-    for (var objectIndex = 0; objectIndex < this.props.objects.length; objectIndex++) {
-      var object = this.props.objects[objectIndex];
-      var ref = 'object-' + object.id;
+    this.props.objects.map((object) => {
+      var ref = `object-${object.id}`;
 
       var selectedColumns = {};
       if (numSelectedRows == 0 || typeof this.state.selectedRows[object.id] !== 'undefined')
@@ -954,17 +915,17 @@ var ObjectTable = React.createClass({
           actions={this.props.actions}
           actionsOpen={object.id === this.state.openActions}
 
-          updateField={this.updateField}
-          abortField={this.abortField}
+          updateField={this.updateField.bind(this)}
+          abortField={this.abortField.bind(this)}
           cellError={this.props.onCellError}
-          openActions={this.openActions}
-          closeActions={this.closeActions}
+          openActions={this.openActions.bind(this)}
+          closeActions={this.closeActions.bind(this)}
 
-          onMouseDownCell={this.handleMouseDownCell}
-          beginEdit={this.beginEdit}
+          onMouseDownCell={this.handleMouseDownCell.bind(this)}
+          beginEdit={this.beginEdit.bind(this)}
         />
       );
-    }
+    });
 
     if (!rows.length) {
       var numColumns = this.props.columns.length;
@@ -979,8 +940,8 @@ var ObjectTable = React.createClass({
       );
     }
     return rows;
-  },
-  render: function() {
+  }
+  render() {
     var classes = ClassNames('', {
       'editing': (this.state.editing !== null),
     });
@@ -1000,8 +961,39 @@ var ObjectTable = React.createClass({
         </table>
       </div>
     );
-  },
-});
+  }
+}
 
-ObjectTable.BaseEditor = require('./base-editor');
-module.exports = ObjectTable;
+ObjectTable.defaultProps = {
+  rowHeight: 32,
+  objects: [
+    {
+      id: 1,  // every object is expected to have a unique identifier
+      name: 'Product item report',
+      quantity: '1.0000',
+    },
+  ],
+  columns: [
+    {
+      name: 'Description',
+      key: 'description',
+      width: 'auto',
+      drawer: null,
+      drawerProps: null,
+      editor: null,
+      editorProps: null,
+    },
+  ],
+  emptyText: 'No objects',
+  onRowError: function(row, message) {
+    console.warn('Unable to update row:', row);
+    console.warn('As the following error was encountered:', message);
+  },
+  onCellError: function(objectId, columnKey, message) {
+    console.warn('Unable to update row ' + objectId + ' ' + columnKey);
+    console.warn('As the following error was encountered:', message);
+  },
+};
+
+export default ObjectTable
+export { BaseEditor }

@@ -8,7 +8,7 @@
     "buildjs": "./node_modules/webpack/bin/webpack.js",
     "buildsass": "./node_modules/node-sass/bin/node-sass src/object-table.sass dist/object-table.css",
     "build": "npm run buildjs; npm run buildsass",
-    "compile": "babel ./src --out-dir ./dist --source-maps --presets es2015,react --plugins babel-plugin-add-module-exports",
+    "compile": "babel ./src --out-dir ./dist --source-maps --presets es2015,react,babel-preset-stage-0 --plugins babel-plugin-add-module-exports",
     "prepublish": "npm run compile && npm run buildsass"
   },
   "repository": {
@@ -41,6 +41,7 @@
     "babel-plugin-add-module-exports": "^0.1.2",
     "babel-preset-es2015": "^6.5.0",
     "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-0": "^6.5.0",
     "node-sass": "^3.4.2",
     "webpack": "^1.12.13"
   },
