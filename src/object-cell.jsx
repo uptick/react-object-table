@@ -90,6 +90,7 @@ var ObjectCell = React.createClass({
       drawerProps.ref = 'drawer';
       drawerProps.value = this.props.value;
       drawerProps.beginEdit = this.beginEdit;
+      drawerProps.context = this.props.drawerContext;
 
       var cellProps = {
         className: ClassNames(classes + ' drawer ' + drawer.className, {

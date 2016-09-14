@@ -92,6 +92,8 @@ var ObjectRow = React.createClass({
       cellProps.editorContext = null;
       if (editing && column.editorContext)
         cellProps.editorContext = column.editorContext(this.props.object);
+      if (!editing && column.drawerContext)
+        cellProps.drawerContext = column.drawerContext(this.props.object);
 
       cellProps.disabled = (this.props.object.disabled === true);
       if (this.props.object.disabled)
