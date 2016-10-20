@@ -165,7 +165,7 @@ class ObjectRow extends React.Component {
             <li
               key={'action-' + actionId}
               className="action"
-              onClick={this.onActionClick}
+              onClick={this.onActionClick.bind(this)}
               data-action={actionId}
             >
               {action.label}
@@ -179,7 +179,7 @@ class ObjectRow extends React.Component {
             className="actions open"
             style={cellStyle}
           >
-            <i className="fa fa-bars" onClick={this.closeActions}></i>
+            <i className="fa fa-bars" onClick={this.closeActions.bind(this)}></i>
             <ul className="actions">
               {actions}
             </ul>
