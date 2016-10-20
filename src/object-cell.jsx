@@ -104,7 +104,7 @@ class ObjectCell extends React.Component {
       var drawerProps = Clone(this.props.column.drawerProps || {});
       drawerProps.ref = 'drawer';
       drawerProps.value = this.props.value;
-      drawerProps.beginEdit = this.beginEdit;
+      drawerProps.beginEdit = this.beginEdit.bind(this);
       drawerProps.context = this.props.drawerContext;
 
       var cellProps = {
