@@ -3,6 +3,7 @@ import ReactDom from 'react-dom'
 import JQuery from 'jquery'
 import ClassNames from 'classnames'
 import Clone from 'clone'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 import Utilities from './utilities'
 import Clipboard from './clipboard'
@@ -18,6 +19,7 @@ if (typeof navigator !== 'undefined')
 class ObjectTable extends React.Component {
   constructor(props) {
     super(props);
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
 
     this.state = {
       ...this.state,
@@ -900,6 +902,11 @@ class ObjectTable extends React.Component {
       if (numCopyingRows == 0 || typeof this.state.copyingRows[object.id] !== 'undefined')
         copyingColumns = this.state.copyingColumns;
 
+      var editing = null;
+      if (this.state.editing !== null && this.state.editing.objectId === object.id) {
+        editing = this.state.editing;
+      }
+
       rows.push(
         <ObjectRow
           ref={ref}
@@ -908,8 +915,8 @@ class ObjectTable extends React.Component {
 
           height={this.props.rowHeight}
           columns={this.props.columns}
-          editing={this.state.editing}
-          editReplace={this.state.editReplace}
+          editing={editing}
+          editReplace={editing === null ? null : this.state.editReplace}
           selectedColumns={selectedColumns}
           copyingColumns={copyingColumns}
           actions={this.props.actions}

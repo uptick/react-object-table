@@ -1,56 +1,71 @@
-const React = require('react');
-const Clone = require('clone');
-const ClassNames = require('classnames');
+import React from 'react'
+import Clone from 'clone'
+import classNames from 'classnames'
 
-const TextDrawer = require('./drawers/text');
-const TextEditor = require('./editors/text');
+import TextDrawer from './drawers/text'
+import TextEditor from './editors/text'
 
-var ObjectCell = React.createClass({
-  getDefaultProps: function() {
-    return {
-      // column: {}, // from row
-      // objectId: 1, // from ro w
+class ObjectCell extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      ...this.state,
     };
-  },
-  getInitialState: function() {
-    return {};
-  },
+  }
 
-  shouldComponentUpdate: function(nextProps, nextState) {
-    for (var propKey in nextProps) {
-      if (this.props[propKey] !== nextProps[propKey])
-        return true;
+  shouldComponentUpdate(nextProps, nextState) {
+    var isShallowDifferent = function(objectA, objectB, exemptions) {
+      for (var key in objectA) {
+        if (exemptions && key in exemptions) {
+          continue;
+        }
+        if (objectB[key] !== objectA[key]) {
+          // console.log('key', key, 'does not equal');
+          return true;
+        }
+      }
+      return false;
+    };
+    var propsExemptions = {
+      'onMouseDownCell': true,
+      'beginEdit': true,
+      'updateField': true,
+      'abortField': true,
+      'cellError': true,
+    };
+    if (isShallowDifferent(this.props, nextProps, propsExemptions) || isShallowDifferent(nextProps, this.props, propsExemptions)) {
+      return true;
     }
-    for (var stateKey in nextState) {
-      if (this.state[stateKey] !== nextState[stateKey])
-        return true;
+    if (isShallowDifferent(this.state, nextState) || isShallowDifferent(nextState, this.state)) {
+      return true;
     }
     return false;
-  },
+  }
 
-  getCellRef: function() {
+  getCellRef() {
     return {
       columnKey: this.props.column.key,
       objectId: this.props.objectId,
     };
-  },
+  }
 
-  handleMouseDown: function(event) {
+  handleMouseDown(event) {
     var button = event.which || event.button;
     event.preventDefault();
     if (button == 0)
       this.props.onMouseDownCell(this.getCellRef(), event.clientX, event.clientY, event.shiftKey);
-  },
-  handleDoubleClick: function(event) {
+  }
+  handleDoubleClick(event) {
     this.beginEdit();
-  },
-  beginEdit: function(editReplaceOverride) {
+  }
+  beginEdit(editReplaceOverride) {
     if (!this.props.disabled && this.props.column.editor !== false)
       this.props.beginEdit(this.getCellRef(), editReplaceOverride);
-  },
+  }
 
-  render: function() {
-    var classes = ClassNames('', {
+  render() {
+    var classes = classNames('', {
       'selected': this.props.selected,
       'copying': this.props.copying,
       'editing': this.props.editing,
@@ -93,11 +108,11 @@ var ObjectCell = React.createClass({
       drawerProps.context = this.props.drawerContext;
 
       var cellProps = {
-        className: ClassNames(classes + ' drawer ' + drawer.className, {
+        className: classNames(classes + ' drawer ' + drawer.className, {
           uneditable: (this.props.column.editor === false),
         }),
-        onMouseDown: this.handleMouseDown,
-        onDoubleClick: this.handleDoubleClick,
+        onMouseDown: this.handleMouseDown.bind(this),
+        onDoubleClick: this.handleDoubleClick.bind(this),
       };
 
       return (
@@ -114,7 +129,11 @@ var ObjectCell = React.createClass({
         </td>
       );
     }
-  },
-});
+  }
+}
+ObjectCell.defaultProps = {
+  // column: {}, // from row
+  // objectId: 1, // from row
+};
 
 module.exports = ObjectCell;
