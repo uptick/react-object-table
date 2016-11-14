@@ -13,14 +13,22 @@ module.exports = {
         exclude: /(node_modules)/,
         loader: 'babel',
         query: {
-          presets: ['react', 'es2015', 'stage-0']
-        }
+          presets: [
+            'react',
+            'es2015',
+            'stage-0',
+          ]
+        },
       }
     ],
   },
   resolve: {
     root: [
     ],
-    extensions: [ '', '.js', '.jsx' ]
+    extensions: [
+      '',
+      '.js',
+      '.jsx',
+    ]
   }
 };
