@@ -3,7 +3,7 @@ import ReactDom from 'react-dom'
 import JQuery from 'jquery'
 import ClassNames from 'classnames'
 import Clone from 'clone'
-import PureRenderMixin from 'react-addons-pure-render-mixin'
+import shallowCompare from 'react-addons-shallow-compare'
 
 import Utilities from './utilities'
 import Clipboard from './clipboard'
@@ -19,7 +19,6 @@ if (typeof navigator !== 'undefined')
 class ObjectTable extends React.Component {
   constructor(props) {
     super(props);
-    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
 
     this.state = {
       ...this.state,
@@ -39,6 +38,10 @@ class ObjectTable extends React.Component {
 
       openActions: null,
     };
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
   }
 
   componentDidMount() {

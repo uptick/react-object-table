@@ -1,15 +1,17 @@
 {
   "name": "react-object-table",
   "version": "0.0.32",
-  "description": "React table of objects, designed with hooks to be editable and fast.",
+  "description": "React table of objects, designed to be editable and fast.",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "buildjs": "./node_modules/webpack/bin/webpack.js",
+    "buildjs-demo": "./node_modules/webpack/bin/webpack.js --config webpack.config.demo.js",
     "buildsass": "./node_modules/node-sass/bin/node-sass src/object-table.sass dist/object-table.css",
+    "buildsass-demo": "./node_modules/node-sass/bin/node-sass src/object-table.sass dist/object-table.css",
     "build": "npm run buildjs; npm run buildsass",
-    "compile": "babel ./src --out-dir ./dist --source-maps --presets es2015,react,babel-preset-stage-0 --plugins babel-plugin-add-module-exports",
-    "prepublish": "npm run compile && npm run buildsass"
+    "build-demo": "npm run buildjs-demo && npm run buildsass-demo",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
