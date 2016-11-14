@@ -5,26 +5,41 @@ layout: default
   <div class="page-header">
     <h1>Live Demo</h1>
   </div>
-  <p>To participate in the tutorial you will need:</p>
+  <p>To participate in the demonstration you will need:</p>
   <ul>
     <li>Javascript enabled</li>
     <li>A modern browser</li>
   </ul>
+  <p>All examples given are written with babel loaders to support es6 (stage-0) syntax.</p>
 
-  <br />
-
-  <h2>Line Item List</h2>
-  <div class="demo-mount"></div>
-
-  <br />
-
-  <h2>Sample Code</h2>
-  <p>Tutorials are represented as javascript object configs. The sample here is for the demo
-  tutorial initiated above.</p>
-  <p>Note that to function, the config must be loaded onto every page that the user could
-  potentially see the tutorial on.</p>
+  <h2>Simple Example</h2>
+  <p>This is the simplest implementation of React-Object-Table, an editable list of strings.</p>
+  <p>To allow editing, the table requires an onUpdate handler (refer to source code below).</p>
+  <p>Even this simple example supports:</p>
+  <ul>
+    <li>Single cell editing</li>
+    <li>Familiar navigation and completion hotkeys such as arrows tab/enter</li>
+    <li>Multi column or row copy-paste</li>
+  </ul>
+  <div class="demo-mount-simple"></div>
   <code
     class="script"
-    data-source="{{ site.baseurl }}/demo.jsx"
+    data-source="{{ site.baseurl }}/simple-demo.jsx"
   >Loading ...</code>
+
+  <h2>More Feature-Filled Example</h2>
+  <p>This example demonstrates:</p>
+  <ul>
+    <li>Read-only columns</li>
+    <li>A more complex update handler</li>
+    <li>The ability to add rows</li>
+    <li>Row-level action handlers</li>
+  </ul>
+  <div class="demo-mount-features"></div>
+  <code
+    class="script"
+    data-source="{{ site.baseurl }}/features-demo.jsx"
+  >Loading ...</code>
+
+  <h2>Customisation Example</h2>
 </div>

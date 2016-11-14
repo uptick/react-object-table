@@ -1,10 +1,10 @@
 var path = require('path');
 
 module.exports = {
-  entry: './demo.jsx',
+  entry: './demos.jsx',
   output: {
     path: __dirname + '/dist',
-    filename: 'demo.js',
+    filename: 'demos.js',
   },
   module: {
     loaders: [
