@@ -5,7 +5,7 @@ module.exports = {
   entry: './src/object-table.jsx',
   output: {
     path: __dirname + '/dist',
-    filename: 'object-table.js',
+    filename: 'react-object-table.js',
     library: 'react-object-table',
     libraryTarget: 'umd',
   },

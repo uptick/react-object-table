@@ -1,1 +1,1 @@
-module.exports = require('./dist/object-table');
+module.exports = require('./dist/react-object-table');

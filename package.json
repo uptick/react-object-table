@@ -1,12 +1,12 @@
 {
   "name": "react-object-table",
-  "version": "0.0.37",
+  "version": "0.0.39",
   "description": "React table of objects, designed to be editable and fast.",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-js": "./node_modules/webpack/bin/webpack.js",
-    "build-css": "./node_modules/node-sass/bin/node-sass src/object-table.sass dist/object-table.css",
+    "build-css": "./node_modules/node-sass/bin/node-sass src/object-table.sass dist/react-object-table.css",
     "build": "npm run build-js; npm run build-css",
     "prepublish": "npm run build"
   },
