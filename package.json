@@ -1,16 +1,13 @@
 {
   "name": "react-object-table",
-  "version": "0.0.32",
+  "version": "0.0.37",
   "description": "React table of objects, designed to be editable and fast.",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "buildjs": "./node_modules/webpack/bin/webpack.js",
-    "buildjs-demo": "./node_modules/webpack/bin/webpack.js --config webpack.config.demo.js",
-    "buildsass": "./node_modules/node-sass/bin/node-sass src/object-table.sass dist/object-table.css",
-    "buildsass-demo": "./node_modules/node-sass/bin/node-sass src/object-table.sass dist/object-table.css",
-    "build": "npm run buildjs; npm run buildsass",
-    "build-demo": "npm run buildjs-demo && npm run buildsass-demo",
+    "build-js": "./node_modules/webpack/bin/webpack.js",
+    "build-css": "./node_modules/node-sass/bin/node-sass src/object-table.sass dist/object-table.css",
+    "build": "npm run build-js; npm run build-css",
     "prepublish": "npm run build"
   },
   "repository": {
@@ -34,8 +31,8 @@
     "clone": "^1.0.2",
     "jquery": "^2.2.0",
     "react": "^0.14.8",
-    "react-addons-shallow-compare": "^15.3.2",
-    "react-dom": "^0.14.6"
+    "react-addons-shallow-compare": "^0.14.8",
+    "react-dom": "^0.14.8"
   },
   "devDependencies": {
     "babel-cli": "^6.6.4",
@@ -46,7 +43,8 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "node-sass": "^3.4.2",
-    "webpack": "^1.12.13"
+    "webpack": "^1.12.13",
+    "webpack-node-externals": "^1.5.4"
   },
   "browserDependencies": {}
 }

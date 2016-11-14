@@ -20,9 +20,9 @@
   "license": "MIT",
   "dependencies": {
     "jquery": "^3.1.1",
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
-    "react-object-table": "0.0.32"
+    "react": "^0.14.8",
+    "react-dom": "^0.14.8",
+    "react-object-table": "0.0.37"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
