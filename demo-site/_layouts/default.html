@@ -13,22 +13,25 @@
       integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="
       crossorigin="anonymous"
     ></script>
-    <link href="{{ site.baseurl }}/dist/object-table.css" rel="stylesheet">
-    <link href="{{ site.baseurl }}/demo-site.css" rel="stylesheet">
+    <link href="{{ site.baseurl }}/dist/site.css" rel="stylesheet">
+    <link href="{{ site.baseurl }}/dist/demo.css" rel="stylesheet">
   </head>
   <body>
     <div class="header">
       <div class="container-fluid" style="max-width: 900px;">
         <a class="title" href="{{ site.baseurl }}/">React Object Table</a>
         <span style="margin-left: 20px;">
-          <a href="https://github.com/ABASystems/react-object-table">GitHub</a>&nbsp;|&nbsp;<a href="https://www.npmjs.com/package/react-object-table">NPM</a>
+          <a href="https://github.com/ABASystems/react-object-table">GitHub</a>
+          &nbsp;|&nbsp;
+          <a href="https://www.npmjs.com/package/react-object-table">NPM</a>
         </span>
       </div>
     </div>
 
     <div class="content">
       {{ content }}
-      <script src="{{ site.baseurl }}/demo-site.js"></script>
+      <script src="{{ site.baseurl }}/site.js"></script>
+      <script src="{{ site.baseurl }}/dist/demo.js"></script>
     </div>
 
     <div class="footer">

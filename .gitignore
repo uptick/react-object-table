@@ -36,4 +36,5 @@ node_modules
 dist
 
 # Jekyll
-_site/
+demo-site/_site/
+demo-site/dist
