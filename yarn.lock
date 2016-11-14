@@ -2268,9 +2268,9 @@ react-dom@^0.14.8:
   version "0.14.8"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-0.14.8.tgz#0f1c547514263f771bd31814a739e5306575069e"
 
-react-object-table@0.0.38:
-  version "0.0.38"
-  resolved "http://localhost:8080/react-object-table/-/react-object-table-0.0.38.tgz#9e3a7ac3ebc9ed02a5971bbfd980ac13b20b546b"
+react-object-table@0.0.39:
+  version "0.0.39"
+  resolved "http://localhost:8080/react-object-table/-/react-object-table-0.0.39.tgz#c0df2d86a9e40c32ca7b119e4d62fbb869e8b194"
   dependencies:
     classnames "^2.2.3"
     clone "^1.0.2"
