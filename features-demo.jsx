@@ -6,6 +6,10 @@ import Moment from 'moment'
 import ObjectTable from 'react-object-table'
 
 class SinceDrawer extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <span>{Moment(this.props.value).fromNow()}</span>
@@ -55,7 +59,27 @@ class SimpleTable extends React.Component {
     });
   }
   handleDuplicate(id) {
-    console.log('deleting', id);
+    this.setState(state => {
+      var newId = 0;
+      var original;
+      state.objects.map((object) => {
+        if (object.id === id) {
+          original = object;
+        }
+        if (object.id > newId) {
+          newId = object.id;
+        }
+      });
+      newId++;
+      if (original) {
+        state.objects.push({
+          ...original,
+          id: newId,
+          updated: +Moment(),
+        });
+      }
+      return state;
+    });
   }
 
   render() {
@@ -86,6 +110,7 @@ SimpleTable.defaultProps = {
       key: 'updated',
       editor: false,
       drawer: SinceDrawer,
+      width: 200,
     },
   ],
 };
