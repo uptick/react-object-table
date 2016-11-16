@@ -4,6 +4,9 @@
   "description": "React table of objects, designed to be editable and fast.",
   "main": "src/index.js",
   "scripts": {
+    "add-demo-dist": "sed -i -e 's/demo\\-site\\/\\dist/\\# demo dist/g' .gitignore",
+    "remove-demo-dist": "sed -i -e 's/\\# demo dist/demo\\-site\\/\\dist/g' .gitignore",
+    "publish-demo": "npm run add-demo-dist; cd demo-site; npm run build; cd ..; git commit -am \"Demo site build\"; git subtree push --prefix demo-site origin gh-pages;",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-js": "./node_modules/webpack/bin/webpack.js",
     "build-css": "./node_modules/node-sass/bin/node-sass src/object-table.sass dist/react-object-table.css",
