@@ -8,6 +8,7 @@ import shallowCompare from 'react-addons-shallow-compare'
 import Utilities from './utilities'
 import Clipboard from './clipboard'
 import TextEditor from './editors/text'
+import TextDrawer from './drawers/text'
 
 import ObjectRow from './object-row'
 import BaseEditor from './base-editor'
@@ -1006,4 +1007,4 @@ ObjectTable.defaultProps = {
 };
 
 export default ObjectTable
-export { BaseEditor }
+export { BaseEditor, TextEditor, TextDrawer }

@@ -1,17 +1,22 @@
-const React = require('react');
-const BaseEditor = require('./../base-editor');
+import React from 'react'
+import BaseEditor from './../base-editor'
 
-const validate = function(value, props) {
+function validate(value, props) {
   return {
     valid: true,
     cleanedValue: value,
   };
-};
+}
 
 class TextEditor extends BaseEditor {
+  constructor(props) {
+    super(props);
+  }
+
   componentDidMount() {
-    if (this.props.editReplace)
+    if (this.props.editReplace) {
       this.refs.field.setSelectionRange(this.state.value.length, this.state.value.length);
+    }
   }
 
   validate(value) {
@@ -58,10 +63,10 @@ class TextEditor extends BaseEditor {
       </form>
     );
   }
-};
+}
 
-module.exports = {
+export default {
   className: 'text-editor',
   component: TextEditor,
   validate: validate,
-};
+}

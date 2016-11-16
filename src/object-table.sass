@@ -1,5 +1,6 @@
 $selection-colour: #337ab7
 $cell-padding: 0.4rem
+$border-colour: #ddd
 
 div.object-table-container
   margin-bottom: 2em
@@ -18,7 +19,7 @@ div.object-table-container
           opacity: 1
 
     // borders
-    $border: 0.1rem solid #ddd
+    $border: 0.1rem solid $border-colour
 
     tr:first-child
       td, th
@@ -66,28 +67,32 @@ div.object-table-container
     td.actions
       position: relative
       text-align: center
-      font-size: 1.1rem
+      font-size: 0.9rem
+      cursor: pointer
+      > span
+        font-size: 0.8rem
       ul.actions
+        overflow: hidden
         line-height: 1em
         text-align: left
         position: absolute
-        top: 0px
-        right: 0px
+        top: 50%
+        right: -0.1rem
         list-style: none
         padding: 0
         z-index: 20
         background: #fff
-        border: 0.1rem solid #eee
-        border-radius: 0.3rem
-        min-width: 150px
+        border: 0.1rem solid $border-colour
+        min-width: 10rem
         li
           display: block
-          padding: 10px
+          margin: 0
+          padding: 0.6rem
           cursor: pointer
-          font-size: 15px
           &:hover
             background: $selection-colour
             color: #fff
+
     td.uneditable
       background: #fafafa
 

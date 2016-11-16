@@ -1,20 +1,21 @@
-const React = require('react');
+import React from 'react'
 
-const validate = function(value, props) {
+function validate(value, props) {
   return {
     valid: true,
     cleanedValue: value,
   };
-};
+}
 
-class BaseEditor extends React.Component{
+class BaseEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       value:  this.props.value,
     };
-    if (this.props.editReplace !== null)
+    if (this.props.editReplace !== null) {
       this.state.value = this.props.editReplace;
+    }
   }
 
   validate(value) {
@@ -28,13 +29,18 @@ class BaseEditor extends React.Component{
     var validation = this.validate(value);
 
     if (validation.valid) {
-      this.props.update(this.props.objectId, this.props.columnKey, validation.cleanedValue, nextAction);
+      this.props.update(
+        this.props.objectId,
+        this.props.columnKey,
+        validation.cleanedValue,
+        nextAction,
+      );
     }
     else {
       this.props.cellError(
         this.props.objectId,
         this.props.columnKey,
-        '"' + value + '" is not a valid value.'
+        `"${value}" is not a valid value.`
       )
       this.abort(nextAction);
     }
@@ -57,7 +63,7 @@ class BaseEditor extends React.Component{
       this.abort(false);
     }
   }
-};
+}
 BaseEditor.defaultProps = {
   editReplace: null,
 };

@@ -10,7 +10,7 @@ layout: default
     <li>Javascript enabled</li>
     <li>A modern browser</li>
   </ul>
-  <p>All examples given are written with babel loaders to support es6 (stage-0) syntax.</p>
+  <p>All examples given are written with babel loaders to support es6 (stage-0) and JSX syntax.</p>
 
   <h2>Simple Example</h2>
   <p>This is the simplest implementation of React-Object-Table, an editable list of strings.</p>
@@ -19,7 +19,8 @@ layout: default
   <ul>
     <li>Single cell editing</li>
     <li>Familiar navigation and completion hotkeys such as the arrow keys and tab/enter</li>
-    <li>Multi column or row copy-paste</li>
+    <li>Multi column or row copy-paste <small>(except on Firefox, where the required events do not
+    exist)</small></li>
   </ul>
   <div class="demo-mount-simple"></div>
   <code
@@ -32,7 +33,7 @@ layout: default
   <ul>
     <li>Read-only columns</li>
     <li>A more complex update handler</li>
-    <li>The ability to add rows (handle outside the scope of React-Object-Table)</li>
+    <li>The ability to add rows (handled outside the scope of React-Object-Table)</li>
     <li>Row-level action handlers</li>
     <li>A very basic custom renderer</li>
   </ul>
@@ -43,4 +44,17 @@ layout: default
   >Loading ...</code>
 
   <h2>Customisation Example</h2>
+  <p>This example demonstrates:</p>
+  <ul>
+    <li>A more exciting custom renderer</li>
+    <li>A custom editor widget</li>
+    <li>Cell input validation (age column, confirmed to be positive integer in a reasonable
+    range)</li>
+    <li>Very basic validation error exception handling</li>
+  </ul>
+  <div class="demo-mount-customisation"></div>
+  <code
+    class="script"
+    data-source="{{ site.baseurl }}/customisation-demo.jsx"
+  >Loading ...</code>
 </div>

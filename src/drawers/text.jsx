@@ -1,21 +1,19 @@
-var React = require('react');
+import React from 'react'
 
-var TextDrawer = React.createClass({
-  getDefaultProps: function() {
-    return {};
-  },
-  getInitialState: function() {
-    return {};
-  },
+class TextDrawer extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-  render: function() {
+  render() {
     return (
       <span>{this.props.value}</span>
     );
-  },
-});
+  }
+}
+TextDrawer.defaultProps = {};
 
-module.exports = {
+export default {
   className: 'text-drawer',
   component: TextDrawer,
-};
+}

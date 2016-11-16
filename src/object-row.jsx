@@ -179,7 +179,7 @@ class ObjectRow extends React.Component {
             className="actions open"
             style={cellStyle}
           >
-            <i className="fa fa-bars" onClick={this.closeActions.bind(this)}></i>
+            <span onClick={this.closeActions.bind(this)}>&#9776;</span>
             <ul className="actions">
               {actions}
             </ul>
@@ -195,7 +195,7 @@ class ObjectRow extends React.Component {
             onClick={this.openActions.bind(this)}
             style={cellStyle}
           >
-            <i className="fa fa-bars"></i>
+            <span>&#9776;</span>
           </td>
         );
       }
