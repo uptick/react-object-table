@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build-css": "./node_modules/node-sass/bin/node-sass site.sass dist/site.css",
-    "watch-css": "npm run build-css; ./node_modules/node-sass/bin/node-sass site.sass dist/site.css --watch",
+    "build-css": "./node_modules/node-sass/bin/node-sass demos.sass dist/demos.css",
+    "watch-css": "npm run build-css; ./node_modules/node-sass/bin/node-sass demos.sass dist/demos.css --watch",
     "build-js": "./node_modules/webpack/bin/webpack.js",
     "watch-js": "./node_modules/webpack/bin/webpack.js --watch",
     "build": "npm run build-js; npm run build-css",
@@ -19,11 +19,11 @@
   "author": "ABA Systems Pty Ltd",
   "license": "MIT",
   "dependencies": {
-    "jquery": "^3.1.1",
+    "abas-demo-site": "^1.0.3",
     "moment": "^2.16.0",
     "react": "^0.14.8",
     "react-dom": "^0.14.8",
-    "react-object-table": "0.0.40"
+    "react-object-table": "0.0.41"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
