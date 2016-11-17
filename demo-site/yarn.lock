@@ -1909,6 +1909,10 @@ mkdirp@^0.5.0, mkdirp@^0.5.1, "mkdirp@>=0.5 0", mkdirp@~0.5.0, mkdirp@~0.5.1:
   dependencies:
     minimist "0.0.8"
 
+moment@^2.16.0:
+  version "2.16.0"
+  resolved "http://localhost:8080/moment/-/moment-2.16.0.tgz#f38f2c97c9889b0ee18fc6cc392e1e443ad2da8e"
+
 ms@0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.1.tgz#9cd13c03adbff25b65effde7ce864ee952017098"
@@ -2268,9 +2272,9 @@ react-dom@^0.14.8:
   version "0.14.8"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-0.14.8.tgz#0f1c547514263f771bd31814a739e5306575069e"
 
-react-object-table@0.0.39:
-  version "0.0.39"
-  resolved "http://localhost:8080/react-object-table/-/react-object-table-0.0.39.tgz#c0df2d86a9e40c32ca7b119e4d62fbb869e8b194"
+react-object-table@0.0.40:
+  version "0.0.40"
+  resolved "http://localhost:8080/react-object-table/-/react-object-table-0.0.40.tgz#991762f65c3299363a461a1ee8d4c7dbaffc8bfc"
   dependencies:
     classnames "^2.2.3"
     clone "^1.0.2"
