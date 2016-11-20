@@ -1,6 +1,8 @@
 # react-object-table
+
 [![npm version](https://badge.fury.io/js/react-object-table.svg)](http://badge.fury.io/js/react-object-table)
 ![Downloads](http://img.shields.io/npm/dm/react-object-table.svg?style=flat)
+
 React powered table of objects, designed to be editable and fast.
 
 ## Live Demo
