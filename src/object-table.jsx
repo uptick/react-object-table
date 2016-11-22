@@ -5,13 +5,13 @@ import ClassNames from 'classnames'
 import Clone from 'clone'
 import shallowCompare from 'react-addons-shallow-compare'
 
-import Utilities from './utilities'
-import Clipboard from './clipboard'
-import TextEditor from './editors/text'
-import TextDrawer from './drawers/text'
+import { dict_count, dict_first_key } from './utilities.js'
+import { string_value, deserialize_cells } from './clipboard.js'
+import TextEditor from './editors/text.jsx'
+import TextDrawer from './drawers/text.jsx'
 
-import ObjectRow from './object-row'
-import BaseEditor from './base-editor'
+import ObjectRow from './object-row.jsx'
+import BaseEditor from './base-editor.js'
 
 var _iOSDevice = false;
 if (typeof navigator !== 'undefined')
@@ -66,7 +66,7 @@ class ObjectTable extends React.Component {
     });
     JQuery(document).on('paste', (event) => {
       var theEvent = event;
-      var clipboardObjects = Clipboard.deserialize_cells(theEvent.originalEvent.clipboardData);
+      var clipboardObjects = deserialize_cells(theEvent.originalEvent.clipboardData);
       if (clipboardObjects.length) {
         this.handlePaste(clipboardObjects);
       }
@@ -566,7 +566,7 @@ class ObjectTable extends React.Component {
     var longestColumns = [];
     for (var rowIndex = 0; rowIndex < cellsData.length; rowIndex++) {
       for (var columnIndex = 0; columnIndex < cellsData[rowIndex].length; columnIndex++) {
-        var stringVal = Clipboard.string_value(cellsData[rowIndex][columnIndex]);
+        var stringVal = string_value(cellsData[rowIndex][columnIndex]);
 
         if (typeof longestColumns[columnIndex] == 'undefined' || longestColumns[columnIndex] < stringVal.length)
           longestColumns[columnIndex] = stringVal.length;
@@ -574,7 +574,7 @@ class ObjectTable extends React.Component {
     }
     for (var rowIndex = 0; rowIndex < cellsData.length; rowIndex++) {
       for (var columnIndex = 0; columnIndex < cellsData[rowIndex].length; columnIndex++) {
-        var stringVal = Clipboard.string_value(cellsData[rowIndex][columnIndex]);
+        var stringVal = string_value(cellsData[rowIndex][columnIndex]);
         stringData += stringVal;
         var numSpaces = longestColumns[columnIndex] - stringVal.length;
         if (columnIndex != (cellsData[rowIndex].length - 1))
@@ -588,7 +588,7 @@ class ObjectTable extends React.Component {
     var csvData = '';
     for (var rowIndex = 0; rowIndex < cellsData.length; rowIndex++) {
       for (var columnIndex = 0; columnIndex < cellsData[rowIndex].length; columnIndex++) {
-        var stringVal = Clipboard.string_value(cellsData[rowIndex][columnIndex]);
+        var stringVal = string_value(cellsData[rowIndex][columnIndex]);
         // var wrapQuotes = (stringVal.indexOf(',') != -1);
         var wrapQuotes = false;
         if (wrapQuotes)
@@ -748,7 +748,7 @@ class ObjectTable extends React.Component {
     var updateAction = action;
     reactClass.setState(state => {
       state.editing = null;
-      if (Utilities.dict_count(state.selectedRows) == 1 && Utilities.dict_count(state.selectedColumns) == 1) {
+      if (dict_count(state.selectedRows) == 1 && dict_count(state.selectedColumns) == 1) {
         switch (updateAction) {
 
           case 'nextRow':
@@ -812,7 +812,7 @@ class ObjectTable extends React.Component {
     var down;
     if (Object.keys(this.state.selectedRows).length == 1 && Object.keys(newRows).length > 1) {
       down = false;
-      var oldRow = Utilities.dict_first_key(this.state.selectedRows);
+      var oldRow = dict_first_key(this.state.selectedRows);
       for (var rowIndex = 0; rowIndex < this.props.objects.length; rowIndex++) {
         var row = this.props.objects[rowIndex];
         if (row.id == oldRow) {
@@ -829,7 +829,7 @@ class ObjectTable extends React.Component {
     var right;
     if (Object.keys(this.state.selectedColumns).length == 1 && Object.keys(newColumns).length > 1) {
       right = false;
-      var oldColumn = Utilities.dict_first_key(this.state.selectedColumns);
+      var oldColumn = dict_first_key(this.state.selectedColumns);
       for (var columnIndex = 0; columnIndex < this.props.columns.length; columnIndex++) {
         var column = this.props.columns[columnIndex];
         if (column.key == oldColumn) {

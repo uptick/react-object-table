@@ -2,8 +2,8 @@ import React from 'react'
 import Clone from 'clone'
 import classNames from 'classnames'
 
-import TextDrawer from './drawers/text'
-import TextEditor from './editors/text'
+import TextDrawer from './drawers/text.jsx'
+import TextEditor from './editors/text.jsx'
 
 class ObjectCell extends React.Component {
   constructor(props) {
@@ -136,4 +136,4 @@ ObjectCell.defaultProps = {
   // objectId: 1, // from row
 };
 
-module.exports = ObjectCell;
+export default ObjectCell

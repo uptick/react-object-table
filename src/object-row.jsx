@@ -2,9 +2,9 @@ import React from 'react'
 import JQuery from 'jquery'
 import classNames from 'classnames'
 
-import Utilities from './utilities'
+import { dict_count } from './utilities.js'
 
-import ObjectCell from './object-cell'
+import ObjectCell from './object-cell.jsx'
 
 class ObjectRow extends React.Component {
   constructor(props) {
@@ -68,8 +68,8 @@ class ObjectRow extends React.Component {
   }
 
   colInRanges(column, columns, rows) {
-    var numRangeColumns = Utilities.dict_count(columns);
-    var numRangeRows = Utilities.dict_count(rows);
+    var numRangeColumns = dict_count(columns);
+    var numRangeRows = dict_count(rows);
     if (numRangeColumns == 0 && numRangeRows === 0) {
       return false;
     }
@@ -217,4 +217,4 @@ ObjectRow.defaultProps = {
   // rowHeight: 32, // from grid
 };
 
-module.exports = ObjectRow;
+export default ObjectRow

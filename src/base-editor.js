@@ -68,4 +68,4 @@ BaseEditor.defaultProps = {
   editReplace: null,
 };
 
-module.exports = BaseEditor;
+export default BaseEditor

@@ -17,18 +17,9 @@ module.exports = {
             'react',
             'es2015',
             'stage-0',
-          ]
+          ],
         },
-      }
+      },
     ],
   },
-  resolve: {
-    root: [
-    ],
-    extensions: [
-      '',
-      '.js',
-      '.jsx',
-    ]
-  }
 };
