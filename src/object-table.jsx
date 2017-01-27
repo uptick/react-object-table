@@ -3,7 +3,6 @@ import ReactDom from 'react-dom'
 import JQuery from 'jquery'
 import ClassNames from 'classnames'
 import Clone from 'clone'
-import shallowCompare from 'react-addons-shallow-compare'
 
 import { dict_count, dict_first_key } from './utilities.js'
 import { string_value, deserialize_cells } from './clipboard.js'
@@ -17,7 +16,7 @@ var _iOSDevice = false;
 if (typeof navigator !== 'undefined')
   _iOSDevice = !!navigator.platform.match(/iPhone|iPod|iPad/);
 
-class ObjectTable extends React.Component {
+class ObjectTable extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -39,10 +38,6 @@ class ObjectTable extends React.Component {
 
       openActions: null,
     };
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
   }
 
   componentDidMount() {
