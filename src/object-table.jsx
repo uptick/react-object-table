@@ -948,6 +948,16 @@ class ObjectTable extends React.PureComponent {
     return rows;
   }
   render() {
+    var overlay;
+    if (this.state.editing)
+      overlay = (
+        <div
+          className='editing-overlay'
+          onClick={this.handleClickOutside.bind(this)}
+        >
+        </div>
+      )
+    
     return (
       <div className="object-table-container">
         <table
@@ -961,11 +971,7 @@ class ObjectTable extends React.PureComponent {
             {this.renderRows()}
           </tbody>
         </table>
-        <div
-          className={ClassNames({'editing-overlay': this.state.editing})}
-          onClick={this.handleClickOutside.bind(this)}
-        >
-        </div>
+        {overlay}
       </div>
     );
   }
