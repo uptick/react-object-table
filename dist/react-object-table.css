@@ -1,0 +1,101 @@
+div.object-table-container {
+  position: relative;
+  margin-bottom: 2em; }
+  div.object-table-container table {
+    width: 100%;
+    border: none !important;
+    outline: none !important;
+    font-size: 1rem;
+    border-collapse: collapse; }
+    div.object-table-container table td.editing div.contents {
+      z-index: 1;
+      position: relative; }
+    div.object-table-container table tr:first-child td, div.object-table-container table tr:first-child th {
+      border-top: 0.1rem solid #ddd; }
+    div.object-table-container table tr:last-child td {
+      border-bottom: 0.1rem solid #ddd; }
+    div.object-table-container table td:first-child, div.object-table-container table th:first-child {
+      border-left: 0.1rem solid #ddd; }
+    div.object-table-container table td:last-child, div.object-table-container table th:last-child {
+      border-right: 0.1rem solid #ddd; }
+    div.object-table-container table td.actions {
+      border-left: 0.1rem solid #ddd; }
+      div.object-table-container table td.actions i {
+        cursor: pointer; }
+    div.object-table-container table tr.disabled {
+      opacity: 0.5; }
+    div.object-table-container table td, div.object-table-container table th {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+      box-sizing: border-box;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none; }
+      div.object-table-container table td div.contents, div.object-table-container table th div.contents {
+        transition: opacity 0.2s; }
+    div.object-table-container table:not(.editing) td.selected {
+      background: #337ab7; }
+    div.object-table-container table:not(.editing) td.copying div.contents {
+      opacity: 0.5; }
+    div.object-table-container table th {
+      padding: 0.4rem;
+      text-align: left;
+      font-weight: normal; }
+    div.object-table-container table td.actions {
+      position: relative;
+      text-align: center;
+      font-size: 1rem;
+      cursor: pointer; }
+      div.object-table-container table td.actions > span {
+        font-size: 1rem; }
+      div.object-table-container table td.actions ul.actions {
+        overflow: hidden;
+        line-height: 1em;
+        text-align: left;
+        position: absolute;
+        top: 50%;
+        right: -0.1rem;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        z-index: 20;
+        background: #fff;
+        border: 0.1rem solid #ddd;
+        min-width: 10rem; }
+        div.object-table-container table td.actions ul.actions li {
+          display: block;
+          margin: 0;
+          padding: 0.6rem;
+          cursor: pointer; }
+          div.object-table-container table td.actions ul.actions li:hover {
+            background: #337ab7;
+            color: #fff; }
+    div.object-table-container table td.uneditable {
+      background: #fafafa; }
+
+div.object-table-container td.editor input {
+  font-size: 1rem;
+  box-shadow: none;
+  width: 100%;
+  padding: 0.4rem;
+  margin: 0;
+  border: none;
+  outline: none;
+  background: none; }
+
+div.object-table-container td.drawer, div.object-table-container td.empty {
+  padding: 0.4rem; }
+
+div.object-table-container div.editing-overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: white;
+  opacity: 0.3; }
+
+div.object-table-container td.text-editor input {
+  text-align: left; }
