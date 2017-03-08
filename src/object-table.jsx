@@ -20,6 +20,18 @@ class ObjectTable extends React.PureComponent {
   constructor(props) {
     super(props);
 
+    this.handleMouseMove = ::this.handleMouseMove;
+    this.handleKeyPress = ::this.handleKeyPress;
+    this.handleKeyDown = ::this.handleKeyDown;
+    this.handleMouseUp = ::this.handleMouseUp;
+
+    this.updateField = ::this.updateField;
+    this.abortField = ::this.abortField;
+    this.openActions = ::this.openActions;
+    this.closeActions = ::this.closeActions;
+    this.handleMouseDownCell = ::this.handleMouseDownCell;
+    this.beginEdit = ::this.beginEdit;
+
     this.state = {
       ...this.state,
 
@@ -41,9 +53,9 @@ class ObjectTable extends React.PureComponent {
   }
 
   componentDidMount() {
-    JQuery(document).on('mousemove', this.handleMouseMove.bind(this));
-    JQuery(document).on('keypress', this.handleKeyPress.bind(this));
-    JQuery(document).on('keydown', this.handleKeyDown.bind(this));
+    JQuery(document).on('mousemove', this.handleMouseMove);
+    JQuery(document).on('keypress', this.handleKeyPress);
+    JQuery(document).on('keydown', this.handleKeyDown);
     JQuery(document).on('mouseup', (event) => {
       var parentContainer = JQuery(event.target).closest('.object-table-container');
       if (parentContainer.length == 1) {
@@ -53,7 +65,7 @@ class ObjectTable extends React.PureComponent {
       if (this.state.selectionDragStart === null)
         this.handleClickOutside(event);
     });
-    JQuery(document).on('mouseup', this.handleMouseUp.bind(this));
+    JQuery(document).on('mouseup', this.handleMouseUp);
     JQuery(document).on('copy', (event) => {
       var theEvent = event;
       if (Object.keys(this.state.selectedColumns).length > 0 || Object.keys(this.state.selectedRows).length)
@@ -891,19 +903,22 @@ class ObjectTable extends React.PureComponent {
     var numSelectedRows = Object.keys(this.state.selectedRows).length;
     var numCopyingRows = Object.keys(this.state.copyingRows).length;
     var rows = [];
-    this.props.objects.map((object) => {
+
+    var reactClass = this;
+
+    this.props.objects.map(function(object) {
       var ref = `object-${object.id}`;
 
       var selectedColumns = {};
-      if (numSelectedRows == 0 || typeof this.state.selectedRows[object.id] !== 'undefined')
-        selectedColumns = this.state.selectedColumns;
+      if (numSelectedRows == 0 || typeof reactClass.state.selectedRows[object.id] !== 'undefined')
+        selectedColumns = reactClass.state.selectedColumns;
       var copyingColumns = {};
-      if (numCopyingRows == 0 || typeof this.state.copyingRows[object.id] !== 'undefined')
-        copyingColumns = this.state.copyingColumns;
+      if (numCopyingRows == 0 || typeof reactClass.state.copyingRows[object.id] !== 'undefined')
+        copyingColumns = reactClass.state.copyingColumns;
 
       var editing = null;
-      if (this.state.editing !== null && this.state.editing.objectId === object.id) {
-        editing = this.state.editing;
+      if (reactClass.state.editing !== null && reactClass.state.editing.objectId === object.id) {
+        editing = reactClass.state.editing;
       }
 
       rows.push(
@@ -912,23 +927,23 @@ class ObjectTable extends React.PureComponent {
           key={ref}
           object={object}
 
-          height={this.props.rowHeight}
-          columns={this.props.columns}
+          height={reactClass.props.rowHeight}
+          columns={reactClass.props.columns}
           editing={editing}
-          editReplace={editing === null ? null : this.state.editReplace}
+          editReplace={editing === null ? null : reactClass.state.editReplace}
           selectedColumns={selectedColumns}
           copyingColumns={copyingColumns}
-          actions={this.props.actions}
-          actionsOpen={object.id === this.state.openActions}
+          actions={reactClass.props.actions}
+          actionsOpen={object.id === reactClass.state.openActions}
 
-          updateField={this.updateField.bind(this)}
-          abortField={this.abortField.bind(this)}
-          cellError={this.props.onCellError}
-          openActions={this.openActions.bind(this)}
-          closeActions={this.closeActions.bind(this)}
+          updateField={reactClass.updateField}
+          abortField={reactClass.abortField}
+          cellError={reactClass.props.onCellError}
+          openActions={reactClass.openActions}
+          closeActions={reactClass.closeActions}
 
-          onMouseDownCell={this.handleMouseDownCell.bind(this)}
-          beginEdit={this.beginEdit.bind(this)}
+          onMouseDownCell={reactClass.handleMouseDownCell}
+          beginEdit={reactClass.beginEdit}
         />
       );
     });

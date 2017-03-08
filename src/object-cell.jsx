@@ -9,6 +9,10 @@ class ObjectCell extends React.Component {
   constructor(props) {
     super(props);
 
+    this.beginEdit = ::this.beginEdit;
+    this.handleMouseDown = ::this.handleMouseDown;
+    this.handleDoubleClick = ::this.handleDoubleClick;
+
     this.state = {
       ...this.state,
     };
@@ -104,15 +108,15 @@ class ObjectCell extends React.Component {
       var drawerProps = Clone(this.props.column.drawerProps || {});
       drawerProps.ref = 'drawer';
       drawerProps.value = this.props.value;
-      drawerProps.beginEdit = this.beginEdit.bind(this);
+      drawerProps.beginEdit = this.beginEdit;
       drawerProps.context = this.props.drawerContext;
 
       var cellProps = {
         className: classNames(classes + ' drawer ' + drawer.className, {
           uneditable: (this.props.column.editor === false),
         }),
-        onMouseDown: this.handleMouseDown.bind(this),
-        onDoubleClick: this.handleDoubleClick.bind(this),
+        onMouseDown: this.handleMouseDown,
+        onDoubleClick: this.handleDoubleClick,
       };
 
       return (

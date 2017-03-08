@@ -10,6 +10,10 @@ class ObjectRow extends React.Component {
   constructor(props) {
     super(props);
 
+    this.onActionClick = ::this.onActionClick;
+    this.closeActions = ::this.closeActions;
+    this.openActions = ::this.openActions;
+
     this.state = {
       ...this.state,
     };
@@ -165,7 +169,7 @@ class ObjectRow extends React.Component {
             <li
               key={'action-' + actionId}
               className="action"
-              onClick={this.onActionClick.bind(this)}
+              onClick={this.onActionClick}
               data-action={actionId}
             >
               {action.label}
@@ -179,7 +183,7 @@ class ObjectRow extends React.Component {
             className="actions open"
             style={cellStyle}
           >
-            <span onClick={this.closeActions.bind(this)}>&#9776;</span>
+            <span onClick={this.closeActions}>&#9776;</span>
             <ul className="actions">
               {actions}
             </ul>
@@ -192,7 +196,7 @@ class ObjectRow extends React.Component {
             key="actions"
             ref="actions"
             className="actions closed"
-            onClick={this.openActions.bind(this)}
+            onClick={this.openActions}
             style={cellStyle}
           >
             <span>&#9776;</span>
