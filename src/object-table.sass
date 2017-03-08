@@ -4,6 +4,7 @@ $border-colour: #ddd
 $main-font-size: 1rem
 
 div.object-table-container
+  position: relative
   margin-bottom: 2em
   table
     width: 100%
@@ -12,12 +13,9 @@ div.object-table-container
     font-size: $main-font-size
     border-collapse: collapse
 
-    &.editing
-      td
-        div.contents
-          opacity: 0.2
-        &.editing div.contents
-          opacity: 1
+    td.editing div.contents
+      z-index: 1
+      position: relative
 
     // borders
     $border: 0.1rem solid $border-colour
@@ -58,7 +56,6 @@ div.object-table-container
       td
         &.selected
           background: $selection-colour
-          color: #fff
         &.copying div.contents
           opacity: 0.5
 
@@ -117,6 +114,17 @@ div.object-table-container
 div.object-table-container
   td.drawer, td.empty
     padding: $cell-padding
+
+// editing overlay
+div.object-table-container
+  div.editing-overlay
+    width: 100%
+    height: 100%
+    position: absolute
+    top: 0
+    left: 0
+    background: white
+    opacity: 0.3
 
 @import 'drawers/text'
 @import 'editors/text'
