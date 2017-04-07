@@ -7,7 +7,7 @@ class TextDrawer extends React.Component {
 
   render() {
     return (
-      <span>{this.props.value}</span>
+      <span>{String(this.props.value)}</span>
     );
   }
 }

@@ -4,7 +4,7 @@ import BaseEditor from './../base-editor'
 function validate(value, props) {
   return {
     valid: true,
-    cleanedValue: value,
+    cleanedValue: String(value),
   };
 }
 
