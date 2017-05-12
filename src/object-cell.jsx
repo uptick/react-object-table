@@ -63,8 +63,18 @@ class ObjectCell extends React.Component {
   handleDoubleClick(event) {
     this.beginEdit();
   }
+  editable(objectId) {
+    if (this.props.column.editor !== false) {
+      if (typeof(this.props.column.isReadOnly) === 'boolean') {
+        return !this.props.column.isReadOnly
+      } else if (typeof(this.props.column.isReadOnly) === 'function') {
+        return !this.props.column.isReadOnly(objectId)
+      }
+    }
+    return (this.props.column.editor !== false)
+  }
   beginEdit(editReplaceOverride) {
-    if (!this.props.disabled && this.props.column.editor !== false)
+    if (!this.props.disabled && this.editable(this.getCellRef().objectId))
       this.props.beginEdit(this.getCellRef(), editReplaceOverride);
   }
 
@@ -113,7 +123,7 @@ class ObjectCell extends React.Component {
 
       var cellProps = {
         className: classNames(classes + ' drawer ' + drawer.className, {
-          uneditable: (this.props.column.editor === false),
+          uneditable: (!this.editable(this.getCellRef().objectId)),
         }),
         onMouseDown: this.handleMouseDown,
         onDoubleClick: this.handleDoubleClick,
