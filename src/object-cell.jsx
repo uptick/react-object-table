@@ -64,14 +64,10 @@ class ObjectCell extends React.Component {
     this.beginEdit();
   }
   editable(objectId) {
-    if (this.props.column.editor !== false) {
-      if (typeof(this.props.column.isReadOnly) === 'boolean') {
-        return !this.props.column.isReadOnly
-      } else if (typeof(this.props.column.isReadOnly) === 'function') {
-        return !this.props.column.isReadOnly(objectId)
-      }
-    }
-    return (this.props.column.editor !== false)
+    const { isReadOnly, editor } = this.props.column
+    const editorIsSet = !(editor === false)
+    const readOnly = typeof(isReadOnly) === 'function' ? isReadOnly(objectId) : (isReadOnly === true)
+    return editorIsSet && !readOnly
   }
   beginEdit(editReplaceOverride) {
     if (!this.props.disabled && this.editable(this.getCellRef().objectId))

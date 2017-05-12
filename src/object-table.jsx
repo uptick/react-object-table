@@ -215,15 +215,8 @@ class ObjectTable extends React.PureComponent {
   }
 
   getColumnFromKey(key) {
-    var column = null
-    for (var columnIndex = 0; columnIndex < this.props.columns.length; columnIndex++) {
-      var col = this.props.columns[columnIndex];
-      if (col.key == key) {
-        column = col
-        break
-      }
-    }
-    return column
+    const cols = this.props.columns || []
+    return cols.find(col => col.key === key)
   }
 
   cellIsEditable(objectId, column) {
