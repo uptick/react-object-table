@@ -165,11 +165,17 @@ class ObjectRow extends React.Component {
         var actions = [];
         for (var actionId = 0; actionId < this.props.actions.length; actionId++) {
           var action = this.props.actions[actionId];
+          var actionEnabled = action.enabled
+          if (!(actionEnabled === undefined)) {
+            if (typeof(actionEnabled) === 'function') actionEnabled = actionEnabled(this.props.object)
+          } else {
+            actionEnabled = true
+          }
           actions.push(
             <li
               key={'action-' + actionId}
-              className="action"
-              onClick={this.onActionClick}
+              className={classNames({'disabled': !actionEnabled}, 'action')}
+              onClick={actionEnabled ? this.onActionClick : null}
               data-action={actionId}
             >
               {action.label}
