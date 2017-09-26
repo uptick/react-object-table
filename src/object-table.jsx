@@ -59,8 +59,12 @@ class ObjectTable extends React.PureComponent {
     JQuery(document).on('mouseup', (event) => {
       var parentContainer = JQuery(event.target).closest('.object-table-container');
       if (parentContainer.length == 1) {
-        if (parentContainer[0] == ReactDom.findDOMNode(this))
-          return;
+        try {
+          if (parentContainer[0] == ReactDom.findDOMNode(this))
+            return;
+        }
+        catch( e ) {
+        }
       }
       if (this.state.selectionDragStart === null)
         this.handleClickOutside(event);
