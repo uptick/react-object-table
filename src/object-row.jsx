@@ -5,8 +5,6 @@ import classNames from 'classnames'
 
 import { dictCount } from './utilities.js'
 
-import ObjectCell from './object-cell.jsx'
-
 class ObjectRow extends React.Component {
   static propTypes = {
     id: PropTypes.number,
@@ -26,6 +24,7 @@ class ObjectRow extends React.Component {
     abortField: PropTypes.func,
     cellError: PropTypes.func,
     actionsOpen: PropTypes.func,
+    cellComponent: PropTypes.object,
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -161,7 +160,7 @@ class ObjectRow extends React.Component {
         cellProps.editing = editing
       }
       cells.push(
-        <ObjectCell
+        <this.props.cellComponent
           {...cellProps}
         />
       )

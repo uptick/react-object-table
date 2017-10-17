@@ -10,8 +10,9 @@ import { stringValue, deserializeCells } from './clipboard.js'
 import TextEditor from './editors/text.jsx'
 import TextDrawer from './drawers/text.jsx'
 
-import ObjectRow from './object-row.jsx'
 import BaseEditor from './base-editor.js'
+import ObjectCell from './object-cell.jsx'
+import ObjectRow from './object-row.jsx'
 
 let _iOSDevice = false
 if (typeof navigator !== 'undefined') {
@@ -29,9 +30,13 @@ class ObjectTable extends React.PureComponent {
     emptyText: PropTypes.string,
     onRowError: PropTypes.func,
     onCellError: PropTypes.func,
+    rowComponent: PropTypes.object,
+    cellComponent: PropTypes.object,
   }
 
   static defaultProps = {
+    rowComponent: ObjectRow,
+    cellComponent: ObjectCell,
     rowHeight: 32,
     objects: [
       {
@@ -938,11 +943,12 @@ class ObjectTable extends React.PureComponent {
       }
 
       rows.push(
-        <ObjectRow
+        <this.props.rowComponent
           ref={ref}
           key={ref}
           object={object}
 
+          cellComponent={this.props.cellComponent}
           height={this.props.rowHeight}
           columns={this.props.columns}
           editing={editing}
