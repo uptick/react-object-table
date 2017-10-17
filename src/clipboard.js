@@ -1,59 +1,62 @@
-function deserialize_cells(clipboardData) {
-  var gridData = clipboardData.getData('react/object-grid');
+function deserializeCells(clipboardData) {
+  let gridData = clipboardData.getData('react/object-grid')
   if (gridData) {
-    return JSON.parse(gridData);
+    return JSON.parse(gridData)
   }
-  var tabbedData = clipboardData.getData('text/plain');
+  let tabbedData = clipboardData.getData('text/plain')
   if (tabbedData) {
-    var rows = [];
-    var lines = tabbedData.split('\n');
-    for (var lineIndex = 0; lineIndex < lines.length; lineIndex++) {
-      var columns = [];
-      var tabs = lines[lineIndex].split('\t');
-      for (var tabIndex = 0; tabIndex < tabs.length; tabIndex++) {
-        columns.push(tabs[tabIndex]);
+    let rows = []
+    let lines = tabbedData.split('\n')
+    for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+      let columns = []
+      let tabs = lines[lineIndex].split('\t')
+      for (let tabIndex = 0; tabIndex < tabs.length; tabIndex++) {
+        columns.push(tabs[tabIndex])
       }
-      rows.push(columns);
+      rows.push(columns)
     }
-    return rows;
+    return rows
   }
-  return [];
+  return []
 }
 
-function string_value(value) {
+function stringValue(value) {
   switch (typeof value) {
     case 'number':
-      return value.toString();
+      return value.toString()
 
     case 'object':
       if (Array.isArray(value)) {
-        var stringValue = '';
-        for (var valueIndex = 0; valueIndex < value.length; valueIndex++) {
-          stringValue += string_value(value[valueIndex])
-          if (valueIndex < value.length - 1)
-            stringValue += ', ';
+        let stringValue = ''
+        for (let valueIndex = 0; valueIndex < value.length; valueIndex++) {
+          stringValue += stringValue(value[valueIndex])
+          if (valueIndex < value.length - 1) {
+            stringValue += ', '
+          }
         }
-        return stringValue;
+        return stringValue
       }
 
-      if (value === null)
-        return '';
-      else
-        return 'object';
+      if (value === null) {
+        return ''
+      } else {
+        return 'object'
+      }
 
     case 'boolean':
-      if (value)
-        return 'true';
-      else
-        return 'false';
+      if (value) {
+        return 'true'
+      } else {
+        return 'false'
+      }
 
     case 'string':
-      return value;
+      return value
   }
-  return '';
+  return ''
 }
 
 export {
-  deserialize_cells,
-  string_value,
+  deserializeCells,
+  stringValue,
 }
