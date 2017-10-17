@@ -27,6 +27,8 @@ class ObjectTable extends React.PureComponent {
     rowHeight: PropTypes.number,
     actions: PropTypes.array,
     emptyText: PropTypes.string,
+    onRowError: PropTypes.func,
+    onCellError: PropTypes.func,
   }
 
   static defaultProps = {
@@ -299,7 +301,6 @@ class ObjectTable extends React.PureComponent {
     }
   }
   handleKeyDown = (event) => {
-    let reactClass = this
     let directionKeys = {
       38: 'arrow_up',
       40: 'arrow_down',
@@ -396,9 +397,9 @@ class ObjectTable extends React.PureComponent {
             break
 
           case 'backspace':
-            let editColumn = reactClass.getSelectedFirstVisibleColumn()
-            let editRow = reactClass.getSelectedFirstVisibleRow()
-            if (selectedCells > 0 && reactClass.cellIsEditable(editRow, editColumn)) {
+            let editColumn = this.getSelectedFirstVisibleColumn()
+            let editRow = this.getSelectedFirstVisibleRow()
+            if (selectedCells > 0 && this.cellIsEditable(editRow, editColumn)) {
               this.setState(state => {
                 state.editing = {
                   columnKey: editColumn,
@@ -633,8 +634,7 @@ class ObjectTable extends React.PureComponent {
     })
   }
   handlePaste(pasteData) {
-    let reactClass = this
-    let raiseRowErrors = function(errors, row) {
+    let raiseRowErrors = (errors, row) => {
       let numErrors = Object.keys(errors).length
       if (numErrors) {
         let message
@@ -649,13 +649,13 @@ class ObjectTable extends React.PureComponent {
         }
         message = message.substring(0, message.length - 2)
         message += '.'
-        reactClass.props.onRowError(row, message)
+        this.props.onRowError(row, message)
       }
     }
 
     // console.log('handling a paste of', pasteData)
-    let numSelectedRows = Object.keys(reactClass.state.selectedRows).length
-    let numSelectedColumns = Object.keys(reactClass.state.selectedColumns).length
+    let numSelectedRows = Object.keys(this.state.selectedRows).length
+    let numSelectedColumns = Object.keys(this.state.selectedColumns).length
     if (numSelectedRows === 1 && numSelectedColumns === 1) {
       let objectUpdates = []
 
@@ -664,9 +664,9 @@ class ObjectTable extends React.PureComponent {
 
       let pastingRow = false
       let pastingRowIndex = 0
-      for (let rowIndex = 0; rowIndex < reactClass.props.objects.length; rowIndex++) {
-        let row = reactClass.props.objects[rowIndex]
-        if (!pastingRow && typeof reactClass.state.selectedRows[row.id] === 'undefined') {
+      for (let rowIndex = 0; rowIndex < this.props.objects.length; rowIndex++) {
+        let row = this.props.objects[rowIndex]
+        if (!pastingRow && typeof this.state.selectedRows[row.id] === 'undefined') {
           continue
         }
         pastingRow = true
@@ -676,9 +676,9 @@ class ObjectTable extends React.PureComponent {
           let pastingColumnIndex = 0
           let updates = {}
           let errors = {}
-          for (let columnIndex = 0; columnIndex < reactClass.props.columns.length; columnIndex++) {
-            let column = reactClass.props.columns[columnIndex]
-            if (!pastingColumn && typeof reactClass.state.selectedColumns[column.key] === 'undefined') {
+          for (let columnIndex = 0; columnIndex < this.props.columns.length; columnIndex++) {
+            let column = this.props.columns[columnIndex]
+            if (!pastingColumn && typeof this.state.selectedColumns[column.key] === 'undefined') {
               continue
             }
             pastingColumn = true
@@ -706,23 +706,23 @@ class ObjectTable extends React.PureComponent {
           pastingRowIndex++
         }
       }
-      reactClass.updateManyObjects(objectUpdates)
-      reactClass.changeSelectionTo(newSelectionRows, newSelectionColumns)
+      this.updateManyObjects(objectUpdates)
+      this.changeSelectionTo(newSelectionRows, newSelectionColumns)
     } else {
       let objectUpdates = []
 
       let pasteRow = 0
       let pasteColumn = 0
-      for (let rowIndex = 0; rowIndex < reactClass.props.objects.length; rowIndex++) {
-        let row = reactClass.props.objects[rowIndex]
-        if (typeof reactClass.state.selectedRows[row.id] === 'undefined') {
+      for (let rowIndex = 0; rowIndex < this.props.objects.length; rowIndex++) {
+        let row = this.props.objects[rowIndex]
+        if (typeof this.state.selectedRows[row.id] === 'undefined') {
           continue
         }
         let updates = {}
         let errors = {}
-        for (let columnIndex = 0; columnIndex < reactClass.props.columns.length; columnIndex++) {
-          let column = reactClass.props.columns[columnIndex]
-          if (typeof reactClass.state.selectedColumns[column.key] === 'undefined') {
+        for (let columnIndex = 0; columnIndex < this.props.columns.length; columnIndex++) {
+          let column = this.props.columns[columnIndex]
+          if (typeof this.state.selectedColumns[column.key] === 'undefined') {
             continue
           }
           if (column.editor !== false && !row.disabled && this.cellIsEditable(row.id, column)) {
@@ -749,9 +749,9 @@ class ObjectTable extends React.PureComponent {
         if (pasteRow >= pasteData.length) pasteRow = 0
       }
 
-      reactClass.updateManyObjects(objectUpdates)
+      this.updateManyObjects(objectUpdates)
     }
-    reactClass.setState(state => {
+    this.setState(state => {
       state.copyingColumns = {}
       state.copyingRows = {}
       return state
@@ -765,14 +765,12 @@ class ObjectTable extends React.PureComponent {
     })
   }
   updateField = (objectId, columnKey, newValue, action) => {
-    let reactClass = this
-
     let updates = {}
     updates[columnKey] = newValue
     this.updateObject(objectId, updates)
 
     let updateAction = action
-    reactClass.setState(state => {
+    this.setState(state => {
       state.editing = null
       if (dictCount(state.selectedRows) === 1 && dictCount(state.selectedColumns) === 1) {
         switch (updateAction) {
@@ -922,23 +920,21 @@ class ObjectTable extends React.PureComponent {
     let numCopyingRows = Object.keys(this.state.copyingRows).length
     let rows = []
 
-    let reactClass = this
-
-    this.props.objects.map(function(object) {
+    this.props.objects.map((object) => {
       let ref = `object-${object.id}`
 
       let selectedColumns = {}
-      if (numSelectedRows === 0 || typeof reactClass.state.selectedRows[object.id] !== 'undefined') {
-        selectedColumns = reactClass.state.selectedColumns
+      if (numSelectedRows === 0 || typeof this.state.selectedRows[object.id] !== 'undefined') {
+        selectedColumns = this.state.selectedColumns
       }
       let copyingColumns = {}
-      if (numCopyingRows === 0 || typeof reactClass.state.copyingRows[object.id] !== 'undefined') {
-        copyingColumns = reactClass.state.copyingColumns
+      if (numCopyingRows === 0 || typeof this.state.copyingRows[object.id] !== 'undefined') {
+        copyingColumns = this.state.copyingColumns
       }
 
       let editing = null
-      if (reactClass.state.editing !== null && reactClass.state.editing.objectId === object.id) {
-        editing = reactClass.state.editing
+      if (this.state.editing !== null && this.state.editing.objectId === object.id) {
+        editing = this.state.editing
       }
 
       rows.push(
@@ -947,23 +943,23 @@ class ObjectTable extends React.PureComponent {
           key={ref}
           object={object}
 
-          height={reactClass.props.rowHeight}
-          columns={reactClass.props.columns}
+          height={this.props.rowHeight}
+          columns={this.props.columns}
           editing={editing}
-          editReplace={editing === null ? null : reactClass.state.editReplace}
+          editReplace={editing === null ? null : this.state.editReplace}
           selectedColumns={selectedColumns}
           copyingColumns={copyingColumns}
-          actions={reactClass.props.actions}
-          actionsOpen={object.id === reactClass.state.openActions}
+          actions={this.props.actions}
+          actionsOpen={object.id === this.state.openActions}
 
-          updateField={reactClass.updateField}
-          abortField={reactClass.abortField}
-          cellError={reactClass.props.onCellError}
-          openActions={reactClass.openActions}
-          closeActions={reactClass.closeActions}
+          updateField={this.updateField}
+          abortField={this.abortField}
+          cellError={this.props.onCellError}
+          openActions={this.openActions}
+          closeActions={this.closeActions}
 
-          onMouseDownCell={reactClass.handleMouseDownCell}
-          beginEdit={reactClass.beginEdit}
+          onMouseDownCell={this.handleMouseDownCell}
+          beginEdit={this.beginEdit}
         />
       )
     })

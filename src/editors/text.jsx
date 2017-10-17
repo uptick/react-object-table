@@ -28,10 +28,9 @@ class TextEditor extends BaseEditor {
   }
 
   handleFocus = (event) => {
-    let reactClass = this
     if (this.props.editReplace === null) {
-      window.setTimeout(function() {
-        let inputElement = reactClass.refs.field
+      window.setTimeout(() => {
+        let inputElement = this.refs.field
         inputElement.select()
       }, 0)
     }

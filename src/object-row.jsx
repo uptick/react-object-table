@@ -103,13 +103,12 @@ class ObjectRow extends React.Component {
     this.props.closeActions()
   }
   onActionClick = (event) => {
-    let reactClass = this
     let actionId = JQuery(event.target).data('action')
     let action = this.props.actions[actionId]
     if (action) {
-      reactClass.props.actions[actionId].func(reactClass.props.object.id)
+      this.props.actions[actionId].func(this.props.object.id)
       if (!action.stayOpen) {
-        reactClass.props.closeActions()
+        this.props.closeActions()
       }
     }
   }
