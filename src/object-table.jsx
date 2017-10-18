@@ -30,8 +30,8 @@ class ObjectTable extends React.PureComponent {
     emptyText: PropTypes.string,
     onRowError: PropTypes.func,
     onCellError: PropTypes.func,
-    rowComponent: PropTypes.object,
-    cellComponent: PropTypes.object,
+    rowComponent: PropTypes.func,
+    cellComponent: PropTypes.func,
   }
 
   static defaultProps = {

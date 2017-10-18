@@ -9,22 +9,22 @@ class ObjectRow extends React.Component {
   static propTypes = {
     id: PropTypes.number,
     object: PropTypes.object,
-    openActions: PropTypes.array,
-    closeActions: PropTypes.array,
+    openActions: PropTypes.func,
+    closeActions: PropTypes.func,
     actions: PropTypes.array,
     columns: PropTypes.array,
     editing: PropTypes.bool,
     height: PropTypes.number,
     editReplace: PropTypes.string,
-    selectedColumns: PropTypes.array,
-    copyingColumns: PropTypes.bool,
+    selectedColumns: PropTypes.object,
+    copyingColumns: PropTypes.object,
     onMouseDownCell: PropTypes.func,
     beginEdit: PropTypes.func,
     updateField: PropTypes.func,
     abortField: PropTypes.func,
     cellError: PropTypes.func,
-    actionsOpen: PropTypes.func,
-    cellComponent: PropTypes.object,
+    actionsOpen: PropTypes.bool,
+    cellComponent: PropTypes.func,
   }
 
   shouldComponentUpdate(nextProps, nextState) {

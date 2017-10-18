@@ -21,12 +21,12 @@ Then require and use with ES6 imports:
 
 ```javascript
 import React from 'react'
-import ReactDOM from 'react-dom'
+import ReactDom from 'react-dom'
 
 import ObjectTable from 'react-object-table'
 
 var mount = document.querySelectorAll('div.table-mount');
-ReactDOM.render(
+ReactDom.render(
   <ObjectTable
     columns={[
       {

@@ -9,14 +9,18 @@ import TextEditor from './editors/text.jsx'
 class ObjectCell extends React.Component {
   static propTypes = {
     column: PropTypes.object,
-    objectId: PropTypes.number,
+    objectId: PropTypes.string,
     onMouseDownCell: PropTypes.func,
     disabled: PropTypes.bool,
     beginEdit: PropTypes.func,
     selected: PropTypes.bool,
     copying: PropTypes.bool,
     editing: PropTypes.bool,
-    value: PropTypes.string,
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.object,
+    ]),
     updateField: PropTypes.func,
     abortField: PropTypes.func,
     height: PropTypes.number,

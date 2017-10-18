@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import ReactDom from 'react-dom'
 
 import Moment from 'moment'
 
@@ -116,7 +116,7 @@ SimpleTable.defaultProps = {
 };
 
 var mount = document.querySelectorAll('div.demo-mount-features');
-ReactDOM.render(
+ReactDom.render(
   <SimpleTable />,
   mount[0]
 );
