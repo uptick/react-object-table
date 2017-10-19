@@ -1,5 +1,4 @@
-var path = require('path');
-var NodeExternals = require('webpack-node-externals');
+var path = require('path')
 
 module.exports = {
   entry: './src/object-table.jsx',
@@ -25,5 +24,9 @@ module.exports = {
       },
     ],
   },
-  externals: NodeExternals(),
-};
+  externals: [
+    'jquery',
+    'react',
+    'react-dom',
+  ]
+}
