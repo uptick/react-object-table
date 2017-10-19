@@ -13,7 +13,7 @@ class ObjectRow extends React.Component {
     closeActions: PropTypes.func,
     actions: PropTypes.array,
     columns: PropTypes.array,
-    editing: PropTypes.bool,
+    editing: PropTypes.object,
     height: PropTypes.number,
     editReplace: PropTypes.string,
     selectedColumns: PropTypes.object,

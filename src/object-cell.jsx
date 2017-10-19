@@ -24,7 +24,7 @@ class ObjectCell extends React.Component {
     updateField: PropTypes.func,
     abortField: PropTypes.func,
     height: PropTypes.number,
-    editReplace: PropTypes.func,
+    editReplace: PropTypes.string,
     cellError: PropTypes.func,
     editorContext: PropTypes.func,
     drawerContext: PropTypes.func,

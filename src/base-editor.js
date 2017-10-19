@@ -11,11 +11,15 @@ function validate(value, props) {
 class BaseEditor extends React.Component {
   static propTypes = {
     editReplace: PropTypes.string,
-    value: PropTypes.string,
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.object,
+    ]),
     abort: PropTypes.func,
     update: PropTypes.func,
     cellError: PropTypes.func,
-    objectId: PropTypes.number,
+    objectId: PropTypes.string,
     columnKey: PropTypes.string,
   }
   static defaultProps = {
