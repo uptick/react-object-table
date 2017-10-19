@@ -1,55 +1,63 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import JQuery from 'jquery'
 import classNames from 'classnames'
 
-import { dict_count } from './utilities.js'
-
-import ObjectCell from './object-cell.jsx'
+import { dictCount } from './utilities.js'
 
 class ObjectRow extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.onActionClick = ::this.onActionClick;
-    this.closeActions = ::this.closeActions;
-    this.openActions = ::this.openActions;
-
-    this.state = {
-      ...this.state,
-    };
+  static propTypes = {
+    id: PropTypes.number,
+    object: PropTypes.object,
+    openActions: PropTypes.func,
+    closeActions: PropTypes.func,
+    actions: PropTypes.array,
+    columns: PropTypes.array,
+    editing: PropTypes.object,
+    height: PropTypes.number,
+    editReplace: PropTypes.string,
+    selectedColumns: PropTypes.object,
+    copyingColumns: PropTypes.object,
+    onMouseDownCell: PropTypes.func,
+    beginEdit: PropTypes.func,
+    updateField: PropTypes.func,
+    abortField: PropTypes.func,
+    cellError: PropTypes.func,
+    actionsOpen: PropTypes.bool,
+    cellComponent: PropTypes.func,
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    var isMissingColumns = function(propsA, propsB, columnsKey) {
-      for (var key in propsA[columnsKey]) {
+    let isMissingColumns = function(propsA, propsB, columnsKey) {
+      for (let key in propsA[columnsKey]) {
         if (key in propsB[columnsKey] === false) {
-          // console.log('key', key, 'does not exist in both');
-          return true;
+          // console.log('key', key, 'does not exist in both')
+          return true
         }
       }
-      return false;
-    };
+      return false
+    }
     if (isMissingColumns(nextProps, this.props, 'selectedColumns') || isMissingColumns(this.props, nextProps, 'selectedColumns')) {
-      return true;
+      return true
     }
     if (isMissingColumns(nextProps, this.props, 'copyingColumns') || isMissingColumns(this.props, nextProps, 'copyingColumns')) {
-      return true;
+      return true
     }
 
-    var isShallowDifferent = function(objectA, objectB, exemptions) {
-      for (var key in objectA) {
+    let isShallowDifferent = function(objectA, objectB, exemptions) {
+      for (let key in objectA) {
         if (exemptions && key in exemptions) {
-          continue;
+          continue
         }
         if (objectB[key] !== objectA[key]) {
-          // console.log('key', key, 'does not equal');
-          return true;
+          // console.log('key', key, 'does not equal')
+          return true
         }
       }
-      return false;
-    };
+      return false
+    }
 
-    var propsExemptions = {
+    let propsExemptions = {
       // ignore column we perform above
       'selectedColumns': true,
       'copyingColumns': true,
@@ -61,65 +69,63 @@ class ObjectRow extends React.Component {
       'closeActions': true,
       'onMouseDownCell': true,
       'beginEdit': true,
-    };
+    }
     if (isShallowDifferent(this.props, nextProps, propsExemptions) || isShallowDifferent(nextProps, this.props, propsExemptions)) {
-      return true;
+      return true
     }
     if (isShallowDifferent(this.state, nextState) || isShallowDifferent(nextState, this.state)) {
-      return true;
+      return true
     }
-    return false;
+    return false
   }
 
   colInRanges(column, columns, rows) {
-    var numRangeColumns = dict_count(columns);
-    var numRangeRows = dict_count(rows);
-    if (numRangeColumns == 0 && numRangeRows === 0) {
-      return false;
-    }
-    else if (columns !== null && rows === null) {
-      return (typeof columns[column.key] != 'undefined');
-    }
-    else if (columns === null && rows !== null) {
-      return true;
+    let numRangeColumns = dictCount(columns)
+    let numRangeRows = dictCount(rows)
+    if (numRangeColumns === 0 && numRangeRows === 0) {
+      return false
+    } else if (columns !== null && rows === null) {
+      return (typeof columns[column.key] !== 'undefined')
+    } else if (columns === null && rows !== null) {
+      return true
     }
     return (
-      typeof columns[column.key] != 'undefined'
-      && typeof rows[this.props.object.id] != 'undefined'
-    );
+      typeof columns[column.key] !== 'undefined' &&
+      typeof rows[this.props.object.id] !== 'undefined'
+    )
   }
 
-  openActions(event) {
-    this.props.openActions(this.props.object.id);
+  openActions = (event) => {
+    this.props.openActions(this.props.object.id)
   }
-  closeActions(event) {
-    this.props.closeActions();
+  closeActions = (event) => {
+    this.props.closeActions()
   }
-  onActionClick(event) {
-    var reactClass = this;
-    var actionId = JQuery(event.target).data('action');
-    var action = this.props.actions[actionId];
+  onActionClick = (event) => {
+    let actionId = JQuery(event.target).data('action')
+    let action = this.props.actions[actionId]
     if (action) {
-      reactClass.props.actions[actionId].func(reactClass.props.object.id);
-      if (!action.stayOpen)
-        reactClass.props.closeActions();
+      this.props.actions[actionId].func(this.props.object.id)
+      if (!action.stayOpen) {
+        this.props.closeActions()
+      }
     }
   }
 
   render() {
-    var cells = [];
-    for (var columnIndex = 0; columnIndex < this.props.columns.length; columnIndex++) {
-      var column = this.props.columns[columnIndex];
-      var editing = false;
+    let cells = []
+    for (let columnIndex = 0; columnIndex < this.props.columns.length; columnIndex++) {
+      let column = this.props.columns[columnIndex]
+      let editing = false
       if (this.props.editing !== null) {
         editing = (
-          this.props.editing.objectId == this.props.object.id
-          && this.props.editing.columnKey == column.key
-        );
+          this.props.editing.objectId === this.props.object.id &&
+          this.props.editing.columnKey === column.key
+        )
       }
 
-      var ref = 'column-' + column.key;
-      var cellProps = {
+      let ref = 'column-' + column.key
+      let cellProps = {
         key: ref,
         ref: ref,
 
@@ -129,8 +135,8 @@ class ObjectRow extends React.Component {
         column: column,
         height: this.props.height,
         editReplace: this.props.editReplace,
-        selected: (typeof this.props.selectedColumns[column.key] != 'undefined'),
-        copying: (typeof this.props.copyingColumns[column.key] != 'undefined'),
+        selected: (typeof this.props.selectedColumns[column.key] !== 'undefined'),
+        copying: (typeof this.props.copyingColumns[column.key] !== 'undefined'),
 
         onMouseDownCell: this.props.onMouseDownCell,
         beginEdit: this.props.beginEdit,
@@ -138,33 +144,35 @@ class ObjectRow extends React.Component {
         updateField: this.props.updateField,
         abortField: this.props.abortField,
         cellError: this.props.cellError,
-      };
-      cellProps.editorContext = null;
-      if (editing && column.editorContext)
-        cellProps.editorContext = column.editorContext(this.props.object);
-      if (!editing && column.drawerContext)
-        cellProps.drawerContext = column.drawerContext(this.props.object);
+      }
+      cellProps.editorContext = null
+      if (editing && column.editorContext) {
+        cellProps.editorContext = column.editorContext(this.props.object)
+      }
+      if (!editing && column.drawerContext) {
+        cellProps.drawerContext = column.drawerContext(this.props.object)
+      }
 
-      cellProps.disabled = (this.props.object.disabled === true);
-      if (this.props.object.disabled)
-        cellProps.editing = false;
-      else
-        cellProps.editing = editing;
-
+      cellProps.disabled = (this.props.object.disabled === true)
+      if (this.props.object.disabled) {
+        cellProps.editing = false
+      } else {
+        cellProps.editing = editing
+      }
       cells.push(
-        <ObjectCell
+        <this.props.cellComponent
           {...cellProps}
         />
-      );
+      )
     }
     if (this.props.actions && this.props.actions.length) {
-      var cellStyle = {
+      let cellStyle = {
         lineHeight: this.props.height + 'px',
-      };
+      }
       if (this.props.actionsOpen && !this.props.object.disabled) {
-        var actions = [];
-        for (var actionId = 0; actionId < this.props.actions.length; actionId++) {
-          var action = this.props.actions[actionId];
+        let actions = []
+        for (let actionId = 0; actionId < this.props.actions.length; actionId++) {
+          let action = this.props.actions[actionId]
           actions.push(
             <li
               key={'action-' + actionId}
@@ -174,7 +182,7 @@ class ObjectRow extends React.Component {
             >
               {action.label}
             </li>
-          );
+          )
         }
         cells.push(
           <td
@@ -188,9 +196,8 @@ class ObjectRow extends React.Component {
               {actions}
             </ul>
           </td>
-        );
-      }
-      else {
+        )
+      } else {
         cells.push(
           <td
             key="actions"
@@ -201,24 +208,20 @@ class ObjectRow extends React.Component {
           >
             <span>&#9776;</span>
           </td>
-        );
+        )
       }
     }
     return (
       <tr
-        className={classNames('', {disabled: (this.props.object.disabled == true)})}
+        className={classNames('', {disabled: (this.props.object.disabled === true)})}
         style={{
           height: '' + this.props.height + 'px',
         }}
       >
         {cells}
       </tr>
-    );
+    )
   }
 }
-ObjectRow.defaultProps = {
-  // columns: [], // from grid
-  // rowHeight: 32, // from grid
-};
 
 export default ObjectRow

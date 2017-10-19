@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import ReactDom from 'react-dom'
 
 import ObjectTable from 'react-object-table'
 
@@ -56,7 +56,7 @@ SimpleTable.defaultProps = {
 };
 
 var mount = document.querySelectorAll('div.demo-mount-simple');
-ReactDOM.render(
+ReactDom.render(
   <SimpleTable />,
   mount[0]
 );

@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import ReactDom from 'react-dom'
 
 import ObjectTable from 'react-object-table'
 import { TextEditor } from 'react-object-table'
@@ -167,7 +167,7 @@ CustomisedTable.defaultProps = {
 };
 
 var mount = document.querySelectorAll('div.demo-mount-customisation');
-ReactDOM.render(
+ReactDom.render(
   <CustomisedTable />,
   mount[0]
 );
