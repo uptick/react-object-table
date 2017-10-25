@@ -1007,4 +1007,4 @@ class ObjectTable extends React.PureComponent {
 }
 
 export default ObjectTable
-export { BaseEditor, TextEditor, TextDrawer }
+export { ObjectCell, ObjectRow, BaseEditor, TextEditor, TextDrawer }
