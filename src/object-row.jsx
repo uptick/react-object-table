@@ -25,6 +25,7 @@ class ObjectRow extends React.Component {
     cellError: PropTypes.func,
     actionsOpen: PropTypes.bool,
     cellComponent: PropTypes.func,
+    cellProps: PropTypes.object,
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -161,6 +162,7 @@ class ObjectRow extends React.Component {
       }
       cells.push(
         <this.props.cellComponent
+          {...this.props.cellProps}
           {...cellProps}
         />
       )

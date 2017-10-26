@@ -31,7 +31,9 @@ class ObjectTable extends React.PureComponent {
     onRowError: PropTypes.func,
     onCellError: PropTypes.func,
     rowComponent: PropTypes.func,
+    rowProps: PropTypes.object,
     cellComponent: PropTypes.func,
+    cellProps: PropTypes.object,
   }
 
   static defaultProps = {
@@ -944,11 +946,13 @@ class ObjectTable extends React.PureComponent {
 
       rows.push(
         <this.props.rowComponent
+          {...this.props.rowProps}
           ref={ref}
           key={ref}
           object={object}
 
           cellComponent={this.props.cellComponent}
+          cellProps={this.props.cellProps}
           height={this.props.rowHeight}
           columns={this.props.columns}
           editing={editing}
