@@ -112,7 +112,7 @@ class ObjectRow extends React.Component {
     }
   }
 
-  render() {
+  renderCells() {
     let cells = []
     for (let columnIndex = 0; columnIndex < this.props.columns.length; columnIndex++) {
       let column = this.props.columns[columnIndex]
@@ -211,6 +211,10 @@ class ObjectRow extends React.Component {
         )
       }
     }
+    return cells
+  }
+
+  render() {
     return (
       <tr
         className={classNames('', {disabled: (this.props.object.disabled === true)})}
@@ -218,7 +222,7 @@ class ObjectRow extends React.Component {
           height: '' + this.props.height + 'px',
         }}
       >
-        {cells}
+        {this.renderCells()}
       </tr>
     )
   }
