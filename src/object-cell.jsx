@@ -137,8 +137,13 @@ class ObjectCell extends React.Component {
         className: classNames(classes + ' drawer ' + drawer.className, {
           uneditable: (!this.editable(this.getCellRef().objectId)),
         }),
-        onMouseDown: this.handleMouseDown,
-        onDoubleClick: this.handleDoubleClick,
+      }
+      if (!this.props.column.disableInteraction) {
+        cellProps = {
+          ...cellProps,
+          onMouseDown: this.handleMouseDown,
+          onDoubleClick: this.handleDoubleClick,
+        }
       }
 
       return (
