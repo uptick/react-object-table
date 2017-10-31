@@ -29,8 +29,8 @@ class ObjectCell extends React.Component {
     height: PropTypes.number,
     editReplace: PropTypes.string,
     cellError: PropTypes.func,
-    editorContext: PropTypes.func,
-    drawerContext: PropTypes.func,
+    editorContext: PropTypes.object,
+    drawerContext: PropTypes.object,
   }
 
   shouldComponentUpdate(nextProps, nextState) {
