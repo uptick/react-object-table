@@ -19,7 +19,7 @@ class BaseEditor extends React.Component {
     abort: PropTypes.func,
     update: PropTypes.func,
     cellError: PropTypes.func,
-    objectId:  PropTypes.oneOfType([
+    objectId: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number,
     ]),
