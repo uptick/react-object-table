@@ -10,12 +10,8 @@ function validate(value, props) {
 
 class BaseEditor extends React.Component {
   static propTypes = {
-    editReplace: PropTypes.string,
-    value: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-      PropTypes.object,
-    ]),
+    editReplace: PropTypes.any,
+    value: PropTypes.any,
     abort: PropTypes.func,
     update: PropTypes.func,
     cellError: PropTypes.func,

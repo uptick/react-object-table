@@ -15,7 +15,7 @@ class ObjectRow extends React.Component {
     columns: PropTypes.array,
     editing: PropTypes.object,
     height: PropTypes.number,
-    editReplace: PropTypes.string,
+    editReplace: PropTypes.any,
     selectedColumns: PropTypes.object,
     copyingColumns: PropTypes.object,
     onMouseDownCell: PropTypes.func,
