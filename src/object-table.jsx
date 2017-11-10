@@ -164,7 +164,7 @@ class ObjectTable extends React.PureComponent {
     }
     for (let rowIndex = 0; rowIndex < this.props.objects.length; rowIndex++) {
       let object = this.props.objects[rowIndex]
-      let rowElem = ReactDom.findDOMNode(this.refs['object-' + object.id])
+      let rowElem = ReactDom.findDOMNode(this.getRowFromRefs(object.id))
       if (!rowElem) {
         continue
       }
@@ -241,6 +241,26 @@ class ObjectTable extends React.PureComponent {
       }
     }
     return next
+  }
+
+  getRowFromRefs(rowId) {
+    // Dumb hack to clean up existing hack.
+    let row = this.refs[`object-${rowId}`]
+    // Unwrap
+    while (row.decoratedComponentInstance) {
+      row = row.decoratedComponentInstance
+    }
+    return row
+  }
+
+  getCellFromRefs(rowId, columnKey) {
+    // Dumb hack to clean up existing hack.
+    let cell = this.getRowFromRefs(rowId).refs[`column-${columnKey}`]
+    // Unwrap
+    while (cell.decoratedComponentInstance) {
+      cell = cell.decoratedComponentInstance
+    }
+    return cell
   }
 
   getColumnFromKey(key) {
@@ -425,7 +445,7 @@ class ObjectTable extends React.PureComponent {
   }
   handleClickOutside(event) {
     if (this.state.editing) {
-      this.refs['object-' + this.state.editing.objectId].refs['column-' + this.state.editing.columnKey].refs.editor.handleBlur()
+      this.getCellFromRefs(this.state.editing.objectId, this.state.editing.columnKey).refs.editor.handleBlur()
     } else if (Object.keys(this.state.selectedRows).length !== 0 || Object.keys(this.state.selectedColumns).length !== 0) {
       this.setState(state => {
         state.selectedRows = {}
