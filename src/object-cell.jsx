@@ -3,6 +3,8 @@ import React from 'react'
 import Clone from 'clone'
 import classNames from 'classnames'
 
+import { cellIsEditable } from './utilities'
+
 import TextDrawer from './drawers/text.jsx'
 import TextEditor from './editors/text.jsx'
 
@@ -76,10 +78,7 @@ class ObjectCell extends React.Component {
     this.beginEdit()
   }
   editable(objectId) {
-    const { isReadOnly, editor } = this.props.column
-    const editorIsSet = !(editor === false)
-    const readOnly = typeof isReadOnly === 'function' ? isReadOnly(objectId) : (isReadOnly === true)
-    return editorIsSet && !readOnly
+    return cellIsEditable(objectId, this.props.column)
   }
   beginEdit = (editReplaceOverride) => {
     if (!this.props.disabled && this.editable(this.getCellRef().objectId)) {

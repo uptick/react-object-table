@@ -5,7 +5,7 @@ import JQuery from 'jquery'
 import ClassNames from 'classnames'
 import Clone from 'clone'
 
-import { dictCount, dictFirstKey } from './utilities.js'
+import { dictCount, dictFirstKey, cellIsEditable } from './utilities.js'
 import { stringValue, deserializeCells } from './clipboard.js'
 import TextEditor from './editors/text.jsx'
 import TextDrawer from './drawers/text.jsx'
@@ -248,21 +248,6 @@ class ObjectTable extends React.PureComponent {
     return cols.find(col => col.key === key)
   }
 
-  cellIsEditable(objectId, column) {
-    if (typeof column === 'string') {
-      column = this.getColumnFromKey(column)
-    }
-    if (column) {
-      if (typeof column.isReadOnly === 'boolean') {
-        return !column.isReadOnly
-      } else if (typeof column.isReadOnly === 'function') {
-        return !column.isReadOnly(objectId)
-      }
-      return true
-    }
-    return false
-  }
-
   handleKeyPress = (event) => {
     if (this.state.editing === null) {
       let editRow = this.getSelectedFirstVisibleRow()
@@ -276,7 +261,7 @@ class ObjectTable extends React.PureComponent {
         switch (event.which) {
           // case 'enter':
           case 13:
-            if (this.cellIsEditable(editRow, editColumn) && editObject && !editObject.disabled) {
+            if (cellIsEditable(editRow, this.getColumnFromKey(editColumn)) && editObject && !editObject.disabled) {
               this.setState(state => {
                 state.editing = {
                   columnKey: editColumn,
@@ -290,7 +275,7 @@ class ObjectTable extends React.PureComponent {
             break
 
           default:
-            if (this.cellIsEditable(editRow, editColumn) && editObject && !editObject.disabled) {
+            if (cellIsEditable(editRow, this.getColumnFromKey(editColumn)) && editObject && !editObject.disabled) {
               this.setState(state => {
                 state.editing = {
                   columnKey: editColumn,
@@ -406,7 +391,7 @@ class ObjectTable extends React.PureComponent {
           case 'backspace':
             let editColumn = this.getSelectedFirstVisibleColumn()
             let editRow = this.getSelectedFirstVisibleRow()
-            if (selectedCells > 0 && this.cellIsEditable(editRow, editColumn)) {
+            if (selectedCells > 0 && cellIsEditable(editRow, this.getColumnFromKey(editColumn))) {
               this.setState(state => {
                 state.editing = {
                   columnKey: editColumn,
@@ -691,7 +676,7 @@ class ObjectTable extends React.PureComponent {
             pastingColumn = true
             if (pastingColumnIndex < pasteData[pastingRowIndex].length) {
               newSelectionColumns[column.key] = true
-              if (column.editor !== false && !row.disabled && this.cellIsEditable(row.id, column)) {
+              if (!row.disabled && cellIsEditable(row.id, column)) {
                 let editor = column.editor || TextEditor
                 let validated = editor.validate(
                   pasteData[pastingRowIndex][pastingColumnIndex],
@@ -732,7 +717,7 @@ class ObjectTable extends React.PureComponent {
           if (typeof this.state.selectedColumns[column.key] === 'undefined') {
             continue
           }
-          if (column.editor !== false && !row.disabled && this.cellIsEditable(row.id, column)) {
+          if (!row.disabled && cellIsEditable(row.id, column)) {
             let editor = column.editor || TextEditor
             let validated = editor.validate(
               pasteData[pasteRow][pasteColumn],
