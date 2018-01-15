@@ -7,7 +7,7 @@ React powered table of objects, designed to be editable and fast.
 
 ## Live Demo
 
-Check out the live demo here: http://abasystems.github.io/react-object-table/
+Check out the live demo here: http://uptick.github.io/react-object-table/
 
 ## Installation
 
@@ -59,4 +59,4 @@ or tag:
 ```
 
 Full reference documentation coming soon. For now, take a look at the reference on the live demo at
-http://abasystems.github.io/react-object-table/.
+http://uptick.github.io/react-object-table/.
