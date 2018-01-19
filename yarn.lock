@@ -1719,10 +1719,6 @@ isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
 
-jquery@^2.2.0:
-  version "2.2.4"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.2.4.tgz#2c89d6889b5eac522a7eea32c14521559c6cbf02"
-
 jquery@^3.1.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.2.1.tgz#5c4d9de652af6cd0a770154a631bba12b015c787"
@@ -2299,24 +2295,16 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-addons-shallow-compare@^0.14.8:
-  version "0.14.8"
-  resolved "https://registry.yarnpkg.com/react-addons-shallow-compare/-/react-addons-shallow-compare-0.14.8.tgz#1f26533d78cadabf4639756ec0dae5ab45427a74"
-
 react-dom@^0.14.8:
   version "0.14.9"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-0.14.9.tgz#05064a3dcf0fb1880a3b2bfc9d58c55d8d9f6293"
 
-react-object-table@0.0.42:
-  version "0.0.42"
-  resolved "https://registry.yarnpkg.com/react-object-table/-/react-object-table-0.0.42.tgz#de6a011ff5502ae5590b1578a411ca508e63a9b7"
+react-object-table@latest:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/react-object-table/-/react-object-table-0.3.0.tgz#b5b1d9cdfb5f0001ea95f4db3003b35d157d3a0d"
   dependencies:
     classnames "^2.2.3"
     clone "^1.0.2"
-    jquery "^2.2.0"
-    react "^0.14.8"
-    react-addons-shallow-compare "^0.14.8"
-    react-dom "^0.14.8"
 
 react@^0.14.8:
   version "0.14.9"
@@ -2792,9 +2780,9 @@ uid-number@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/uid-number/-/uid-number-0.0.6.tgz#0ea10e8035e8eb5b8e4449f06da1c730663baa81"
 
-uptick-demo-site@^1.0.6:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/uptick-demo-site/-/uptick-demo-site-1.1.1.tgz#81bc0d09a78247b39c264cfc504fe08450a94975"
+uptick-demo-site@latest:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/uptick-demo-site/-/uptick-demo-site-1.1.2.tgz#3a530cd95ed787bf4838d26cde11923dc9ceb660"
   dependencies:
     jquery "^3.1.1"
 
