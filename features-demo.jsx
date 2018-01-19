@@ -6,10 +6,6 @@ import Moment from 'moment'
 import ObjectTable from 'react-object-table'
 
 class SinceDrawer extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <span>{Moment(this.props.value).fromNow()}</span>

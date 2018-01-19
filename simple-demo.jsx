@@ -4,18 +4,13 @@ import ReactDom from 'react-dom'
 import ObjectTable from 'react-object-table'
 
 class SimpleTable extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      ...this.state,
-      objects: [
-        {id: 1, firstName: 'Jon', lastName: 'Athon',},
-        {id: 2, firstName: 'Andrew', lastName: 'Angagram',},
-        {id: 3, firstName: 'Craig', lastName: 'Jenny',},
-        {id: 4, firstName: 'Luke', lastName: 'Hotkins',},
-      ],
-    };
+  state = {
+    objects: [
+      {id: 1, firstName: 'Jon', lastName: 'Athon'},
+      {id: 2, firstName: 'Andrew', lastName: 'Angagram'},
+      {id: 3, firstName: 'Craig', lastName: 'Jenny'},
+      {id: 4, firstName: 'Luke', lastName: 'Hotkins'},
+    ],
   }
 
   handleUpdate(id, values) {
