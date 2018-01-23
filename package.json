@@ -1,6 +1,6 @@
 {
   "name": "react-object-table",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "React powered table of objects, designed to be editable and fast.",
   "main": "src/index.js",
   "scripts": {
