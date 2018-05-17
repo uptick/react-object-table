@@ -15,6 +15,7 @@ class ObjectCell extends React.Component {
       PropTypes.string,
       PropTypes.number,
     ]),
+    object: PropTypes.object,
     onMouseDownCell: PropTypes.func,
     disabled: PropTypes.bool,
     beginEdit: PropTypes.func,
@@ -101,6 +102,8 @@ class ObjectCell extends React.Component {
       editorProps.update = this.props.updateField
       editorProps.abort = this.props.abortField
       editorProps.objectId = this.props.objectId
+      editorProps.column = this.props.column
+      editorProps.object = this.props.object
       editorProps.columnKey = this.props.column.key
       editorProps.height = this.props.height
       editorProps.editReplace = this.props.editReplace
@@ -123,8 +126,11 @@ class ObjectCell extends React.Component {
     } else {
       let drawer = this.props.column.drawer || TextDrawer
       let drawerProps = Clone(this.props.column.drawerProps || {})
+
       drawerProps.ref = 'drawer'
       drawerProps.value = this.props.value
+      drawerProps.column = this.props.column
+      drawerProps.object = this.props.object
       drawerProps.beginEdit = this.beginEdit
       drawerProps.context = this.props.drawerContext
 

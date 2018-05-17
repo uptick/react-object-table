@@ -126,12 +126,14 @@ class ObjectRow extends React.Component {
       }
 
       let ref = 'column-' + column.key
+
       let cellProps = {
         key: ref,
         ref: ref,
 
         value: this.props.object[column.key],
         objectId: this.props.object.id,
+        object: this.props.object,
 
         column: column,
         height: this.props.height,
@@ -146,6 +148,7 @@ class ObjectRow extends React.Component {
         abortField: this.props.abortField,
         cellError: this.props.cellError,
       }
+
       cellProps.editorContext = null
       if (editing && column.editorContext) {
         cellProps.editorContext = column.editorContext(this.props.object)
