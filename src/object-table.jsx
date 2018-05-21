@@ -566,7 +566,7 @@ class ObjectTable extends React.PureComponent {
       let mouseX = event.clientX + document.body.scrollLeft
       let mouseY = event.clientY + document.body.scrollTop
       this.setState(state => {
-        let tableBounds = this.refs.table.getBoundingClientRect()
+        let tableBounds = this.table.getBoundingClientRect()
         state.selectedColumns = this.getDraggedColumns(state.selectionDragStart.x, mouseX, tableBounds)
         state.selectedRows = this.getDraggedRows(state.selectionDragStart.y, mouseY, tableBounds)
         state.selectedColumnsRight = true
@@ -580,7 +580,7 @@ class ObjectTable extends React.PureComponent {
       let mouseX = event.clientX + document.body.scrollLeft
       let mouseY = event.clientY + document.body.scrollTop
       this.setState(state => {
-        let tableBounds = this.refs.table.getBoundingClientRect()
+        let tableBounds = this.table.getBoundingClientRect()
         state.selectedColumnsRight = (state.selectionDragStart.x < mouseX)
         state.selectedRowsDown = (state.selectionDragStart.y < mouseY)
         state.selectedColumns = this.getDraggedColumns(state.selectionDragStart.x, mouseX, tableBounds)
@@ -915,7 +915,7 @@ class ObjectTable extends React.PureComponent {
     if (this.props.actions && this.props.actions.length) {
       columns.push(
         <th
-          ref="actions"
+          ref={el => { this.actions = el }}
           key="actions"
           className="actions"
           width={25}
@@ -999,7 +999,7 @@ class ObjectTable extends React.PureComponent {
     return (
       <div className="object-table-container">
         <table
-          ref="table"
+          ref={el => { this.table = el }}
           tabIndex="1"
           className={classes}
         >

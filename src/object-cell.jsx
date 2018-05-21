@@ -97,7 +97,6 @@ class ObjectCell extends React.Component {
     if (this.props.editing) {
       let editor = this.props.column.editor || TextEditor
       let editorProps = Clone(this.props.column.editorProps || {})
-      editorProps.ref = 'editor'
       editorProps.value = this.props.value
       editorProps.update = this.props.updateField
       editorProps.abort = this.props.abortField
@@ -127,7 +126,6 @@ class ObjectCell extends React.Component {
       let drawer = this.props.column.drawer || TextDrawer
       let drawerProps = Clone(this.props.column.drawerProps || {})
 
-      drawerProps.ref = 'drawer'
       drawerProps.value = this.props.value
       drawerProps.column = this.props.column
       drawerProps.object = this.props.object

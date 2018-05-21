@@ -11,7 +11,7 @@ function validate(value, props) {
 class TextEditor extends BaseEditor {
   componentDidMount() {
     if (this.props.editReplace) {
-      this.refs.field.setSelectionRange(this.state.value.length, this.state.value.length)
+      this.field.setSelectionRange(this.state.value.length, this.state.value.length)
     }
   }
 
@@ -20,7 +20,7 @@ class TextEditor extends BaseEditor {
   }
 
   handleChange = (event) => {
-    let newValue = this.refs.field.value
+    let newValue = this.field.value
     this.setState(state => {
       state.value = newValue
       return state
@@ -30,7 +30,7 @@ class TextEditor extends BaseEditor {
   handleFocus = (event) => {
     if (this.props.editReplace === null) {
       window.setTimeout(() => {
-        let inputElement = this.refs.field
+        let inputElement = this.field
         inputElement.select()
       }, 0)
     }
@@ -43,7 +43,7 @@ class TextEditor extends BaseEditor {
         onKeyDown={this.handleKeyDown}
       >
         <input
-          ref="field"
+          ref={el => { this.field = el }}
           value={this.state.value}
           onChange={this.handleChange}
           onBlur={this.handleBlur}

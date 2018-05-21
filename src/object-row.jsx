@@ -192,7 +192,7 @@ class ObjectRow extends React.Component {
         cells.push(
           <td
             key="actions"
-            ref="actions"
+            ref={el => { this.actions = el }}
             className="actions open"
             style={cellStyle}
           >
@@ -206,7 +206,7 @@ class ObjectRow extends React.Component {
         cells.push(
           <td
             key="actions"
-            ref="actions"
+            ref={el => { this.actions = el }}
             className="actions closed"
             onClick={this.openActions}
             style={cellStyle}
