@@ -440,7 +440,7 @@ class ObjectTable extends React.PureComponent {
   }
   handleClickOutside(event) {
     if (this.state.editing) {
-      this.getCellFromRefs(this.state.editing.objectId, this.state.editing.columnKey).refs.editor.handleBlur()
+      this.getCellFromRefs(this.state.editing.objectId, this.state.editing.columnKey).editor.handleBlur()
     } else if (Object.keys(this.state.selectedRows).length !== 0 || Object.keys(this.state.selectedColumns).length !== 0) {
       this.setState({selectedRows: {}, selectedColumns: {}})
     }
