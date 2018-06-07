@@ -41,24 +41,26 @@ class SimpleTable extends React.Component {
   }
 
   handleUpdate(id, values) {
-    this.setState(state => {
-      state.objects.map((object, index) => {
+    this.setState(prevState => {
+      const stateChanges = {objects: []}
+      prevState.objects.map((object, index) => {
         if (object.id === id) {
-          state.objects[index] = {
+          stateChanges.objects[index] = {
             ...object,
             ...values,
             updated: +Moment(),
           };
         }
       });
-      return state;
+      return stateChanges;
     });
   }
   handleDuplicate(id) {
-    this.setState(state => {
+    this.setState(prevState => {
+      const stateChanges = {objects: []}
       var newId = 0;
       var original;
-      state.objects.map((object) => {
+      prevState.objects.map((object) => {
         if (object.id === id) {
           original = object;
         }
@@ -68,13 +70,13 @@ class SimpleTable extends React.Component {
       });
       newId++;
       if (original) {
-        state.objects.push({
+        stateChanges.objects.push({
           ...original,
           id: newId,
           updated: +Moment(),
         });
       }
-      return state;
+      return stateChanges;
     });
   }
 
