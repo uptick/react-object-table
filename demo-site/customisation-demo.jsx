@@ -92,17 +92,20 @@ class CustomisedTable extends React.Component {
   }
 
   handleUpdate(id, values) {
-    this.setState(state => {
-      state.exception = null;
-      state.objects.map((object, index) => {
+    this.setState(prevState => {
+      const stateChanges = {
+        exception: null,
+        objects: [],
+      }
+      prevState.objects.map((object, index) => {
         if (object.id === id) {
-          state.objects[index] = {
+          stateChanges.objects[index] = {
             ...object,
             ...values,
           };
         }
       });
-      return state;
+      return stateChanges;
     });
   }
   handleCellError(objectId, columnKey, message) {

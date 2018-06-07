@@ -116,7 +116,10 @@ class ObjectCell extends React.Component {
           <div className="contents">
             {React.createElement(
               editor.component,
-              editorProps,
+              {
+                ...editorProps,
+                ref: el => { this.editor = el },
+              },
               null
             )}
           </div>
@@ -152,7 +155,10 @@ class ObjectCell extends React.Component {
           <div className="contents">
             {React.createElement(
               drawer.component,
-              drawerProps,
+              {
+                ...drawerProps,
+                ref: el => { this.drawer = el },
+              },
               null
             )}
           </div>
