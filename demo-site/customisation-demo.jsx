@@ -95,7 +95,7 @@ class CustomisedTable extends React.Component {
     this.setState(prevState => {
       const stateChanges = {
         exception: null,
-        objects: [],
+        objects: prevState.objects,
       }
       prevState.objects.map((object, index) => {
         if (object.id === id) {

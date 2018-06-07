@@ -42,7 +42,9 @@ class SimpleTable extends React.Component {
 
   handleUpdate(id, values) {
     this.setState(prevState => {
-      const stateChanges = {objects: []}
+      const stateChanges = {
+        objects: prevState.objects,
+      }
       prevState.objects.map((object, index) => {
         if (object.id === id) {
           stateChanges.objects[index] = {
@@ -57,7 +59,9 @@ class SimpleTable extends React.Component {
   }
   handleDuplicate(id) {
     this.setState(prevState => {
-      const stateChanges = {objects: []}
+      const stateChanges = {
+        objects: prevState.objects,
+      }
       var newId = 0;
       var original;
       prevState.objects.map((object) => {
