@@ -282,13 +282,12 @@ class ObjectTable extends React.PureComponent {
           // case 'enter':
           case 13:
             if (cellIsEditable(editRow, this.getColumnFromKey(editColumn)) && editObject && !editObject.disabled) {
-              this.setState(state => {
-                state.editing = {
+              this.setState({
+                editing: {
                   columnKey: editColumn,
                   objectId: editRow,
-                }
-                state.editReplace = null
-                return state
+                },
+                editReplace: null,
               })
             }
             event.preventDefault()
@@ -296,14 +295,12 @@ class ObjectTable extends React.PureComponent {
 
           default:
             if (cellIsEditable(editRow, this.getColumnFromKey(editColumn)) && editObject && !editObject.disabled) {
-              this.setState(state => {
-                state.editing = {
+              this.setState({
+                editing: {
                   columnKey: editColumn,
                   objectId: editRow,
-                }
-                let keyPressed = String.fromCharCode(event.which)
-                state.editReplace = keyPressed
-                return state
+                },
+                editReplace: String.fromCharCode(event.which), // keyPressed
               })
             }
             event.preventDefault()
@@ -400,10 +397,9 @@ class ObjectTable extends React.PureComponent {
         switch (actionKeys[event.which]) {
           case 'escape':
             if (Object.keys(this.state.copyingColumns).length > 0 || Object.keys(this.state.copyingRows).length > 0) {
-              this.setState(state => {
-                state.copyingColumns = {}
-                state.copyingRows = {}
-                return state
+              this.setState({
+                copyingColumns: {},
+                copyingRows: {},
               })
             }
             break
@@ -412,13 +408,12 @@ class ObjectTable extends React.PureComponent {
             let editColumn = this.getSelectedFirstVisibleColumn()
             let editRow = this.getSelectedFirstVisibleRow()
             if (selectedCells > 0 && cellIsEditable(editRow, this.getColumnFromKey(editColumn))) {
-              this.setState(state => {
-                state.editing = {
+              this.setState({
+                editing: {
                   columnKey: editColumn,
                   objectId: editRow,
-                }
-                state.editReplace = ''
-                return state
+                },
+                editReplace: '',
               })
             }
             break
@@ -447,11 +442,7 @@ class ObjectTable extends React.PureComponent {
     if (this.state.editing) {
       this.getCellFromRefs(this.state.editing.objectId, this.state.editing.columnKey).refs.editor.handleBlur()
     } else if (Object.keys(this.state.selectedRows).length !== 0 || Object.keys(this.state.selectedColumns).length !== 0) {
-      this.setState(state => {
-        state.selectedRows = {}
-        state.selectedColumns = {}
-        return state
-      })
+      this.setState({selectedRows: {}, selectedColumns: {}})
     }
     if (!JQuery(event.target).closest('ul.actions').length) {
       this.closeActions()
@@ -462,11 +453,7 @@ class ObjectTable extends React.PureComponent {
     if (typeof editReplaceOverride !== 'undefined') {
       editReplace = editReplaceOverride
     }
-    this.setState(state => {
-      state.editing = ref
-      state.editReplace = editReplace
-      return state
-    })
+    this.setState({editing: ref, editReplace: editReplace})
   }
   handleMouseDownCell = (ref, clientX, clientY, shift) => {
     if (_iOSDevice) {
@@ -537,24 +524,25 @@ class ObjectTable extends React.PureComponent {
           }
         }
 
-        this.setState(state => {
-          state.selectedColumns = newSelectionColumns
-          state.selectedRows = newSelectionRows
-          state.selectedRowsDown = selectingDown
-          state.selectedColumnsRight = selectingRight
-          return state
+        this.setState({
+          selectedColumns: newSelectionColumns,
+          selectedRows: newSelectionRows,
+          selectedRowsDown: selectingDown,
+          selectedColumnsRight: selectingRight,
         })
       } else {
-        this.setState(state => {
-          state.selectionDragStart = {
-            x: mouseX + document.body.scrollLeft,
-            y: mouseY + document.body.scrollTop,
+        this.setState(prevState => {
+          const stateChanges = {
+            selectionDragStart: {
+              x: mouseX + document.body.scrollLeft,
+              y: mouseY + document.body.scrollTop,
+            },
+            selectedRows: prevState.selectedRows,
+            selectedColumns: prevState.selectedColumns,
           }
-          state.selectedRows = {}
-          state.selectedRows[clickRef.objectId] = true
-          state.selectedColumns = {}
-          state.selectedColumns[clickRef.columnKey] = true
-          return state
+          stateChanges.selectedRows[clickRef.objectId] = true
+          stateChanges.selectedColumns[clickRef.columnKey] = true
+          return stateChanges
         })
       }
     }
@@ -565,13 +553,14 @@ class ObjectTable extends React.PureComponent {
     if (this.state.selectionDragStart !== null) {
       let mouseX = event.clientX + document.body.scrollLeft
       let mouseY = event.clientY + document.body.scrollTop
-      this.setState(state => {
+      this.setState(prevState => {
         let tableBounds = this.table.getBoundingClientRect()
-        state.selectedColumns = this.getDraggedColumns(state.selectionDragStart.x, mouseX, tableBounds)
-        state.selectedRows = this.getDraggedRows(state.selectionDragStart.y, mouseY, tableBounds)
-        state.selectedColumnsRight = true
-        state.selectedRowsDown = true
-        return state
+        return {
+          selectedColumns: this.getDraggedColumns(prevState.selectionDragStart.x, mouseX, tableBounds),
+          selectedRows: this.getDraggedRows(prevState.selectionDragStart.y, mouseY, tableBounds),
+          selectedColumnsRight: true,
+          selectedRowsDown: true,
+        }
       })
     }
   }
@@ -579,14 +568,15 @@ class ObjectTable extends React.PureComponent {
     if (this.state.selectionDragStart !== null) {
       let mouseX = event.clientX + document.body.scrollLeft
       let mouseY = event.clientY + document.body.scrollTop
-      this.setState(state => {
+      this.setState(prevState => {
         let tableBounds = this.table.getBoundingClientRect()
-        state.selectedColumnsRight = (state.selectionDragStart.x < mouseX)
-        state.selectedRowsDown = (state.selectionDragStart.y < mouseY)
-        state.selectedColumns = this.getDraggedColumns(state.selectionDragStart.x, mouseX, tableBounds)
-        state.selectedRows = this.getDraggedRows(state.selectionDragStart.y, mouseY, tableBounds)
-        state.selectionDragStart = null
-        return state
+        return {
+          selectedColumnsRight: (prevState.selectionDragStart.x < mouseX),
+          selectedRowsDown: (prevState.selectionDragStart.y < mouseY),
+          selectedColumns: this.getDraggedColumns(prevState.selectionDragStart.x, mouseX, tableBounds),
+          selectedRows: this.getDraggedRows(prevState.selectionDragStart.y, mouseY, tableBounds),
+          selectionDragStart: null,
+        }
       })
     }
   }
@@ -639,11 +629,10 @@ class ObjectTable extends React.PureComponent {
     clipboardData.setData('react/object-grid', JSON.stringify(cellsData))
     // clipboardData.setData('application/csv', csvData)
     event.preventDefault()
-    this.setState(state => {
-      state.copyingRows = state.selectedRows
-      state.copyingColumns = state.selectedColumns
-      return state
-    })
+    this.setState(prevState => ({
+      copyingRows: prevState.selectedRows,
+      copyingColumns: prevState.selectedColumns,
+    }))
   }
   handlePaste(pasteData) {
     let raiseRowErrors = (errors, row) => {
@@ -763,18 +752,11 @@ class ObjectTable extends React.PureComponent {
 
       this.updateManyObjects(objectUpdates)
     }
-    this.setState(state => {
-      state.copyingColumns = {}
-      state.copyingRows = {}
-      return state
-    })
+    this.setState({copyingColumns: {}, copyingRows: {}})
   }
 
   abortField = (action) => {
-    this.setState(state => {
-      state.editing = null
-      return state
-    })
+    this.setState({editing: null})
   }
   updateField = (objectId, columnKey, newValue, action) => {
     let updates = {}
@@ -782,22 +764,22 @@ class ObjectTable extends React.PureComponent {
     this.updateObject(objectId, updates)
 
     let updateAction = action
-    this.setState(state => {
-      state.editing = null
-      if (dictCount(state.selectedRows) === 1 && dictCount(state.selectedColumns) === 1) {
+    this.setState(prevState => {
+      const stateChanges = {editing: null}
+      if (dictCount(prevState.selectedRows) === 1 && dictCount(prevState.selectedColumns) === 1) {
         switch (updateAction) {
           case 'nextRow':
-            state.selectedRows = {}
-            state.selectedRows[this.getSelectedNextVisibleRow()] = true
+            stateChanges.selectedRows = {}
+            stateChanges.selectedRows[this.getSelectedNextVisibleRow()] = true
             break
 
           case 'nextColumn':
-            state.selectedColumns = {}
-            state.selectedColumns[this.getSelectedNextVisibleColumn()] = true
+            stateChanges.selectedColumns = {}
+            stateChanges.selectedColumns[this.getSelectedNextVisibleColumn()] = true
             break
         }
       }
-      return state
+      return stateChanges
     })
   }
   updateManyObjects(updates) {
@@ -818,19 +800,13 @@ class ObjectTable extends React.PureComponent {
     }
   }
   openActions = (id) => {
-    this.setState(state => {
-      state.openActions = id
-      return state
-    })
+    this.setState({openActions: id})
   }
   closeActions = () => {
     if (this.state.openActions === null) {
       return
     }
-    this.setState(state => {
-      state.openActions = null
-      return state
-    })
+    this.setState({openActions: null})
   }
 
   moveSelectionTo(row, column) {
@@ -882,12 +858,14 @@ class ObjectTable extends React.PureComponent {
       right = true
     }
 
-    this.setState(state => {
-      if (typeof down !== 'undefined') state.selectedRowsDown = down
-      if (typeof right !== 'undefined') state.selectedColumnsRight = right
-      state.selectedRows = newRows
-      state.selectedColumns = newColumns
-      return state
+    this.setState(() => {
+      const stateChanges = {
+        selectedRows: newRows,
+        selectedColumns: newColumns,
+      }
+      if (typeof down !== 'undefined') stateChanges.selectedRowsDown = down
+      if (typeof right !== 'undefined') stateChanges.selectedColumnsRight = right
+      return stateChanges
     })
   }
 

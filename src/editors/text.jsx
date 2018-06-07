@@ -21,10 +21,7 @@ class TextEditor extends BaseEditor {
 
   handleChange = (event) => {
     let newValue = this.field.value
-    this.setState(state => {
-      state.value = newValue
-      return state
-    })
+    this.setState({value: newValue})
   }
 
   handleFocus = (event) => {
