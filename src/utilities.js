@@ -13,10 +13,10 @@ function dictFirstKey(dict) {
   return undefined
 }
 
-function cellIsEditable(objectId, column) {
+function cellIsEditable(object, column) {
   const { isReadOnly, editor } = column
   const editorIsSet = editor !== false
-  const readOnly = typeof isReadOnly === 'function' ? isReadOnly(objectId) : (isReadOnly === true)
+  const readOnly = typeof isReadOnly === 'function' ? isReadOnly(object) : (isReadOnly === true)
   return editorIsSet && !readOnly
 }
 

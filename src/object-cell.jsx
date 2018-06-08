@@ -78,11 +78,11 @@ class ObjectCell extends React.Component {
   handleDoubleClick = (event) => {
     this.beginEdit()
   }
-  editable(objectId) {
-    return cellIsEditable(objectId, this.props.column)
+  editable(object) {
+    return cellIsEditable(object, this.props.column)
   }
   beginEdit = (editReplaceOverride) => {
-    if (!this.props.disabled && this.editable(this.getCellRef().objectId)) {
+    if (!this.props.disabled && this.editable(this.props.object)) {
       this.props.beginEdit(this.getCellRef(), editReplaceOverride)
     }
   }
@@ -137,7 +137,7 @@ class ObjectCell extends React.Component {
 
       let cellProps = {
         className: classNames(classes + ' drawer ' + drawer.className, {
-          uneditable: (!this.editable(this.getCellRef().objectId)),
+          uneditable: (!this.editable(this.props.object)),
         }),
       }
       if (!this.props.column.disableInteraction) {
