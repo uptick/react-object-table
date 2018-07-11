@@ -176,25 +176,30 @@ class ObjectRow extends React.Component {
       }
       if (this.props.actionsOpen && !this.props.object.disabled) {
         let actions = []
-        for (var actionId = 0; actionId < this.props.actions.length; actionId++) {
-          const action = this.props.actions[actionId]
+        this.props.actions.map((action, index) => {
           let actionEnabled = action.enabled
+          let tooltip
           if (!(actionEnabled === undefined)) {
-            if (typeof(actionEnabled) === 'function') actionEnabled = actionEnabled(this.props.object)
+            if (typeof actionEnabled === 'function') actionEnabled = actionEnabled(this.props.object)
+            if (Array.isArray(actionEnabled) && actionEnabled.length === 2) {
+              tooltip = actionEnabled[1]
+              actionEnabled = actionEnabled[0]
+            }
           } else {
             actionEnabled = true
           }
           actions.push(
             <li
-              key={'action-' + actionId}
+              key={'action-' + index}
+              title={tooltip}
               className={classNames({'disabled': !actionEnabled}, 'action')}
               onClick={actionEnabled ? this.onActionClick : null}
-              data-action={actionId}
-            >
+              data-action={index}
+              >
               {action.label}
             </li>
-          )
-        }
+            )
+        })
         cells.push(
           <td
             key="actions"
