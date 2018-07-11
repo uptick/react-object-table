@@ -181,9 +181,8 @@ class ObjectRow extends React.Component {
           let tooltip
           if (!(actionEnabled === undefined)) {
             if (typeof actionEnabled === 'function') actionEnabled = actionEnabled(this.props.object)
-            if (Array.isArray(actionEnabled) && actionEnabled.length === 2) {
-              tooltip = actionEnabled[1]
-              actionEnabled = actionEnabled[0]
+            if (Array.isArray(actionEnabled)) {
+              [actionEnabled, tooltip] = actionEnabled
             }
           } else {
             actionEnabled = true
