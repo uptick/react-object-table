@@ -7,7 +7,7 @@ React powered table of objects, designed to be editable and fast.
 
 ## Live Demo
 
-Check out the live demo here: http://abasystems.github.io/react-object-table/
+Check out the live demo here: http://uptick.github.io/react-object-table/
 
 ## Installation
 
@@ -21,12 +21,12 @@ Then require and use with ES6 imports:
 
 ```javascript
 import React from 'react'
-import ReactDOM from 'react-dom'
+import ReactDom from 'react-dom'
 
 import ObjectTable from 'react-object-table'
 
 var mount = document.querySelectorAll('div.table-mount');
-ReactDOM.render(
+ReactDom.render(
   <ObjectTable
     columns={[
       {
@@ -59,4 +59,4 @@ or tag:
 ```
 
 Full reference documentation coming soon. For now, take a look at the reference on the live demo at
-http://abasystems.github.io/react-object-table/.
+http://uptick.github.io/react-object-table/.

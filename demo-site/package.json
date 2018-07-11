@@ -1,6 +1,6 @@
 {
   "name": "react-object-table-demo-site",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Demo site for react-object-table package",
   "main": "index.js",
   "scripts": {
@@ -16,14 +16,14 @@
     "type": "git",
     "url": "react-object-table"
   },
-  "author": "ABA Systems Pty Ltd",
+  "author": "Uptick Pty Ltd",
   "license": "MIT",
   "dependencies": {
-    "abas-demo-site": "^1.0.6",
     "moment": "^2.16.0",
-    "react": "^0.14.8",
-    "react-dom": "^0.14.8",
-    "react-object-table": "0.0.42"
+    "react": "16.x",
+    "react-dom": "16.x",
+    "react-object-table": "latest",
+    "uptick-demo-site": "latest"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",

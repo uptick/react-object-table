@@ -1,34 +1,32 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import ReactDom from 'react-dom'
 
 import ObjectTable from 'react-object-table'
 
 class SimpleTable extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      ...this.state,
-      objects: [
-        {id: 1, firstName: 'Jon', lastName: 'Athon',},
-        {id: 2, firstName: 'Andrew', lastName: 'Angagram',},
-        {id: 3, firstName: 'Craig', lastName: 'Jenny',},
-        {id: 4, firstName: 'Luke', lastName: 'Hotkins',},
-      ],
-    };
+  state = {
+    objects: [
+      {id: 1, firstName: 'Jon', lastName: 'Athon'},
+      {id: 2, firstName: 'Andrew', lastName: 'Angagram'},
+      {id: 3, firstName: 'Craig', lastName: 'Jenny'},
+      {id: 4, firstName: 'Luke', lastName: 'Hotkins'},
+    ],
   }
 
   handleUpdate(id, values) {
-    this.setState(state => {
-      state.objects.map((object, index) => {
+    this.setState(prevState => {
+      const stateChanges = {
+        objects: prevState.objects,
+      }
+      prevState.objects.map((object, index) => {
         if (object.id === id) {
-          state.objects[index] = {
+          stateChanges.objects[index] = {
             ...object,
             ...values,
           };
         }
       });
-      return state;
+      return stateChanges;
     });
   }
 
@@ -56,7 +54,7 @@ SimpleTable.defaultProps = {
 };
 
 var mount = document.querySelectorAll('div.demo-mount-simple');
-ReactDOM.render(
+ReactDom.render(
   <SimpleTable />,
   mount[0]
 );

@@ -1,5 +1,4 @@
-var path = require('path');
-var NodeExternals = require('webpack-node-externals');
+var path = require('path')
 
 module.exports = {
   entry: './src/object-table.jsx',
@@ -18,12 +17,16 @@ module.exports = {
         query: {
           presets: [
             'react',
-            'es2015',
+            'env',
             'stage-0',
           ],
         },
       },
     ],
   },
-  externals: NodeExternals(),
-};
+  externals: [
+    'jquery',
+    'react',
+    'react-dom',
+  ]
+}

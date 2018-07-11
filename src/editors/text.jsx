@@ -5,55 +5,47 @@ function validate(value, props) {
   return {
     valid: true,
     cleanedValue: String(value),
-  };
+  }
 }
 
 class TextEditor extends BaseEditor {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     if (this.props.editReplace) {
-      this.refs.field.setSelectionRange(this.state.value.length, this.state.value.length);
+      this.field.setSelectionRange(this.state.value.length, this.state.value.length)
     }
   }
 
   validate(value) {
-    return validate(value, this.props);
+    return validate(value, this.props)
   }
 
-  handleChange(event) {
-    var newValue = this.refs.field.value;
-    this.setState(state => {
-      state.value = newValue;
-      return state;
-    });
+  handleChange = (event) => {
+    let newValue = this.field.value
+    this.setState({value: newValue})
   }
 
-  handleFocus(event) {
-    var reactClass = this;
+  handleFocus = (event) => {
     if (this.props.editReplace === null) {
-      window.setTimeout(function() {
-        var inputElement = reactClass.refs.field;
-        inputElement.select();
-      }, 0);
+      window.setTimeout(() => {
+        let inputElement = this.field
+        inputElement.select()
+      }, 0)
     }
   }
 
   render() {
     return (
       <form
-        onSubmit={this.handleSubmit.bind(this)}
-        onKeyDown={this.handleKeyDown.bind(this)}
+        onSubmit={this.handleSubmit}
+        onKeyDown={this.handleKeyDown}
       >
         <input
-          ref="field"
+          ref={el => { this.field = el }}
           value={this.state.value}
-          onChange={this.handleChange.bind(this)}
-          onBlur={this.handleBlur.bind(this)}
-          onFocus={this.handleFocus.bind(this)}
-          autoFocus={true}
+          onChange={this.handleChange}
+          onBlur={this.handleBlur}
+          onFocus={this.handleFocus}
+          autoFocus
           style={{
             height: '' + (this.props.height - 2) + 'px',
             lineHeight: '' + (this.props.height - 2) + 'px',
@@ -61,7 +53,7 @@ class TextEditor extends BaseEditor {
           }}
         />
       </form>
-    );
+    )
   }
 }
 

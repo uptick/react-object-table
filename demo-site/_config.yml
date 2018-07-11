@@ -1,5 +1,5 @@
-layouts_dir: 'node_modules/abas-demo-site/dist'
+layouts_dir: 'node_modules/uptick-demo-site/dist'
 
 package_name: React Object Table
-package_github_url: https://github.com/ABASystems/react-object-table
+package_github_url: https://github.com/uptick/react-object-table
 package_npm_url: https://www.npmjs.com/package/react-object-table

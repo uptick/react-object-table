@@ -1,99 +1,113 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import Clone from 'clone'
 import classNames from 'classnames'
+
+import { cellIsEditable } from './utilities'
 
 import TextDrawer from './drawers/text.jsx'
 import TextEditor from './editors/text.jsx'
 
 class ObjectCell extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.beginEdit = ::this.beginEdit;
-    this.handleMouseDown = ::this.handleMouseDown;
-    this.handleDoubleClick = ::this.handleDoubleClick;
-
-    this.state = {
-      ...this.state,
-    };
+  static propTypes = {
+    column: PropTypes.object,
+    objectId: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    object: PropTypes.object,
+    onMouseDownCell: PropTypes.func,
+    disabled: PropTypes.bool,
+    beginEdit: PropTypes.func,
+    selected: PropTypes.bool,
+    copying: PropTypes.bool,
+    editing: PropTypes.bool,
+    value: PropTypes.any,
+    updateField: PropTypes.func,
+    abortField: PropTypes.func,
+    height: PropTypes.number,
+    editReplace: PropTypes.any,
+    cellError: PropTypes.func,
+    editorContext: PropTypes.object,
+    drawerContext: PropTypes.object,
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    var isShallowDifferent = function(objectA, objectB, exemptions) {
-      for (var key in objectA) {
+    let isShallowDifferent = function(objectA, objectB, exemptions) {
+      for (let key in objectA) {
         if (exemptions && key in exemptions) {
-          continue;
+          continue
         }
         if (objectB[key] !== objectA[key]) {
-          // console.log('key', key, 'does not equal');
-          return true;
+          // console.log('key', key, 'does not equal')
+          return true
         }
       }
-      return false;
-    };
-    var propsExemptions = {
+      return false
+    }
+    let propsExemptions = {
       'onMouseDownCell': true,
       'beginEdit': true,
       'updateField': true,
       'abortField': true,
       'cellError': true,
-    };
+    }
     if (isShallowDifferent(this.props, nextProps, propsExemptions) || isShallowDifferent(nextProps, this.props, propsExemptions)) {
-      return true;
+      return true
     }
     if (isShallowDifferent(this.state, nextState) || isShallowDifferent(nextState, this.state)) {
-      return true;
+      return true
     }
-    return false;
+    return false
   }
 
   getCellRef() {
     return {
       columnKey: this.props.column.key,
       objectId: this.props.objectId,
-    };
+    }
   }
 
-  handleMouseDown(event) {
-    var button = event.which || event.button;
-    event.preventDefault();
-    if (button == 0)
-      this.props.onMouseDownCell(this.getCellRef(), event.clientX, event.clientY, event.shiftKey);
+  handleMouseDown = (event) => {
+    let button = event.which || event.button
+    event.preventDefault()
+    if (button === 0) {
+      this.props.onMouseDownCell(this.getCellRef(), event.clientX, event.clientY, event.shiftKey)
+    }
   }
-  handleDoubleClick(event) {
-    this.beginEdit();
+  handleDoubleClick = (event) => {
+    this.beginEdit()
   }
-  editable(objectId) {
-    const { isReadOnly, editor } = this.props.column
-    const editorIsSet = !(editor === false)
-    const readOnly = typeof(isReadOnly) === 'function' ? isReadOnly(objectId) : (isReadOnly === true)
-    return editorIsSet && !readOnly
+  editable(object) {
+    return cellIsEditable(object, this.props.column)
   }
-  beginEdit(editReplaceOverride) {
-    if (!this.props.disabled && this.editable(this.getCellRef().objectId))
-      this.props.beginEdit(this.getCellRef(), editReplaceOverride);
+  beginEdit = (editReplaceOverride) => {
+    if (!this.props.disabled && this.editable(this.props.object)) {
+      this.props.beginEdit(this.getCellRef(), editReplaceOverride)
+    }
   }
 
   render() {
-    var classes = classNames('', {
+    let classes = classNames('', {
       'selected': this.props.selected,
       'copying': this.props.copying,
       'editing': this.props.editing,
-    });
+    })
 
     if (this.props.editing) {
-      var editor = this.props.column.editor || TextEditor;
-      var editorProps = Clone(this.props.column.editorProps || {});
-      editorProps.ref = 'editor';
-      editorProps.value = this.props.value;
-      editorProps.update = this.props.updateField;
-      editorProps.abort = this.props.abortField;
-      editorProps.objectId = this.props.objectId;
-      editorProps.columnKey = this.props.column.key;
-      editorProps.height = this.props.height;
-      editorProps.editReplace = this.props.editReplace;
-      editorProps.cellError = this.props.cellError;
-      editorProps.context = this.props.editorContext;
+      let editor = this.props.column.editor || TextEditor
+      let editorProps = Clone(this.props.column.editorProps || {})
+      editorProps.value = this.props.value
+      editorProps.update = this.props.updateField
+      editorProps.abort = this.props.abortField
+      editorProps.objectId = this.props.objectId
+      editorProps.column = this.props.column
+      editorProps.object = this.props.object
+      editorProps.columnKey = this.props.column.key
+      editorProps.height = this.props.height
+      editorProps.editReplace = this.props.editReplace
+      editorProps.cellError = this.props.cellError
+      editorProps.context = this.props.editorContext
 
       return (
         <td
@@ -102,28 +116,37 @@ class ObjectCell extends React.Component {
           <div className="contents">
             {React.createElement(
               editor.component,
-              editorProps,
+              {
+                ...editorProps,
+                ref: el => { this.editor = el },
+              },
               null
             )}
           </div>
         </td>
-      );
-    }
-    else {
-      var drawer = this.props.column.drawer || TextDrawer;
-      var drawerProps = Clone(this.props.column.drawerProps || {});
-      drawerProps.ref = 'drawer';
-      drawerProps.value = this.props.value;
-      drawerProps.beginEdit = this.beginEdit;
-      drawerProps.context = this.props.drawerContext;
+      )
+    } else {
+      let drawer = this.props.column.drawer || TextDrawer
+      let drawerProps = Clone(this.props.column.drawerProps || {})
 
-      var cellProps = {
+      drawerProps.value = this.props.value
+      drawerProps.column = this.props.column
+      drawerProps.object = this.props.object
+      drawerProps.beginEdit = this.beginEdit
+      drawerProps.context = this.props.drawerContext
+
+      let cellProps = {
         className: classNames(classes + ' drawer ' + drawer.className, {
-          uneditable: (!this.editable(this.getCellRef().objectId)),
+          uneditable: (!this.editable(this.props.object)),
         }),
-        onMouseDown: this.handleMouseDown,
-        onDoubleClick: this.handleDoubleClick,
-      };
+      }
+      if (!this.props.column.disableInteraction) {
+        cellProps = {
+          ...cellProps,
+          onMouseDown: this.handleMouseDown,
+          onDoubleClick: this.handleDoubleClick,
+        }
+      }
 
       return (
         <td
@@ -132,18 +155,17 @@ class ObjectCell extends React.Component {
           <div className="contents">
             {React.createElement(
               drawer.component,
-              drawerProps,
+              {
+                ...drawerProps,
+                ref: el => { this.drawer = el },
+              },
               null
             )}
           </div>
         </td>
-      );
+      )
     }
   }
 }
-ObjectCell.defaultProps = {
-  // column: {}, // from row
-  // objectId: 1, // from row
-};
 
 export default ObjectCell

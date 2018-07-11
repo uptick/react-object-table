@@ -1,10 +1,10 @@
 {
   "name": "react-object-table",
-  "version": "0.1.2",
+  "version": "0.4.0",
   "description": "React powered table of objects, designed to be editable and fast.",
   "main": "src/index.js",
   "scripts": {
-    "publish-demo": "git branch -D gh-pages; git push origin --delete gh-pages; git checkout -b gh-pages; cd demo-site; npm run build; cd ..; git add .; git add -f demo-site/dist; git add -f demo-site/node_modules/abas-demo-site/dist; git commit -m \"Demo site build\"; git push origin gh-pages; git checkout master; git push origin `git subtree split --prefix demo-site gh-pages`:gh-pages --force;",
+    "publish-demo": "git branch -D gh-pages; git push origin --delete gh-pages; git checkout -b gh-pages; cd demo-site; yarn; npm run build; cd ..; git add .; git add -f demo-site/dist; git add -f demo-site/node_modules/uptick-demo-site/dist; git commit -m \"Demo site build\"; git push origin gh-pages; git checkout master; git push origin `git subtree split --prefix demo-site gh-pages`:gh-pages --force;",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-js": "./node_modules/webpack/bin/webpack.js",
     "build-css": "./node_modules/node-sass/bin/node-sass src/object-table.sass dist/react-object-table.css",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ABASystems/react-object-table.git"
+    "url": "https://github.com/uptick/react-object-table.git"
   },
   "keywords": [
     "react",
@@ -22,30 +22,45 @@
     "table",
     "editable"
   ],
-  "author": "ABA Systems Pty Ltd",
+  "author": "Uptick Pty Ltd",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ABASystems/react-object-table/issues"
+    "url": "https://github.com/uptick/react-object-table/issues"
   },
-  "homepage": "https://github.com/ABASystems/react-object-table#readme",
+  "homepage": "https://github.com/uptick/react-object-table#readme",
   "dependencies": {
     "classnames": "^2.2.3",
-    "clone": "^1.0.2",
-    "jquery": "^2.2.0",
-    "react": "^15.4",
-    "react-dom": "^15.4"
+    "clone": "^1.0.2"
+  },
+  "peerDependencies": {
+    "jquery": "^3.x",
+    "react": "15.x - 16.x",
+    "react-dom": "15.x - 16.x"
   },
   "devDependencies": {
     "babel-cli": "^6.6.4",
     "babel-core": "^6.5.2",
+    "babel-eslint": "^7.2.3",
     "babel-loader": "^6.2.2",
     "babel-plugin-add-module-exports": "^0.1.2",
-    "babel-preset-es2015": "^6.5.0",
+    "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
+    "eslint": "^3.19.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-config-standard-jsx": "^4.0.1",
+    "eslint-config-standard-react": "^5.0.0",
+    "eslint-plugin-babel": "^4.1.1",
+    "eslint-plugin-import": "^2.3.0",
+    "eslint-plugin-node": "^4.2.2",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-react": "^7.0.1",
+    "eslint-plugin-standard": "^3.0.1",
+    "jquery": "^3.1.1",
     "node-sass": "^3.4.2",
-    "webpack": "^1.12.13",
-    "webpack-node-externals": "^1.5.4"
+    "react": "^15.4",
+    "react-dom": "^15.4",
+    "webpack": "^1.12.13"
   },
   "browserDependencies": {}
 }

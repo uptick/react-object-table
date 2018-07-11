@@ -1,15 +1,11 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import ReactDom from 'react-dom'
 
 import Moment from 'moment'
 
 import ObjectTable from 'react-object-table'
 
 class SinceDrawer extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <span>{Moment(this.props.value).fromNow()}</span>
@@ -45,24 +41,30 @@ class SimpleTable extends React.Component {
   }
 
   handleUpdate(id, values) {
-    this.setState(state => {
-      state.objects.map((object, index) => {
+    this.setState(prevState => {
+      const stateChanges = {
+        objects: prevState.objects,
+      }
+      prevState.objects.map((object, index) => {
         if (object.id === id) {
-          state.objects[index] = {
+          stateChanges.objects[index] = {
             ...object,
             ...values,
             updated: +Moment(),
           };
         }
       });
-      return state;
+      return stateChanges;
     });
   }
   handleDuplicate(id) {
-    this.setState(state => {
+    this.setState(prevState => {
+      const stateChanges = {
+        objects: prevState.objects,
+      }
       var newId = 0;
       var original;
-      state.objects.map((object) => {
+      prevState.objects.map((object) => {
         if (object.id === id) {
           original = object;
         }
@@ -72,13 +74,13 @@ class SimpleTable extends React.Component {
       });
       newId++;
       if (original) {
-        state.objects.push({
+        stateChanges.objects.push({
           ...original,
           id: newId,
           updated: +Moment(),
         });
       }
-      return state;
+      return stateChanges;
     });
   }
 
@@ -116,7 +118,7 @@ SimpleTable.defaultProps = {
 };
 
 var mount = document.querySelectorAll('div.demo-mount-features');
-ReactDOM.render(
+ReactDom.render(
   <SimpleTable />,
   mount[0]
 );
