@@ -3,7 +3,7 @@ import React from 'react'
 import JQuery from 'jquery'
 import classNames from 'classnames'
 
-import { dictCount } from './utilities.js'
+import { dictCount, isDifferent } from './utilities.js'
 
 class ObjectRow extends React.Component {
   static propTypes = {
@@ -29,8 +29,8 @@ class ObjectRow extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    let isMissingColumns = function(propsA, propsB, columnsKey) {
-      for (let key in propsA[columnsKey]) {
+    const isMissingColumns = function(propsA, propsB, columnsKey) {
+      for (const key in propsA[columnsKey]) {
         if (key in propsB[columnsKey] === false) {
           // console.log('key', key, 'does not exist in both')
           return true
@@ -45,20 +45,7 @@ class ObjectRow extends React.Component {
       return true
     }
 
-    let isShallowDifferent = function(objectA, objectB, exemptions) {
-      for (let key in objectA) {
-        if (exemptions && key in exemptions) {
-          continue
-        }
-        if (objectB[key] !== objectA[key]) {
-          // console.log('key', key, 'does not equal')
-          return true
-        }
-      }
-      return false
-    }
-
-    let propsExemptions = {
+    const propsExemptions = {
       // ignore column we perform above
       'selectedColumns': true,
       'copyingColumns': true,
@@ -71,18 +58,18 @@ class ObjectRow extends React.Component {
       'onMouseDownCell': true,
       'beginEdit': true,
     }
-    if (isShallowDifferent(this.props, nextProps, propsExemptions) || isShallowDifferent(nextProps, this.props, propsExemptions)) {
+    if (isDifferent(this.props, nextProps, propsExemptions)) {
       return true
     }
-    if (isShallowDifferent(this.state, nextState) || isShallowDifferent(nextState, this.state)) {
+    if (isDifferent(this.state, nextState)) {
       return true
     }
     return false
   }
 
   colInRanges(column, columns, rows) {
-    let numRangeColumns = dictCount(columns)
-    let numRangeRows = dictCount(rows)
+    const numRangeColumns = dictCount(columns)
+    const numRangeRows = dictCount(rows)
     if (numRangeColumns === 0 && numRangeRows === 0) {
       return false
     } else if (columns !== null && rows === null) {
