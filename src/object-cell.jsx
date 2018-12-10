@@ -3,7 +3,7 @@ import React from 'react'
 import Clone from 'clone'
 import classNames from 'classnames'
 
-import { cellIsEditable } from './utilities'
+import { cellIsEditable, isDifferent } from './utilities'
 
 import TextDrawer from './drawers/text.jsx'
 import TextEditor from './editors/text.jsx'
@@ -33,29 +33,17 @@ class ObjectCell extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    let isShallowDifferent = function(objectA, objectB, exemptions) {
-      for (let key in objectA) {
-        if (exemptions && key in exemptions) {
-          continue
-        }
-        if (objectB[key] !== objectA[key]) {
-          // console.log('key', key, 'does not equal')
-          return true
-        }
-      }
-      return false
-    }
-    let propsExemptions = {
+    const propsExemptions = {
       'onMouseDownCell': true,
       'beginEdit': true,
       'updateField': true,
       'abortField': true,
       'cellError': true,
     }
-    if (isShallowDifferent(this.props, nextProps, propsExemptions) || isShallowDifferent(nextProps, this.props, propsExemptions)) {
+    if (isDifferent(this.props, nextProps, propsExemptions)) {
       return true
     }
-    if (isShallowDifferent(this.state, nextState) || isShallowDifferent(nextState, this.state)) {
+    if (isDifferent(this.state, nextState)) {
       return true
     }
     return false
@@ -69,7 +57,7 @@ class ObjectCell extends React.Component {
   }
 
   handleMouseDown = (event) => {
-    let button = event.which || event.button
+    const button = event.which || event.button
     event.preventDefault()
     if (button === 0) {
       this.props.onMouseDownCell(this.getCellRef(), event.clientX, event.clientY, event.shiftKey)
@@ -88,15 +76,15 @@ class ObjectCell extends React.Component {
   }
 
   render() {
-    let classes = classNames('', {
+    const classes = classNames('', {
       'selected': this.props.selected,
       'copying': this.props.copying,
       'editing': this.props.editing,
     })
 
     if (this.props.editing) {
-      let editor = this.props.column.editor || TextEditor
-      let editorProps = Clone(this.props.column.editorProps || {})
+      const editor = this.props.column.editor || TextEditor
+      const editorProps = Clone(this.props.column.editorProps || {})
       editorProps.value = this.props.value
       editorProps.update = this.props.updateField
       editorProps.abort = this.props.abortField
@@ -126,8 +114,8 @@ class ObjectCell extends React.Component {
         </td>
       )
     } else {
-      let drawer = this.props.column.drawer || TextDrawer
-      let drawerProps = Clone(this.props.column.drawerProps || {})
+      const drawer = this.props.column.drawer || TextDrawer
+      const drawerProps = Clone(this.props.column.drawerProps || {})
 
       drawerProps.value = this.props.value
       drawerProps.column = this.props.column
