@@ -1,7 +1,6 @@
 $selection-colour: #337ab7
 $cell-padding: 0.4rem
 $border-colour: #ddd
-$main-font-size: 1rem
 
 div.object-table-container
   margin-bottom: 2em
@@ -9,7 +8,6 @@ div.object-table-container
     width: 100%
     border: none !important
     outline: none !important
-    font-size: $main-font-size
     border-collapse: collapse
 
     &.editing
@@ -70,10 +68,7 @@ div.object-table-container
     td.actions
       position: relative
       text-align: center
-      font-size: $main-font-size
       cursor: pointer
-      > span
-        font-size: $main-font-size
       ul.actions
         overflow: hidden
         line-height: 1em
@@ -111,7 +106,6 @@ div.object-table-container
 div.object-table-container
   td.editor
     input
-      font-size: $main-font-size
       box-shadow: none
       width: 100%
       padding: $cell-padding
