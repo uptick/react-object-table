@@ -244,21 +244,21 @@ class ObjectTable extends React.PureComponent {
   }
 
   getRowFromRefs(rowId) {
-    // Dumb hack to clean up existing hack.
+    // Dumb hack to clean up existing hack. Accesses underlying elements wrapped in React DnD v8 HOCs.
     let row = this.refs[`object-${rowId}`]
     // Unwrap
-    while (row.decoratedComponentInstance) {
-      row = row.decoratedComponentInstance
+    while (row.decoratedRef) {
+      row = row.decoratedRef.current
     }
     return row
   }
 
   getCellFromRefs(rowId, columnKey) {
-    // Dumb hack to clean up existing hack.
+    // Dumb hack to clean up existing hack. Accesses underlying elements wrapped in React DnD v8 HOCs.
     let cell = this.getRowFromRefs(rowId).refs[`column-${columnKey}`]
     // Unwrap
-    while (cell.decoratedComponentInstance) {
-      cell = cell.decoratedComponentInstance
+    while (cell.decoratedRef) {
+      cell = cell.decoratedRef.current
     }
     return cell
   }
