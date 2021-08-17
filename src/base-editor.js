@@ -61,6 +61,7 @@ class BaseEditor extends React.Component {
   }
   handleSubmit = (event) => {
     event.preventDefault()
+    event.stopPropagation()
     this.commit(this.state.value, 'nextRow')
   }
   handleKeyDown = (event) => {

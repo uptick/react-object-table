@@ -1,6 +1,6 @@
 {
   "name": "react-object-table",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "React powered table of objects, designed to be editable and fast.",
   "main": "dist/index.js",
   "module": "dist/index.js",
